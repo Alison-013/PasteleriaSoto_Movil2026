@@ -13,42 +13,12 @@ class Seguridad extends StatefulWidget {
 
 class _SeguridadState extends State<Seguridad> {
   final usuarios = const [
-    _Usuario(
-      nombre: 'María Gómez',
-      rol: 'Administrador',
-      iniciales: 'MG',
-      color: Color(0xFFB98264),
-    ),
-    _Usuario(
-      nombre: 'Carlos Ruiz',
-      rol: 'Vendedor',
-      iniciales: 'CR',
-      color: Color(0xFF8FA6B6),
-    ),
-    _Usuario(
-      nombre: 'Ana Morales',
-      rol: 'Cajera',
-      iniciales: 'AM',
-      color: Color(0xFFCE8755),
-    ),
-    _Usuario(
-      nombre: 'Javier Soto',
-      rol: 'Administrador',
-      iniciales: 'JS',
-      color: Color(0xFFBC976C),
-    ),
-    _Usuario(
-      nombre: 'Kevin Marenco',
-      rol: 'Cajero',
-      iniciales: 'KM',
-      color: Color(0xFF6F8391),
-    ),
-    _Usuario(
-      nombre: 'Elena Rostrán',
-      rol: 'Cajera',
-      iniciales: 'ER',
-      color: Color(0xFFE3C4B4),
-    ),
+    _Usuario('María Gómez', 'Administrador', 'MG', Color(0xFFB98264)),
+    _Usuario('Carlos Ruiz', 'Vendedor', 'CR', Color(0xFF8FA6B6)),
+    _Usuario('Ana Morales', 'Cajera', 'AM', Color(0xFFCE8755)),
+    _Usuario('Javier Soto', 'Administrador', 'JS', Color(0xFFBC976C)),
+    _Usuario('Kevin Marenco', 'Cajero', 'KM', Color(0xFF6F8391)),
+    _Usuario('Elena Rostrán', 'Cajera', 'ER', Color(0xFFE3C4B4)),
   ];
 
   void _abrirPermisos(_Usuario usuario) {
@@ -56,9 +26,7 @@ class _SeguridadState extends State<Seguridad> {
       context: context,
       isScrollControlled: true,
       backgroundColor: Colors.transparent,
-      builder: (context) {
-        return _DrawerPermisos(usuario: usuario);
-      },
+      builder: (context) => _DrawerPermisos(usuario: usuario),
     );
   }
 
@@ -78,44 +46,37 @@ class _SeguridadState extends State<Seguridad> {
                   children: [
                     Text(
                       '← Volver a Opciones',
-                      style: GoogleFonts.poppins(
-                        fontSize: 9,
-                        fontWeight: FontWeight.w500,
-                        color: const Color(0xFF486878),
+                      style: _poppins(
+                        9,
+                        const Color(0xFF486878),
+                        FontWeight.w500,
                       ),
                     ),
                     const SizedBox(height: 10),
                     Text(
                       'Seguridad',
-                      style: GoogleFonts.playfairDisplay(
-                        fontSize: 17,
-                        height: 24 / 17,
-                        fontWeight: FontWeight.w400,
-                        color: const Color(0xFF092535),
-                      ),
+                      style: _playfair(17, FontWeight.w400),
                     ),
                     Text(
                       'Gestión de usuarios y permisos de acceso',
-                      style: GoogleFonts.poppins(
-                        fontSize: 10,
-                        height: 14 / 10,
-                        color: const Color(0xFF657278),
+                      style: _poppins(
+                        10,
+                        const Color(0xFF657278),
+                        FontWeight.w400,
                       ),
                     ),
                     const SizedBox(height: 14),
                     ...List.generate(usuarios.length, (index) {
-                      final usuario = usuarios[index];
-
                       return Padding(
                         padding: const EdgeInsets.only(bottom: 9),
                         child: InkWell(
+                          borderRadius: BorderRadius.circular(8),
                           onTap: () {
                             if (index == 0) {
-                              _abrirPermisos(usuario);
+                              _abrirPermisos(usuarios[index]);
                             }
                           },
-                          borderRadius: BorderRadius.circular(8),
-                          child: _TarjetaUsuario(usuario: usuario),
+                          child: _TarjetaUsuario(usuario: usuarios[index]),
                         ),
                       );
                     }),
@@ -157,11 +118,7 @@ class _TarjetaUsuario extends StatelessWidget {
             ),
             child: Text(
               usuario.iniciales,
-              style: GoogleFonts.poppins(
-                fontSize: 11,
-                fontWeight: FontWeight.w600,
-                color: Colors.white,
-              ),
+              style: _poppins(11, Colors.white, FontWeight.w600),
             ),
           ),
           const SizedBox(width: 10),
@@ -172,19 +129,18 @@ class _TarjetaUsuario extends StatelessWidget {
               children: [
                 Text(
                   usuario.nombre,
-                  style: GoogleFonts.poppins(
-                    fontSize: 14,
-                    height: 17 / 14,
-                    fontWeight: FontWeight.w600,
-                    color: const Color(0xFF202B30),
+                  style: _poppins(
+                    14,
+                    const Color(0xFF202B30),
+                    FontWeight.w600,
                   ),
                 ),
                 Text(
                   usuario.rol,
-                  style: GoogleFonts.poppins(
-                    fontSize: 9,
-                    fontWeight: FontWeight.w500,
-                    color: const Color(0xFF657278),
+                  style: _poppins(
+                    9,
+                    const Color(0xFF657278),
+                    FontWeight.w500,
                   ),
                 ),
               ],
@@ -198,10 +154,10 @@ class _TarjetaUsuario extends StatelessWidget {
             ),
             child: Text(
               'Activo',
-              style: GoogleFonts.poppins(
-                fontSize: 8,
-                fontWeight: FontWeight.w500,
-                color: const Color(0xFFD69A2D),
+              style: _poppins(
+                8,
+                const Color(0xFFD69A2D),
+                FontWeight.w500,
               ),
             ),
           ),
@@ -227,20 +183,19 @@ class _DrawerPermisos extends StatefulWidget {
 }
 
 class _DrawerPermisosState extends State<_DrawerPermisos> {
-  bool consultarVentas = true;
-  bool consultarHistorial = true;
-  bool anulaciones = false;
-
-  bool consultarCompras = true;
-  bool editarClientes = true;
-
-  bool consultarInventario = true;
-  bool modificarPrecios = false;
-  bool registrarMermas = false;
-
-  bool registrarCompras = false;
-  bool reportesFinancieros = false;
-  bool modificarSeguridad = false;
+  final Map<String, bool> permisos = {
+    'Ventas': true,
+    'Consultar historial y ventas del día': true,
+    'Realizar anulaciones y descuentos': false,
+    'Consultar compras': true,
+    'Crear y editar fichas de clientes': true,
+    'Consultar catálogo y existencias': true,
+    'Modificar precios y recetas': false,
+    'Registrar ajustes o mermas': false,
+    'Registrar compras o pedidos': false,
+    'Ver reportes financieros': false,
+    'Modificar sistema y seguridad': false,
+  };
 
   @override
   Widget build(BuildContext context) {
@@ -261,17 +216,20 @@ class _DrawerPermisosState extends State<_DrawerPermisos> {
                 Container(
                   width: 40,
                   height: 4,
-                  margin: const EdgeInsets.only(top: 8, bottom: 4),
+                  margin: const EdgeInsets.only(top: 10, bottom: 8),
                   decoration: BoxDecoration(
                     color: const Color(0xFFB9C3C8),
                     borderRadius: BorderRadius.circular(10),
                   ),
                 ),
-              
+
+                // Aquí no hay TopBar_Widget.
+                // Por eso no aparece el contenedor azul de Pastelería Soto.
+
                 Expanded(
                   child: SingleChildScrollView(
                     controller: scrollController,
-                    padding: const EdgeInsets.fromLTRB(12, 12, 12, 12),
+                    padding: const EdgeInsets.fromLTRB(12, 8, 12, 12),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -279,10 +237,10 @@ class _DrawerPermisosState extends State<_DrawerPermisos> {
                           onTap: () => Navigator.pop(context),
                           child: Text(
                             '← Volver a Seguridad',
-                            style: GoogleFonts.poppins(
-                              fontSize: 9,
-                              fontWeight: FontWeight.w500,
-                              color: const Color(0xFF486878),
+                            style: _poppins(
+                              9,
+                              const Color(0xFF486878),
+                              FontWeight.w500,
                             ),
                           ),
                         ),
@@ -292,12 +250,7 @@ class _DrawerPermisosState extends State<_DrawerPermisos> {
                             Expanded(
                               child: Text(
                                 'Detalle de Permisos',
-                                style: GoogleFonts.playfairDisplay(
-                                  fontSize: 19,
-                                  height: 24 / 19,
-                                  fontWeight: FontWeight.w600,
-                                  color: const Color(0xFF092535),
-                                ),
+                                style: _playfair(19, FontWeight.w600),
                               ),
                             ),
                             Container(
@@ -311,10 +264,10 @@ class _DrawerPermisosState extends State<_DrawerPermisos> {
                               ),
                               child: Text(
                                 '5 de 12 activos',
-                                style: GoogleFonts.poppins(
-                                  fontSize: 8,
-                                  fontWeight: FontWeight.w500,
-                                  color: const Color(0xFF526167),
+                                style: _poppins(
+                                  8,
+                                  const Color(0xFF526167),
+                                  FontWeight.w500,
                                 ),
                               ),
                             ),
@@ -326,137 +279,55 @@ class _DrawerPermisosState extends State<_DrawerPermisos> {
                         _GrupoPermisos(
                           icono: Icons.storefront_outlined,
                           titulo: 'VENTAS Y FACTURACIÓN',
-                          hijos: [
-                            _SwitchPermiso(
-                              texto: 'Ventas',
-                              valor: consultarVentas,
-                              alCambiar: (valor) {
-                                setState(() {
-                                  consultarVentas = valor;
-                                });
-                              },
-                            ),
-                            _SwitchPermiso(
-                              texto: 'Consultar historial y ventas del día',
-                              valor: consultarHistorial,
-                              alCambiar: (valor) {
-                                setState(() {
-                                  consultarHistorial = valor;
-                                });
-                              },
-                            ),
-                            _SwitchPermiso(
-                              texto: 'Realizar anulaciones y descuentos',
-                              valor: anulaciones,
-                              alCambiar: (valor) {
-                                setState(() {
-                                  anulaciones = valor;
-                                });
-                              },
-                            ),
+                          permisos: [
+                            'Ventas',
+                            'Consultar historial y ventas del día',
+                            'Realizar anulaciones y descuentos',
                           ],
+                          valores: permisos,
+                          alCambiar: _cambiarPermiso,
                         ),
                         const SizedBox(height: 9),
                         _GrupoPermisos(
                           icono: Icons.groups_outlined,
                           titulo: 'CLIENTES',
-                          hijos: [
-                            _SwitchPermiso(
-                              texto: 'Consultar compras',
-                              valor: consultarCompras,
-                              alCambiar: (valor) {
-                                setState(() {
-                                  consultarCompras = valor;
-                                });
-                              },
-                            ),
-                            _SwitchPermiso(
-                              texto: 'Crear y editar fichas de clientes',
-                              valor: editarClientes,
-                              alCambiar: (valor) {
-                                setState(() {
-                                  editarClientes = valor;
-                                });
-                              },
-                            ),
+                          permisos: [
+                            'Consultar compras',
+                            'Crear y editar fichas de clientes',
                           ],
+                          valores: permisos,
+                          alCambiar: _cambiarPermiso,
                         ),
                         const SizedBox(height: 9),
                         _GrupoPermisos(
                           icono: Icons.inventory_2_outlined,
                           titulo: 'PRODUCTOS E INVENTARIO',
-                          hijos: [
-                            _SwitchPermiso(
-                              texto: 'Consultar catálogo y existencias',
-                              valor: consultarInventario,
-                              alCambiar: (valor) {
-                                setState(() {
-                                  consultarInventario = valor;
-                                });
-                              },
-                            ),
-                            _SwitchPermiso(
-                              texto: 'Modificar precios y recetas',
-                              valor: modificarPrecios,
-                              alCambiar: (valor) {
-                                setState(() {
-                                  modificarPrecios = valor;
-                                });
-                              },
-                            ),
-                            _SwitchPermiso(
-                              texto: 'Registrar ajustes o mermas',
-                              valor: registrarMermas,
-                              alCambiar: (valor) {
-                                setState(() {
-                                  registrarMermas = valor;
-                                });
-                              },
-                            ),
+                          permisos: [
+                            'Consultar catálogo y existencias',
+                            'Modificar precios y recetas',
+                            'Registrar ajustes o mermas',
                           ],
+                          valores: permisos,
+                          alCambiar: _cambiarPermiso,
                         ),
                         const SizedBox(height: 9),
                         _GrupoPermisos(
                           icono: Icons.settings_outlined,
                           titulo: 'COMPRAS REPORTES Y SEGURIDAD',
-                          hijos: [
-                            _SwitchPermiso(
-                              texto: 'Registrar compras o pedidos',
-                              valor: registrarCompras,
-                              alCambiar: (valor) {
-                                setState(() {
-                                  registrarCompras = valor;
-                                });
-                              },
-                            ),
-                            _SwitchPermiso(
-                              texto: 'Ver reportes financieros',
-                              valor: reportesFinancieros,
-                              alCambiar: (valor) {
-                                setState(() {
-                                  reportesFinancieros = valor;
-                                });
-                              },
-                            ),
-                            _SwitchPermiso(
-                              texto: 'Modificar sistema y seguridad',
-                              valor: modificarSeguridad,
-                              alCambiar: (valor) {
-                                setState(() {
-                                  modificarSeguridad = valor;
-                                });
-                              },
-                            ),
+                          permisos: [
+                            'Registrar compras o pedidos',
+                            'Ver reportes financieros',
+                            'Modificar sistema y seguridad',
                           ],
+                          valores: permisos,
+                          alCambiar: _cambiarPermiso,
                         ),
                         const SizedBox(height: 10),
                         SizedBox(
                           width: double.infinity,
                           height: 40,
                           child: ElevatedButton.icon(
-                            onPressed: () {
-                              Navigator.pop(context);
-                            },
+                            onPressed: () => Navigator.pop(context),
                             style: ElevatedButton.styleFrom(
                               backgroundColor: const Color(0xFF092535),
                               foregroundColor: Colors.white,
@@ -468,9 +339,10 @@ class _DrawerPermisosState extends State<_DrawerPermisos> {
                             icon: const Icon(Icons.save_outlined, size: 15),
                             label: Text(
                               'Guardar Cambios',
-                              style: GoogleFonts.poppins(
-                                fontSize: 11,
-                                fontWeight: FontWeight.w600,
+                              style: _poppins(
+                                11,
+                                Colors.white,
+                                FontWeight.w600,
                               ),
                             ),
                           ),
@@ -489,6 +361,12 @@ class _DrawerPermisosState extends State<_DrawerPermisos> {
         );
       },
     );
+  }
+
+  void _cambiarPermiso(String permiso, bool valor) {
+    setState(() {
+      permisos[permiso] = valor;
+    });
   }
 }
 
@@ -518,11 +396,7 @@ class _CabeceraUsuario extends StatelessWidget {
             ),
             child: Text(
               usuario.iniciales,
-              style: GoogleFonts.poppins(
-                fontSize: 10,
-                fontWeight: FontWeight.w600,
-                color: Colors.white,
-              ),
+              style: _poppins(10, Colors.white, FontWeight.w600),
             ),
           ),
           const SizedBox(width: 8),
@@ -533,17 +407,18 @@ class _CabeceraUsuario extends StatelessWidget {
               children: [
                 Text(
                   usuario.nombre,
-                  style: GoogleFonts.poppins(
-                    fontSize: 12,
-                    fontWeight: FontWeight.w600,
-                    color: const Color(0xFF202B30),
+                  style: _poppins(
+                    12,
+                    const Color(0xFF202B30),
+                    FontWeight.w600,
                   ),
                 ),
                 Text(
                   usuario.rol,
-                  style: GoogleFonts.poppins(
-                    fontSize: 9,
-                    color: const Color(0xFF657278),
+                  style: _poppins(
+                    9,
+                    const Color(0xFF657278),
+                    FontWeight.w400,
                   ),
                 ),
               ],
@@ -557,10 +432,10 @@ class _CabeceraUsuario extends StatelessWidget {
             ),
             child: Text(
               'ACTIVO',
-              style: GoogleFonts.poppins(
-                fontSize: 8,
-                fontWeight: FontWeight.w600,
-                color: const Color(0xFF158260),
+              style: _poppins(
+                8,
+                const Color(0xFF158260),
+                FontWeight.w600,
               ),
             ),
           ),
@@ -574,12 +449,16 @@ class _GrupoPermisos extends StatelessWidget {
   const _GrupoPermisos({
     required this.icono,
     required this.titulo,
-    required this.hijos,
+    required this.permisos,
+    required this.valores,
+    required this.alCambiar,
   });
 
   final IconData icono;
   final String titulo;
-  final List<Widget> hijos;
+  final List<String> permisos;
+  final Map<String, bool> valores;
+  final void Function(String, bool) alCambiar;
 
   @override
   Widget build(BuildContext context) {
@@ -597,60 +476,45 @@ class _GrupoPermisos extends StatelessWidget {
               const SizedBox(width: 5),
               Text(
                 titulo,
-                style: GoogleFonts.poppins(
-                  fontSize: 9,
-                  fontWeight: FontWeight.w600,
-                  color: const Color(0xFF263238),
+                style: _poppins(
+                  9,
+                  const Color(0xFF263238),
+                  FontWeight.w600,
                 ),
               ),
             ],
           ),
           const SizedBox(height: 4),
-          ...hijos,
-        ],
-      ),
-    );
-  }
-}
-
-class _SwitchPermiso extends StatelessWidget {
-  const _SwitchPermiso({
-    required this.texto,
-    required this.valor,
-    required this.alCambiar,
-  });
-
-  final String texto;
-  final bool valor;
-  final ValueChanged<bool> alCambiar;
-
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-      height: 28,
-      child: Row(
-        children: [
-          Expanded(
-            child: Text(
-              texto,
-              style: GoogleFonts.poppins(
-                fontSize: 9,
-                fontWeight: FontWeight.w400,
-                color: valor
-                    ? const Color(0xFF263238)
-                    : const Color(0xFF8B979C),
+          ...permisos.map(
+            (permiso) => SizedBox(
+              height: 28,
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Text(
+                      permiso,
+                      style: _poppins(
+                        9,
+                        valores[permiso]!
+                            ? const Color(0xFF263238)
+                            : const Color(0xFF8B979C),
+                        FontWeight.w400,
+                      ),
+                    ),
+                  ),
+                  Transform.scale(
+                    scale: 0.70,
+                    child: Switch(
+                      value: valores[permiso]!,
+                      onChanged: (valor) => alCambiar(permiso, valor),
+                      activeColor: Colors.white,
+                      activeTrackColor: const Color(0xFF092535),
+                      inactiveThumbColor: Colors.white,
+                      inactiveTrackColor: const Color(0xFFE0E4E6),
+                    ),
+                  ),
+                ],
               ),
-            ),
-          ),
-          Transform.scale(
-            scale: 0.70,
-            child: Switch(
-              value: valor,
-              onChanged: alCambiar,
-              activeColor: Colors.white,
-              activeTrackColor: const Color(0xFF092535),
-              inactiveThumbColor: Colors.white,
-              inactiveTrackColor: const Color(0xFFE0E4E6),
             ),
           ),
         ],
@@ -660,17 +524,28 @@ class _SwitchPermiso extends StatelessWidget {
 }
 
 class _Usuario {
-  const _Usuario({
-    required this.nombre,
-    required this.rol,
-    required this.iniciales,
-    required this.color,
-  });
+  const _Usuario(this.nombre, this.rol, this.iniciales, this.color);
 
   final String nombre;
   final String rol;
   final String iniciales;
   final Color color;
+}
+
+TextStyle _poppins(double tamanio, Color color, FontWeight peso) {
+  return GoogleFonts.poppins(
+    fontSize: tamanio,
+    fontWeight: peso,
+    color: color,
+  );
+}
+
+TextStyle _playfair(double tamanio, FontWeight peso) {
+  return GoogleFonts.playfairDisplay(
+    fontSize: tamanio,
+    fontWeight: peso,
+    color: const Color(0xFF092535),
+  );
 }
 
 BoxDecoration _caja({
