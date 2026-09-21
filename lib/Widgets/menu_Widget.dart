@@ -29,9 +29,9 @@ class menu_Widget extends StatelessWidget {
         children: [
           _item(icon: Icons.home_outlined, label: "Inicio", index: 0),
           _item(icon: Icons.inventory_2_outlined, label: "Inventario", index: 1),
-          _item(icon: Icons.point_of_sale_outlined, label: "Ventas", index: 2),
+          _item(icon: Icons.receipt_long_outlined, label: "Ventas", index: 2),
           _item(icon: Icons.access_time_outlined, label: "Actividad", index: 3),
-          _item(icon: Icons.more_horiz, label: "Más...", index: 4),
+          _item(icon: Icons.more_horiz, label: "Más", index: 4),
         ],
       ), // Row
     ); // Container
