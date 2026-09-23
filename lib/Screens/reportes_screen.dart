@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-
-import 'Widgets/TopBar_Widget.dart';
-import 'Widgets/menu_Widget.dart';
+import '/Widgets/TopBar_Widget.dart';
+import '/Widgets/menu_Widget.dart';
 
 class Reportes extends StatefulWidget {
   const Reportes({super.key});
