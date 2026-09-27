@@ -8,6 +8,6 @@ class AppRoutes {
   static const String compras = '/compras';
   static const String seguridad = '/seguridad';
   static const String proveedores = '/proveedores';
-
+  static const String cliente = '/cliente';
   AppRoutes._();
 }
