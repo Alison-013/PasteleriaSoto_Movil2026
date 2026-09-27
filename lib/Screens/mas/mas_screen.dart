@@ -17,7 +17,7 @@ class _MasScreenState extends State<Mas_Screen> {
       "icono": Icons.people_outline,
       "titulo": "Clientes",
       "descripcion": "Directorio, historial y gestión de clientes.",
-      "ruta": null, // todavia no existe esta pantalla
+      "ruta": AppRoutes.cliente,
     },
     {
       "icono": Icons.shopping_cart_outlined,

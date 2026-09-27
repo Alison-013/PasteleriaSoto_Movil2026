@@ -10,6 +10,7 @@ import '/Screens/mas/mas_screen.dart';
 import '/Screens/compras/compras_screen.dart';
 import '/Screens/seguridad/seguridad_screen.dart';
 import '/Screens/proveedores/proveedores_screen.dart';
+import '/Screens/cliente/cliente_screen.dart';
 
 class MainApp extends StatelessWidget {
   const MainApp({super.key});
@@ -56,6 +57,11 @@ class MainApp extends StatelessWidget {
    AppRoutes.proveedores: (BuildContext context) {
    return const Proveedores();
   },
+  
+  AppRoutes.cliente: (BuildContext context) {
+  return const ClienteScreen();
+},
+  
 },
     );
   }
