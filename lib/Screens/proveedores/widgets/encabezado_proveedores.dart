@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_pasteleria_26/app.routes.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class EncabezadoProveedores extends StatelessWidget {
@@ -9,13 +10,37 @@ class EncabezadoProveedores extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          'Más Opciones  >  Proveedores',
-          style: GoogleFonts.poppins(
-            fontSize: 9,
-            fontWeight: FontWeight.w500,
-            color: const Color(0xFF657278),
-          ),
+        Row(
+          children: [
+            InkWell(
+              onTap: () {
+                Navigator.pushReplacementNamed(context, AppRoutes.mas);
+              },
+              child: Text(
+                'Más Opciones',
+                style: GoogleFonts.poppins(
+                  fontSize: 9,
+                  fontWeight: FontWeight.w500,
+                  color: const Color(0xFF8A8F92),
+                ),
+              ),
+            ),
+            const SizedBox(width: 4),
+            const Icon(
+              Icons.chevron_right,
+              size: 13,
+              color: Color(0xFF8A8F92),
+            ),
+            const SizedBox(width: 4),
+            Text(
+              'Proveedores',
+              style: GoogleFonts.poppins(
+                fontSize: 9,
+                fontWeight: FontWeight.w500,
+                color: const Color(0xFF25282A),
+              ),
+            ),
+          ],
         ),
         const SizedBox(height: 3),
         Row(
