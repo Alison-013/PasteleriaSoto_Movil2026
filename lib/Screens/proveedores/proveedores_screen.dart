@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-
-import 'Widgets/TopBar_Widget.dart';
-import 'Widgets/menu_Widget.dart';
+import '/Widgets/TopBar_Widget.dart';
+import '/Widgets/menu_Widget.dart';
 
 class Proveedores extends StatefulWidget {
   const Proveedores({super.key});
@@ -13,7 +12,6 @@ class Proveedores extends StatefulWidget {
 
 class _ProveedoresState extends State<Proveedores> {
   int _filtroActivo = 0;
-  int _indiceMenu = 4;
 
   final filtros = ['Todos', 'Nombre', 'Email', 'Teléfono'];
 
@@ -216,14 +214,7 @@ class _ProveedoresState extends State<Proveedores> {
           ],
         ),
       ),
-      bottomNavigationBar: menu_Widget(
-        currentIndex: _indiceMenu,
-        onTap: (indice) {
-          setState(() {
-            _indiceMenu = indice;
-          });
-        },
-      ),
+      bottomNavigationBar: const menu_Widget(currentIndex: 4), // 4 = Más
     );
   }
 }

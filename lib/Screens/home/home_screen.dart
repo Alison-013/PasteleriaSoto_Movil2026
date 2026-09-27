@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'Widgets/TopBar_Widget.dart';
-import 'Widgets/menu_Widget.dart';
+import '/Widgets/TopBar_Widget.dart';
+import '/Widgets/menu_Widget.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -11,7 +11,6 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  int _indiceMenu = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -109,14 +108,7 @@ class _HomeState extends State<Home> {
           ],
         ),
       ),
-      bottomNavigationBar: menu_Widget(
-        currentIndex: _indiceMenu,
-        onTap: (indice) {
-          setState(() {
-            _indiceMenu = indice;
-          });
-        },
-      ),
+      bottomNavigationBar: const menu_Widget(currentIndex: 0), // 0 = Inicio
     );
   }
 }

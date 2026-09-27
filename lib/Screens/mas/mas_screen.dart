@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_pasteleria_26/app.routes.dart';
 import '/Widgets/menu_Widget.dart';
 import '/Widgets/TopBar_Widget.dart';
-
 
 class Mas_Screen extends StatefulWidget {
   const Mas_Screen({super.key});
@@ -12,34 +12,36 @@ class Mas_Screen extends StatefulWidget {
 
 class _MasScreenState extends State<Mas_Screen> {
 
-  int _currentIndex = 4; // mas es el tab activo
-
-  //lista de las opcione 
   final List<Map<String, dynamic>> _opciones = [
     {
       "icono": Icons.people_outline,
       "titulo": "Clientes",
       "descripcion": "Directorio, historial y gestión de clientes.",
+      "ruta": null, // todavia no existe esta pantalla
     },
     {
       "icono": Icons.shopping_cart_outlined,
       "titulo": "Compras",
       "descripcion": "Gestión de órdenes de compra y facturación.",
+      "ruta": AppRoutes.compras,
     },
     {
       "icono": Icons.local_shipping_outlined,
       "titulo": "Proveedores",
       "descripcion": "Directorio y evaluación de proveedores de materia prima.",
+      "ruta":  AppRoutes.proveedores, 
     },
     {
       "icono": Icons.shield_outlined,
       "titulo": "Seguridad",
       "descripcion": "Gestión de usuarios, roles y permisos de acceso.",
+      "ruta": AppRoutes.seguridad,
     },
     {
       "icono": Icons.settings_outlined,
       "titulo": "Configuración",
       "descripcion": "Ajustes generales del sistema, notificaciones y perfil de empresa.",
+      "ruta": null, // todavia no existe esta pantalla
     },
   ];
 
@@ -52,7 +54,8 @@ class _MasScreenState extends State<Mas_Screen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
 
-            const TopBar_Widget(), //reutilizable 
+            const TopBar_Widget(), // barra de arriba reutilizable
+
             Padding(
               padding: const EdgeInsets.all(20),
               child: Column(
@@ -71,12 +74,14 @@ class _MasScreenState extends State<Mas_Screen> {
 
                   const SizedBox(height: 20),
 
-                  // Lista de tarjetas en opciones
+                  // Lista de tarjetas de opciones
                   Column(
                     children: _opciones.map((opcion) {
                       return GestureDetector(
                         onTap: () {
-                          // navegacion de cd opcion 
+                          if (opcion["ruta"] != null) {
+                            Navigator.pushNamed(context, opcion["ruta"]);
+                          }
                         },
                         child: Container(
                           margin: const EdgeInsets.only(bottom: 14),
@@ -116,7 +121,7 @@ class _MasScreenState extends State<Mas_Screen> {
                                     ),
                                   ],
                                 ),
-                              ), // Expanded
+                              ),
 
                               const Icon(Icons.chevron_right, color: Colors.grey),
 
@@ -134,15 +139,7 @@ class _MasScreenState extends State<Mas_Screen> {
           ],
         ),
       ),
-      bottomNavigationBar: menu_Widget(
-        currentIndex: _currentIndex,
-        onTap: (index) {
-          setState(() {
-            _currentIndex = index;
-          });
-         //navegacion a cd pantalla
-        },
-      ),
+      bottomNavigationBar: const menu_Widget(currentIndex: 4), // 4 = Más
     );
   }
 }
