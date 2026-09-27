@@ -3,16 +3,15 @@ import 'package:google_fonts/google_fonts.dart';
 import '/Widgets/TopBar_Widget.dart';
 import '/Widgets/menu_Widget.dart';
 
-class Reportes extends StatefulWidget {
-  const Reportes({super.key});
+class reportes extends StatefulWidget {
+  const reportes({super.key});
 
   @override
-  State<Reportes> createState() => _ReportesState();
+  State<reportes> createState() => _ReportesState();
 }
 
-class _ReportesState extends State<Reportes> {
+class _ReportesState extends State<reportes> {
   int _filtroActivo = 0;
-  int _indiceMenu = 2;
 
   final filtros = ['Por Día', 'Semanal', 'Por Mes', 'Anual'];
 
@@ -102,14 +101,7 @@ class _ReportesState extends State<Reportes> {
           ],
         ),
       ),
-      bottomNavigationBar: menu_Widget(
-        currentIndex: _indiceMenu,
-        onTap: (indice) {
-          setState(() {
-            _indiceMenu = indice;
-          });
-        },
-      ),
+      bottomNavigationBar: const menu_Widget(currentIndex: 2), // 2 = Ventas
     );
   }
 }

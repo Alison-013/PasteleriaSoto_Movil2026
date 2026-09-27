@@ -1,34 +1,28 @@
 import 'package:flutter/material.dart';
-import '/Widgets/TopBar_Widget.dart';
 import '/Widgets/menu_Widget.dart';
- 
+import '/Widgets/TopBar_Widget.dart';
+
 class InventoryScreen extends StatefulWidget {
   const InventoryScreen({super.key});
- 
+
   @override
   State<InventoryScreen> createState() => _InventoryScreenState();
 }
- 
- class _InventoryScreenState extends State<InventoryScreen> {
-    int _currentIndex = 1; // "Inventario" es el tab activo cuando le demos click
-    
-    // Filtro seleccionado actualmente es todo osea que saldra en un color oscuro
-    String _filtroActivo = "Todos";
 
-    // Lista de filtros. Los de categoria usan el color oscuro,
-    // los de estado (Bajo stock, Disponible, Agotado) usan su propio color.
-    final List<Map<String, dynamic>> _filtros = [
-      {"label": "Todos", "color": const Color(0xFF16233F)},
-      {"label": "Repostería", "color": const Color(0xFF16233F)},
-      {"label": "Panadería", "color": const Color(0xFF16233F)},
-      {"label": "Tartaletas", "color": const Color(0xFF16233F)},
-      {"label": "Bajo stock", "color": const Color(0xFFF2994A)},
-      {"label": "Disponible", "color": const Color(0xFF27AE60)},
-      {"label": "Agotado", "color": const Color(0xFFEB5757)},
-    ];
+class _InventoryScreenState extends State<InventoryScreen> {
+  String _filtroActivo = "Todos";
+  final List<Map<String, dynamic>> _filtros = [
+    {"label": "Todos", "color": const Color(0xFF16233F)},
+    {"label": "Repostería", "color": const Color(0xFF16233F)},
+    {"label": "Panadería", "color": const Color(0xFF16233F)},
+    {"label": "Tartaletas", "color": const Color(0xFF16233F)},
+    {"label": "Bajo stock", "color": const Color(0xFFF2994A)},
+    {"label": "Disponible", "color": const Color(0xFF27AE60)},
+    {"label": "Agotado", "color": const Color(0xFFEB5757)},
+  ];
 
-    //estos los agg yo pq solo es prototipo nada del backend asi que mejor tenerlos con datos de prueba 
-    final List<Map<String, dynamic>> _productos = [
+  // Lista de productos con datos de prueba 
+  final List<Map<String, dynamic>> _productos = [
     {"nombre": "Pastel de Chocolate M", "categoria": "Pastelería", "sku": "PST-CHO-01", "uds": 24, "estado": "Disponible"},
     {"nombre": "Croissant Clásico", "categoria": "Panadería", "sku": "PAN-CRO-01", "uds": 4, "estado": "Bajo stock"},
     {"nombre": "Tartaleta de Frutas", "categoria": "Tartaletas", "sku": "TAR-FRU-003", "uds": 0, "estado": "Agotado"},
@@ -37,38 +31,37 @@ class InventoryScreen extends StatefulWidget {
     {"nombre": "Muffin de Arándanos", "categoria": "Panadería", "sku": "PAN-MUF-01", "uds": 6, "estado": "Bajo stock"},
     {"nombre": "Tres Leches Clásico", "categoria": "Pastelería", "sku": "PST-TRL-01", "uds": 15, "estado": "Disponible"},
   ];
-  // agg esto para que tengan color el fondo de los estados en las tarjetas
+
   Color _colorEstado(String estado) {
     if (estado == "Disponible") return const Color(0xFF27AE60);
     if (estado == "Bajo stock") return const Color(0xFFF2994A);
     return const Color(0xFFEB5757); // Agotado
   }
- 
 
-   @override
-   Widget build(BuildContext context) {
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xFFF4F6F9),
       body: SingleChildScrollView(
-         child: Column(
+        child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
- 
+
             const TopBar_Widget(), // barra de arriba reutilizable
- 
+
             Padding(
               padding: const EdgeInsets.all(20),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
- 
+
                   const Text(
                     "Inventario",
                     style: TextStyle(fontSize: 26, fontWeight: FontWeight.bold),
                   ),
- 
+
                   const SizedBox(height: 16),
- 
+
                   // Buscador
                   Container(
                     padding: const EdgeInsets.symmetric(horizontal: 14),
@@ -85,11 +78,10 @@ class InventoryScreen extends StatefulWidget {
                         contentPadding: EdgeInsets.symmetric(vertical: 14),
                       ),
                     ),
-                  ), // Container buscador
- 
+                  ),
+
                   const SizedBox(height: 16),
- 
-                  // Filtros con scroll horizontal
+
                   SizedBox(
                     height: 40,
                     child: SingleChildScrollView(
@@ -98,7 +90,7 @@ class InventoryScreen extends StatefulWidget {
                         children: _filtros.map((filtro) {
                           bool activo = _filtroActivo == filtro["label"];
                           Color color = filtro["color"];
- 
+
                           return Padding(
                             padding: const EdgeInsets.only(right: 8),
                             child: GestureDetector(
@@ -126,17 +118,15 @@ class InventoryScreen extends StatefulWidget {
                                     fontSize: 13,
                                   ),
                                 ),
-                              ), // Container chip
-                            ), // GestureDetector
+                              ),
+                            ),
                           ); // Padding
                         }).toList(),
-                      ), // Row
-                    ), // SingleChildScrollView
+                      ),
+                    ),
                   ), // SizedBox filtros
- 
+
                   const SizedBox(height: 20),
- 
-                  // Encabezado de la lista: "Productos  142 total" + "Ordenar: Stock"
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -165,10 +155,10 @@ class InventoryScreen extends StatefulWidget {
                         ],
                       ),
                     ],
-                  ), // Row encabezado
- 
+                  ),
+
                   const SizedBox(height: 12),
- 
+
                   // Lista de tarjetas de producto
                   Column(
                     children: _productos.map((producto) {
@@ -182,7 +172,8 @@ class InventoryScreen extends StatefulWidget {
                         ),
                         child: Row(
                           children: [
-                            // Imagen (placeholder, luego se cambia por la foto real hasta que investigue)
+
+                            // Imagen luego se cambia por la foto real
                             Container(
                               width: 56,
                               height: 56,
@@ -192,11 +183,9 @@ class InventoryScreen extends StatefulWidget {
                               ),
                               child: const Icon(Icons.cake_outlined, color: Colors.grey),
                             ),
- 
+
                             const SizedBox(width: 12),
- 
-                            // Nombre + categoria
-                            //expanded lo utilizo para El lugar q sobre
+
                             Expanded(
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -212,9 +201,8 @@ class InventoryScreen extends StatefulWidget {
                                   ),
                                 ],
                               ),
-                            ), // Expanded
- 
-                            // Unidades + estado
+                            ),
+
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.end,
                               children: [
@@ -243,16 +231,16 @@ class InventoryScreen extends StatefulWidget {
                                 ),
                               ],
                             ),
- 
+
                           ],
-                        ), // Row tarjeta
-                      ); // Container tarjeta
+                        ),
+                      );
                     }).toList(),
-                  ), // Column lista de productos
- 
+                  ),
+
                   const SizedBox(height: 12),
- 
-                  // Paginacion (por ahora solo visual)
+
+                  // Paginacion por ahora solo visual
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -269,27 +257,18 @@ class InventoryScreen extends StatefulWidget {
                       const Icon(Icons.chevron_right, color: Colors.grey),
                     ],
                   ),
- 
+
                 ],
               ),
-            ), // Padding contenido
- 
-          ],
-        ), // Column general
-      ), // SingleChildScrollView
+            ),
 
-      bottomNavigationBar: menu_Widget(
-        currentIndex: _currentIndex,
-        onTap: (index) {
-          setState(() {
-            _currentIndex = index;
-          });
-          // aqui despues iria la navegacion a cada pantalla pero mi compañera no tiene aun las de ella
-        },
-      ), // BottomNavWidget
+          ],
+        ),
+      ),
+      bottomNavigationBar: const menu_Widget(currentIndex: 1), // 1 = Inventario
     );
   }
- 
+
   // Circulo numerado para la paginacion
   Widget _numeroPagina(int numero, {required bool activo}) {
     return Container(
@@ -307,6 +286,4 @@ class InventoryScreen extends StatefulWidget {
       ),
     );
   }
-     
 }
-      

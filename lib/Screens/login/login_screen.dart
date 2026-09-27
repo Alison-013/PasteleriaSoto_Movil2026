@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-//import 'DashboardScreen.dart';
+import '../../app.routes.dart';
 
 class Login_Screen extends StatelessWidget {
   const Login_Screen({super.key});
@@ -112,8 +112,10 @@ class Login_Screen extends StatelessWidget {
                   padding: const EdgeInsets.symmetric(vertical: 14),
                 ),
                 onPressed: () {
-                  // navegacionnn
-                  //Navigator.push( context, MaterialPageRoute( builder: (context) => const Home_Screen(), ), );
+                   Navigator.pushReplacementNamed(
+                   context,
+                   AppRoutes.home,
+                   );
                 },
                 child: const Text(
                   "Iniciar Sesión",

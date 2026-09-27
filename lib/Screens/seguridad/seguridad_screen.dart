@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'Widgets/TopBar_Widget.dart';
-import 'Widgets/menu_Widget.dart';
+import '/Widgets/TopBar_Widget.dart';
+import '/Widgets/menu_Widget.dart';
 
-class Seguridad extends StatefulWidget {
-  const Seguridad({super.key});
+class seguridad extends StatefulWidget {
+  const seguridad({super.key});
 
   @override
-  State<Seguridad> createState() => _SeguridadState();
+  State<seguridad> createState() => _SeguridadState();
 }
 
-class _SeguridadState extends State<Seguridad> {
+class _SeguridadState extends State<seguridad> {
   final usuarios = const [
     _Usuario('María Gómez', 'Administrador', 'MG', Color(0xFFB98264)),
     _Usuario('Carlos Ruiz', 'Vendedor', 'CR', Color(0xFF8FA6B6)),
@@ -86,10 +86,7 @@ class _SeguridadState extends State<Seguridad> {
           ],
         ),
       ),
-      bottomNavigationBar: menu_Widget(
-        currentIndex: 4,
-        onTap: (indice) {},
-      ),
+      bottomNavigationBar: const menu_Widget(currentIndex: 4), // 4 = Más
     );
   }
 }
@@ -350,10 +347,7 @@ class _DrawerPermisosState extends State<_DrawerPermisos> {
                     ),
                   ),
                 ),
-                menu_Widget(
-                  currentIndex: 4,
-                  onTap: (indice) {},
-                ),
+                const menu_Widget(currentIndex: 4), // 4 = Más
               ],
             ),
           ),

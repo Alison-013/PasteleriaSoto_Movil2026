@@ -10,12 +10,8 @@ class Compras_Screen extends StatefulWidget {
 }
 
 class _ComprasScreenState extends State<Compras_Screen> {
-
-  int _currentIndex = 4; // Mas porque Compras es una subpantalla de ahi
-
   String _filtroActivo = "Todos";
   final List<String> _filtros = ["Todos", "Proveedor", "Fecha", "Código"];
-
   final IconData _iconoCompra = Icons.shopping_bag_outlined;
   final Color _iconoColor = const Color(0xFF2E6BF2);
   final Color _iconoBg = const Color(0xFFEAF2FE);
@@ -62,7 +58,7 @@ class _ComprasScreenState extends State<Compras_Screen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
 
-            const TopBar_Widget(), // barra reutilizable
+            const TopBar_Widget(), // barra de arriba reutilizable
 
             Padding(
               padding: const EdgeInsets.all(20),
@@ -71,7 +67,7 @@ class _ComprasScreenState extends State<Compras_Screen> {
                 children: [
 
                   GestureDetector(
-                    onTap: () => Navigator.pop(context), // regresar Mas_Screen
+                    onTap: () => Navigator.pop(context), // regresa a Mas_Screen
                     child: Row(
                       children: [
                         const Text("Más Opciones", style: TextStyle(color: Colors.grey, fontSize: 13)),
@@ -80,9 +76,7 @@ class _ComprasScreenState extends State<Compras_Screen> {
                       ],
                     ),
                   ),
-
                   const SizedBox(height: 8),
-
                   Row(
                     children: [
                       const Text(
@@ -124,7 +118,7 @@ class _ComprasScreenState extends State<Compras_Screen> {
                         contentPadding: EdgeInsets.symmetric(vertical: 14),
                       ),
                     ),
-                  ), // Container buscador
+                  ),
 
                   const SizedBox(height: 20),
 
@@ -181,7 +175,7 @@ class _ComprasScreenState extends State<Compras_Screen> {
 
                   const SizedBox(height: 16),
 
-                  // Lista de tarjetas
+                  // Lista de tarjetas de compra
                   Column(
                     children: _compras.map((compra) {
                       return Container(
@@ -196,6 +190,7 @@ class _ComprasScreenState extends State<Compras_Screen> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
 
+                            // Mismo icono para todo
                             Container(
                               width: 36,
                               height: 36,
@@ -235,17 +230,17 @@ class _ComprasScreenState extends State<Compras_Screen> {
 
                                 ],
                               ),
-                            ),
+                            ), // Expanded
 
                           ],
                         ),
                       );
                     }).toList(),
-                  ),
+                  ), // Column lista
 
                   const SizedBox(height: 12),
 
-                  // Paginacion
+                  // Paginacion (visual)
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -270,18 +265,11 @@ class _ComprasScreenState extends State<Compras_Screen> {
           ],
         ),
       ),
-      bottomNavigationBar: menu_Widget(
-        currentIndex: _currentIndex,
-        onTap: (index) {
-          setState(() {
-            _currentIndex = index;
-          });
-          // navegacion cd pantalla
-        },
-      ),
+      bottomNavigationBar: const menu_Widget(currentIndex: 4), // 4 = mas
     );
   }
 
+  // Circulo numerado para la paginacion
   Widget _numeroPagina(int numero, {required bool activo}) {
     return Container(
       width: 28,

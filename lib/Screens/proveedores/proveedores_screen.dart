@@ -12,7 +12,6 @@ class Proveedores extends StatefulWidget {
 
 class _ProveedoresState extends State<Proveedores> {
   int _filtroActivo = 0;
-  int _indiceMenu = 4;
 
   final filtros = ['Todos', 'Nombre', 'Email', 'Teléfono'];
 
@@ -215,14 +214,7 @@ class _ProveedoresState extends State<Proveedores> {
           ],
         ),
       ),
-      bottomNavigationBar: menu_Widget(
-        currentIndex: _indiceMenu,
-        onTap: (indice) {
-          setState(() {
-            _indiceMenu = indice;
-          });
-        },
-      ),
+      bottomNavigationBar: const menu_Widget(currentIndex: 4), // 4 = Más
     );
   }
 }

@@ -1,24 +1,20 @@
 import 'package:flutter/material.dart';
 import '/Widgets/menu_Widget.dart';
 import '/Widgets/TopBar_Widget.dart';
- 
+
 class Activity_Screen extends StatefulWidget {
   const Activity_Screen({super.key});
- 
+
   @override
   State<Activity_Screen> createState() => _ActividadScreenState();
 }
 
- 
 class _ActividadScreenState extends State<Activity_Screen> {
-  
-  int _currentIndex = 3; // "Actividad" es el tab activo al darle click
- 
+
   String _filtroActivo = "Por Día";
   final List<String> _filtros = ["Por Día", "Semanal", "Por Mes", "Anual"];
- 
-  // Lista de actividades cada una trae todo lo que necesita
-  // tanto la tarjeta pepquueña como el detalle grande.
+
+  // Lista de actividades cada una trae todo lo que necesita hasta detalle 
   final List<Map<String, dynamic>> _actividades = [
     {
       "tipo": "Edición",
@@ -94,23 +90,23 @@ class _ActividadScreenState extends State<Activity_Screen> {
     },
   ];
 
-   @override
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xFFF4F6F9),
-    body:SingleChildScrollView(
+      body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
- 
+
             const TopBar_Widget(), // barra de arriba reutilizable
- 
+
             Padding(
               padding: const EdgeInsets.all(20),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
- 
+
                   const Text(
                     "Registros del Sistema",
                     style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
@@ -120,9 +116,9 @@ class _ActividadScreenState extends State<Activity_Screen> {
                     "Historial cronológico de actividades administrativas.",
                     style: TextStyle(color: Colors.grey, fontSize: 13),
                   ),
- 
+
                   const SizedBox(height: 16),
- 
+
                   // Buscador
                   Container(
                     padding: const EdgeInsets.symmetric(horizontal: 14),
@@ -139,10 +135,10 @@ class _ActividadScreenState extends State<Activity_Screen> {
                         contentPadding: EdgeInsets.symmetric(vertical: 14),
                       ),
                     ),
-                  ), // Container buscador
- 
+                  ),
+
                   const SizedBox(height: 16),
- 
+
                   // Filtros (Por Día, Semanal, Por Mes, Anual)
                   SizedBox(
                     height: 40,
@@ -182,19 +178,19 @@ class _ActividadScreenState extends State<Activity_Screen> {
                         }).toList(),
                       ),
                     ),
-                  ), // filtros
- 
+                  ),
+
                   const SizedBox(height: 16),
- 
+
                   const Center(
                     child: Text(
                       "HOY, 24 OCTUBRE 2023",
                       style: TextStyle(color: Colors.grey, fontSize: 12, letterSpacing: 0.5),
                     ),
                   ),
- 
+
                   const SizedBox(height: 12),
- 
+
                   // Lista de tarjetas de actividad
                   Column(
                     children: _actividades.map((actividad) {
@@ -211,7 +207,7 @@ class _ActividadScreenState extends State<Activity_Screen> {
                           child: Row(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
- 
+
                               // Icono circular de color segun el tipo
                               Container(
                                 width: 36,
@@ -222,14 +218,14 @@ class _ActividadScreenState extends State<Activity_Screen> {
                                 ),
                                 child: Icon(actividad["icono"], size: 18, color: actividad["iconoColor"]),
                               ),
- 
+
                               const SizedBox(width: 12),
- 
+
                               Expanded(
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
- 
+
                                     RichText(
                                       text: TextSpan(
                                         style: const TextStyle(color: Colors.black87, fontSize: 14),
@@ -242,13 +238,13 @@ class _ActividadScreenState extends State<Activity_Screen> {
                                         ],
                                       ),
                                     ), // RichText
- 
+
                                     const SizedBox(height: 2),
                                     Text(actividad["hora"], style: const TextStyle(color: Colors.grey, fontSize: 12)),
- 
+
                                     const SizedBox(height: 6),
                                     Text(actividad["descripcion"], style: const TextStyle(color: Colors.black54, fontSize: 13)),
- 
+
                                     const SizedBox(height: 8),
                                     Row(
                                       children: [
@@ -273,22 +269,22 @@ class _ActividadScreenState extends State<Activity_Screen> {
                                         Text(actividad["usuarioCorto"], style: TextStyle(color: Colors.grey.shade600, fontSize: 12)),
                                       ],
                                     ),
- 
+
                                   ],
                                 ),
                               ), // Expanded
- 
+
                               const Icon(Icons.chevron_right, color: Colors.grey),
- 
+
                             ],
                           ), // Row tarjeta
                         ), // Container tarjeta
                       ); // GestureDetector
                     }).toList(),
                   ), // Column lista
- 
+
                   const SizedBox(height: 12),
- 
+
                   // Paginacion (visual)
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -306,26 +302,17 @@ class _ActividadScreenState extends State<Activity_Screen> {
                       const Icon(Icons.chevron_right, color: Colors.grey),
                     ],
                   ),
- 
+
                 ],
               ),
-            ), // Padding contenido
- 
+            ),
           ],
-        ), // Column general
-      ), // SingleChildScrollView
-      bottomNavigationBar: menu_Widget(
-        currentIndex: _currentIndex,
-        onTap: (index) {
-          setState(() {
-            _currentIndex = index;
-          });
-          // aqui despues iria la navegacion a cada pantalla pero hay que esperar a crearlass
-        },
+        ),
       ),
+      bottomNavigationBar: const menu_Widget(currentIndex: 3), // 3 = Actividad
     );
   }
- 
+
   // Circulo numerado para la paginacion
   Widget _numeroPagina(int numero, {required bool activo}) {
     return Container(
@@ -343,33 +330,31 @@ class _ActividadScreenState extends State<Activity_Screen> {
       ),
     );
   }
- 
- 
-  // Muestra el detalle,
+
+  // Muestra el detalle en el panel pero a la al lado derecho,
   void _mostrarDetalle(BuildContext context, Map<String, dynamic> actividad) {
     final detalle = actividad["detalle"];
- 
+
     showGeneralDialog(
       context: context,
-      barrierDismissible: true, // se puede cerrar tocando
+      barrierDismissible: true, //fuera del panel y se cierra
       barrierLabel: "Cerrar detalle",
-      barrierColor: Colors.black.withOpacity(0.4), // fondo oscuro detras 
+      barrierColor: Colors.black.withOpacity(0.4), 
       transitionDuration: const Duration(milliseconds: 250),
- 
-      // usamos Align para pegarlo a la derecha
+
+      // en vez de un Dialog centrado,
+      // use Align para pegarlo a la derecha, y le di altura infinita.
       pageBuilder: (context, animation, secondaryAnimation) {
         return Align(
           alignment: Alignment.centerRight,
           child: Material(
             color: Colors.white,
             child: SizedBox(
-              width: MediaQuery.of(context).size.width * 0.85, // 85% de pantslla
-              height: double.infinity, // ocupa de arriba hacia abajo completo
+              width: MediaQuery.of(context).size.width * 0.85, // 85% del ancho de la pantalla
+              height: double.infinity,
               child: SafeArea(
                 child: Column(
                   children: [
- 
-                    // Encabezadono hace scroll se queda fijo arriba
                     Container(
                       width: double.infinity,
                       padding: const EdgeInsets.fromLTRB(20, 16, 12, 16),
@@ -396,16 +381,14 @@ class _ActividadScreenState extends State<Activity_Screen> {
                           ),
                         ],
                       ),
-                    ), // Container 
+                    ),
 
-                    // Esta parte si hace scroll
                     Expanded(
                       child: SingleChildScrollView(
                         padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
                         child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
- 
                         _etiquetaSeccion("FECHA Y HORA"),
                         Container(
                           width: double.infinity,
@@ -421,9 +404,9 @@ class _ActividadScreenState extends State<Activity_Screen> {
                               Text(detalle["fechaHora"], style: const TextStyle(fontWeight: FontWeight.w600)),
                             ],
                           ),
-                        ), // Container fecha
+                        ),
                         const SizedBox(height: 16),
- 
+
                         _etiquetaSeccion("USUARIO RESPONSABLE"),
                         Container(
                           width: double.infinity,
@@ -453,7 +436,7 @@ class _ActividadScreenState extends State<Activity_Screen> {
                           ),
                         ), // Container usuario
                         const SizedBox(height: 16),
- 
+
                         _etiquetaSeccion("DETALLE AFECTADO"),
                         Container(
                           width: double.infinity,
@@ -483,14 +466,13 @@ class _ActividadScreenState extends State<Activity_Screen> {
                               ),
                             ],
                           ),
-                        ), // Container producto
+                        ),
                         const SizedBox(height: 16),
- 
+
                         _etiquetaSeccion("DESCRIPCIÓN DE LA ACCIÓN"),
                         Text(detalle["descripcionLarga"], style: const TextStyle(fontSize: 13)),
                         const SizedBox(height: 16),
- 
-                        // si la actividad tiene esos datos si enseña algo, si no, no
+
                         if (detalle["valorAnterior"] != null) ...[
                           _etiquetaSeccion("COMPARATIVA DE VALORES"),
                           Row(
@@ -502,7 +484,7 @@ class _ActividadScreenState extends State<Activity_Screen> {
                           ),
                           const SizedBox(height: 16),
                         ],
- 
+
                         _etiquetaSeccion("ESTADO DE OPERACIÓN"),
                         Container(
                           padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
@@ -518,14 +500,14 @@ class _ActividadScreenState extends State<Activity_Screen> {
                             ],
                           ),
                         ),
- 
+
                         const SizedBox(height: 20),
- 
+
                       ],
                         ),
                       ),
                     ),
-                    // Esta parte nohace scroll, se queda fija abajo siempre es del botom
+
                     Padding(
                       padding: const EdgeInsets.fromLTRB(20, 12, 20, 20),
                       child: SizedBox(
@@ -540,27 +522,28 @@ class _ActividadScreenState extends State<Activity_Screen> {
                           onPressed: () => Navigator.pop(context),
                         ),
                       ),
-                    ), 
- 
+                    ),
+
                   ],
                 ),
-                  ),
-              ), 
-            ),
+                  ), 
+              ),
+            ), 
         );
       },
- 
-      // Esto desliza detalle
+
+      // Esto hace la animacion de deslizamiento
       transitionBuilder: (context, animation, secondaryAnimation, child) {
         final offsetAnimation = Tween<Offset>(
-          begin: const Offset(1, 0), // empieza derecha a izquierda
+          begin: const Offset(1, 0), // empieza a la derecha
           end: Offset.zero, // termina en su lugar
-        ).animate(CurvedAnimation(parent: animation, curve: Curves.easeOut)); 
+        ).animate(CurvedAnimation(parent: animation, curve: Curves.easeOut));
+
         return SlideTransition(position: offsetAnimation, child: child);
       },
     );
   }
- 
+
   Widget _etiquetaSeccion(String texto) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 6),
@@ -570,7 +553,7 @@ class _ActividadScreenState extends State<Activity_Screen> {
       ),
     );
   }
- 
+
   Widget _cajaValor(String etiqueta, String valor, {required bool tachado}) {
     return Container(
       padding: const EdgeInsets.all(10),
@@ -592,9 +575,9 @@ class _ActividadScreenState extends State<Activity_Screen> {
             ),
           ),
         ],
-    )); 
+      ),
+    );
   }
-
 
   String _iniciales(String nombre) {
     List<String> partes = nombre.trim().split(" ");
@@ -604,5 +587,3 @@ class _ActividadScreenState extends State<Activity_Screen> {
     return partes[0][0];
   }
 }
-
-     
