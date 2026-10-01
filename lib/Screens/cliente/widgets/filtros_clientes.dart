@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 
 class FiltroClienteChip extends StatelessWidget {
@@ -20,7 +21,10 @@ class FiltroClienteChip extends StatelessWidget {
       onTap: onTap,
       borderRadius: BorderRadius.circular(18),
       child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 13, vertical: 6),
+        padding: const EdgeInsets.symmetric(
+          horizontal: 13,
+          vertical: 6,
+        ),
         decoration: BoxDecoration(
           color: seleccionado
               ? colorPrincipal
@@ -31,7 +35,9 @@ class FiltroClienteChip extends StatelessWidget {
           texto,
           style: TextStyle(
             fontSize: 9,
-            color: seleccionado ? Colors.white : const Color(0xFF73777B),
+            color: seleccionado
+                ? Colors.white
+                : const Color(0xFF73777B),
           ),
         ),
       ),
