@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 /// Tarjeta de producto usada dentro de la lista de Inventario.
 
@@ -73,7 +74,10 @@ class ProductoCardWidget extends StatelessWidget {
                     color: const Color(0xFFF4F6F9),
                     borderRadius: BorderRadius.circular(10),
                   ),
-                  child: const Icon(Icons.cake_outlined, color: Colors.grey),
+                  child: const Icon(
+                    Icons.cake_outlined,
+                    color: Colors.grey,
+                  ),
                 );
               },
             ),
@@ -87,12 +91,20 @@ class ProductoCardWidget extends StatelessWidget {
               children: [
                 Text(
                   nombre,
-                  style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
+                  style: GoogleFonts.playfairDisplay(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 15,
+                  ),
                 ),
+
                 const SizedBox(height: 2),
+
                 Text(
                   "$categoria • SKU: $sku",
-                  style: const TextStyle(color: Colors.grey, fontSize: 12),
+                  style: GoogleFonts.playfairDisplay(
+                    color: Colors.grey,
+                    fontSize: 12,
+                  ),
                 ),
               ],
             ),
@@ -103,18 +115,30 @@ class ProductoCardWidget extends StatelessWidget {
             children: [
               Text(
                 "$uds uds",
-                style: TextStyle(fontWeight: FontWeight.bold, color: color),
+                style: GoogleFonts.playfairDisplay(
+                  fontWeight: FontWeight.bold,
+                  color: color,
+                ),
               ),
+
               const SizedBox(height: 4),
+
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 8,
+                  vertical: 3,
+                ),
                 decoration: BoxDecoration(
                   color: color.withOpacity(0.12),
                   borderRadius: BorderRadius.circular(10),
                 ),
                 child: Text(
                   estado,
-                  style: TextStyle(color: color, fontSize: 11, fontWeight: FontWeight.w600),
+                  style: GoogleFonts.playfairDisplay(
+                    color: color,
+                    fontSize: 11,
+                    fontWeight: FontWeight.w600,
+                  ),
                 ),
               ),
             ],
