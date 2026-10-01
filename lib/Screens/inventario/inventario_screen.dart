@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import '/Widgets/menu_Widget.dart';
 import '/Widgets/TopBar_Widget.dart';
+import 'widgets/producto_card_widget.dart';
+import 'widgets/filtro_dropdown_widget.dart';
+import 'widgets/paginacion_widget.dart';
 
 class InventoryScreen extends StatefulWidget {
   const InventoryScreen({super.key});
@@ -10,43 +13,112 @@ class InventoryScreen extends StatefulWidget {
 }
 
 class _InventoryScreenState extends State<InventoryScreen> {
-  String _filtroActivo = "Todos";
-  final List<Map<String, dynamic>> _filtros = [
-    {"label": "Todos", "color": const Color(0xFF16233F)},
-    {"label": "Repostería", "color": const Color(0xFF16233F)},
-    {"label": "Panadería", "color": const Color(0xFF16233F)},
-    {"label": "Tartaletas", "color": const Color(0xFF16233F)},
-    {"label": "Bajo stock", "color": const Color(0xFFF2994A)},
-    {"label": "Disponible", "color": const Color(0xFF27AE60)},
-    {"label": "Agotado", "color": const Color(0xFFEB5757)},
+  String _busqueda = "";
+  String _categoriaSeleccionada = "Todos";
+  String _stockSeleccionado = "Todos";
+
+  // Opciones del filtro de Categoría
+  final List<FiltroOpcion> _opcionesCategoria = const [
+    FiltroOpcion(label: "Todos"),
+    FiltroOpcion(label: "Pastelería"),
+    FiltroOpcion(label: "Panadería"),
+    FiltroOpcion(label: "Tartaletas"),
   ];
 
-  // Lista de productos con datos de prueba 
+  // Opciones del filtro de Stock
+  final List<FiltroOpcion> _opcionesStock = const [
+    FiltroOpcion(label: "Todos"),
+    FiltroOpcion(label: "Disponible", color: Color(0xFF27AE60)),
+    FiltroOpcion(label: "Bajo stock", color: Color(0xFFF2994A)),
+    FiltroOpcion(label: "Agotado", color: Color(0xFFEB5757)),
+  ];
+
+  // Lista de productos con datos de prueba.
+  // "imagenUrl" es un placeholder de prueba (picsum.photos con seed fijo);
+  // cuando tengan fotos reales, solo se reemplaza por esa URL o asset.
   final List<Map<String, dynamic>> _productos = [
-    {"nombre": "Pastel de Chocolate M", "categoria": "Pastelería", "sku": "PST-CHO-01", "uds": 24, "estado": "Disponible"},
-    {"nombre": "Croissant Clásico", "categoria": "Panadería", "sku": "PAN-CRO-01", "uds": 4, "estado": "Bajo stock"},
-    {"nombre": "Tartaleta de Frutas", "categoria": "Tartaletas", "sku": "TAR-FRU-003", "uds": 0, "estado": "Agotado"},
-    {"nombre": "Pan Campesino", "categoria": "Panadería", "sku": "PAN-CAM-01", "uds": 12, "estado": "Disponible"},
-    {"nombre": "Cheesecake de Fresa", "categoria": "Pastelería", "sku": "PST-CHS-01", "uds": 18, "estado": "Disponible"},
-    {"nombre": "Muffin de Arándanos", "categoria": "Panadería", "sku": "PAN-MUF-01", "uds": 6, "estado": "Bajo stock"},
-    {"nombre": "Tres Leches Clásico", "categoria": "Pastelería", "sku": "PST-TRL-01", "uds": 15, "estado": "Disponible"},
+    {
+      "nombre": "Pastel de Chocolate M",
+      "categoria": "Pastelería",
+      "sku": "PST-CHO-01",
+      "uds": 24,
+      "estado": "Disponible",
+      "imagenUrl": "https://picsum.dev/images/ai/food/food-uibpackxl0dl.jpg",
+    },
+    {
+      "nombre": "Croissant Clásico",
+      "categoria": "Panadería",
+      "sku": "PAN-CRO-01",
+      "uds": 4,
+      "estado": "Bajo stock",
+      "imagenUrl": "https://picsum.dev/images/ai/food/food-gu4gq8otdsxz.jpg",
+    },
+    {
+      "nombre": "Tartaleta de Frutas",
+      "categoria": "Tartaletas",
+      "sku": "TAR-FRU-003",
+      "uds": 0,
+      "estado": "Agotado",
+      "imagenUrl": "https://picsum.dev/images/ai/food/food-kqpvjmi0a9tf.jpg",
+    },
+    {
+      "nombre": "Pan Campesino",
+      "categoria": "Panadería",
+      "sku": "PAN-CAM-01",
+      "uds": 12,
+      "estado": "Disponible",
+      "imagenUrl": "https://picsum.dev/images/ai/food/food-lo9lwvzbbevj.jpg",
+    },
+    {
+      "nombre": "Cheesecake de Fresa",
+      "categoria": "Pastelería",
+      "sku": "PST-CHS-01",
+      "uds": 18,
+      "estado": "Disponible",
+      "imagenUrl": "https://picsum.dev/images/ai/food/food-8elsmfgudawe.jpg",
+    },
+    {
+      "nombre": "Muffin de Arándanos",
+      "categoria": "Panadería",
+      "sku": "PAN-MUF-01",
+      "uds": 6,
+      "estado": "Bajo stock",
+      "imagenUrl": "https://picsum.dev/images/ai/food/food-zm302zzpbwrf.jpg",
+    },
+    {
+      "nombre": "Tres Leches Clásico",
+      "categoria": "Pastelería",
+      "sku": "PST-TRL-01",
+      "uds": 15,
+      "estado": "Disponible",
+      "imagenUrl": "https://picsum.dev/images/ai/food/food-muaie69g5o9w.jpg",
+    },
   ];
 
-  Color _colorEstado(String estado) {
-    if (estado == "Disponible") return const Color(0xFF27AE60);
-    if (estado == "Bajo stock") return const Color(0xFFF2994A);
-    return const Color(0xFFEB5757); // Agotado
+  // Aplica buscador + los dos filtros (Categoría y Stock) combinados.
+  List<Map<String, dynamic>> get _productosFiltrados {
+    return _productos.where((p) {
+      final coincideBusqueda = _busqueda.isEmpty ||
+          p["nombre"].toString().toLowerCase().contains(_busqueda.toLowerCase()) ||
+          p["sku"].toString().toLowerCase().contains(_busqueda.toLowerCase());
+      final coincideCategoria =
+          _categoriaSeleccionada == "Todos" || p["categoria"] == _categoriaSeleccionada;
+      final coincideStock =
+          _stockSeleccionado == "Todos" || p["estado"] == _stockSeleccionado;
+      return coincideBusqueda && coincideCategoria && coincideStock;
+    }).toList();
   }
 
   @override
   Widget build(BuildContext context) {
+    final productosFiltrados = _productosFiltrados;
+
     return Scaffold(
       backgroundColor: const Color(0xFFF4F6F9),
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-
             const TopBar_Widget(), // barra de arriba reutilizable
 
             Padding(
@@ -54,7 +126,6 @@ class _InventoryScreenState extends State<InventoryScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-
                   const Text(
                     "Inventario",
                     style: TextStyle(fontSize: 26, fontWeight: FontWeight.bold),
@@ -62,7 +133,7 @@ class _InventoryScreenState extends State<InventoryScreen> {
 
                   const SizedBox(height: 16),
 
-                  // Buscador
+                  // Buscador general por nombre o SKU
                   Container(
                     padding: const EdgeInsets.symmetric(horizontal: 14),
                     decoration: BoxDecoration(
@@ -70,8 +141,9 @@ class _InventoryScreenState extends State<InventoryScreen> {
                       borderRadius: BorderRadius.circular(12),
                       border: Border.all(color: const Color(0xFFE0E4EA)),
                     ),
-                    child: const TextField(
-                      decoration: InputDecoration(
+                    child: TextField(
+                      onChanged: (valor) => setState(() => _busqueda = valor),
+                      decoration: const InputDecoration(
                         icon: Icon(Icons.search, color: Colors.grey),
                         hintText: "Buscar por nombre, SKU...",
                         border: InputBorder.none,
@@ -82,49 +154,24 @@ class _InventoryScreenState extends State<InventoryScreen> {
 
                   const SizedBox(height: 16),
 
-                  SizedBox(
-                    height: 40,
-                    child: SingleChildScrollView(
-                      scrollDirection: Axis.horizontal,
-                      child: Row(
-                        children: _filtros.map((filtro) {
-                          bool activo = _filtroActivo == filtro["label"];
-                          Color color = filtro["color"];
-
-                          return Padding(
-                            padding: const EdgeInsets.only(right: 8),
-                            child: GestureDetector(
-                              onTap: () {
-                                setState(() {
-                                  _filtroActivo = filtro["label"];
-                                });
-                              },
-                              child: Container(
-                                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                                decoration: BoxDecoration(
-                                  color: activo ? color : Colors.white,
-                                  borderRadius: BorderRadius.circular(20),
-                                  border: Border.all(
-                                    color: activo ? color : const Color(0xFFE0E4EA),
-                                  ),
-                                ),
-                                child: Text(
-                                  filtro["label"],
-                                  style: TextStyle(
-                                    color: activo
-                                        ? Colors.white
-                                        : (color == const Color(0xFF16233F) ? Colors.black87 : color),
-                                    fontWeight: FontWeight.w600,
-                                    fontSize: 13,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ); // Padding
-                        }).toList(),
+                  // Filtros: Categoría y Stock (cada uno desplegable, con buscador propio)
+                  Row(
+                    children: [
+                      FiltroDropdownWidget(
+                        titulo: "Categoría",
+                        opciones: _opcionesCategoria,
+                        seleccionado: _categoriaSeleccionada,
+                        onSeleccionar: (valor) => setState(() => _categoriaSeleccionada = valor),
                       ),
-                    ),
-                  ), // SizedBox filtros
+                      const SizedBox(width: 10),
+                      FiltroDropdownWidget(
+                        titulo: "Stock",
+                        opciones: _opcionesStock,
+                        seleccionado: _stockSeleccionado,
+                        onSeleccionar: (valor) => setState(() => _stockSeleccionado = valor),
+                      ),
+                    ],
+                  ),
 
                   const SizedBox(height: 20),
                   Row(
@@ -143,7 +190,10 @@ class _InventoryScreenState extends State<InventoryScreen> {
                               color: const Color(0xFFEFF1F5),
                               borderRadius: BorderRadius.circular(10),
                             ),
-                            child: const Text("142 total", style: TextStyle(fontSize: 12)),
+                            child: Text(
+                              "${productosFiltrados.length} total",
+                              style: const TextStyle(fontSize: 12),
+                            ),
                           ),
                         ],
                       ),
@@ -159,131 +209,41 @@ class _InventoryScreenState extends State<InventoryScreen> {
 
                   const SizedBox(height: 12),
 
-                  // Lista de tarjetas de producto
+                  // Lista de tarjetas de producto (widget ProductoCardWidget)
                   Column(
-                    children: _productos.map((producto) {
-                      return Container(
-                        margin: const EdgeInsets.only(bottom: 12),
-                        padding: const EdgeInsets.all(12),
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(14),
-                          border: Border.all(color: const Color(0xFFEFF1F5)),
-                        ),
-                        child: Row(
-                          children: [
-
-                            // Imagen luego se cambia por la foto real
-                            Container(
-                              width: 56,
-                              height: 56,
-                              decoration: BoxDecoration(
-                                color: const Color(0xFFF4F6F9),
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                              child: const Icon(Icons.cake_outlined, color: Colors.grey),
-                            ),
-
-                            const SizedBox(width: 12),
-
-                            Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    producto["nombre"],
-                                    style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
-                                  ),
-                                  const SizedBox(height: 2),
-                                  Text(
-                                    "${producto["categoria"]} • SKU: ${producto["sku"]}",
-                                    style: const TextStyle(color: Colors.grey, fontSize: 12),
-                                  ),
-                                ],
-                              ),
-                            ),
-
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.end,
-                              children: [
-                                Text(
-                                  "${producto["uds"]} uds",
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    color: _colorEstado(producto["estado"]),
-                                  ),
-                                ),
-                                const SizedBox(height: 4),
-                                Container(
-                                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
-                                  decoration: BoxDecoration(
-                                    color: _colorEstado(producto["estado"]).withOpacity(0.12),
-                                    borderRadius: BorderRadius.circular(10),
-                                  ),
-                                  child: Text(
-                                    producto["estado"],
-                                    style: TextStyle(
-                                      color: _colorEstado(producto["estado"]),
-                                      fontSize: 11,
-                                      fontWeight: FontWeight.w600,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-
-                          ],
-                        ),
+                    children: productosFiltrados.map((producto) {
+                      return ProductoCardWidget(
+                        nombre: producto["nombre"],
+                        categoria: producto["categoria"],
+                        sku: producto["sku"],
+                        uds: producto["uds"],
+                        estado: producto["estado"],
+                        imagenUrl: producto["imagenUrl"],
                       );
                     }).toList(),
                   ),
 
+                  if (productosFiltrados.isEmpty)
+                    const Padding(
+                      padding: EdgeInsets.symmetric(vertical: 24),
+                      child: Center(
+                        child: Text(
+                          "No se encontraron productos con esos filtros.",
+                          style: TextStyle(color: Colors.grey),
+                        ),
+                      ),
+                    ),
+
                   const SizedBox(height: 12),
 
-                  // Paginacion por ahora solo visual
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      const Text("Página 1 de 3", style: TextStyle(color: Colors.grey)),
-                      const SizedBox(width: 12),
-                      const Icon(Icons.chevron_left, color: Colors.grey),
-                      const SizedBox(width: 8),
-                      _numeroPagina(1, activo: true),
-                      const SizedBox(width: 8),
-                      _numeroPagina(2, activo: false),
-                      const SizedBox(width: 8),
-                      _numeroPagina(3, activo: false),
-                      const SizedBox(width: 8),
-                      const Icon(Icons.chevron_right, color: Colors.grey),
-                    ],
-                  ),
-
+                  const PaginacionWidget(paginaActual: 1, totalPaginas: 3),
                 ],
               ),
             ),
-
           ],
         ),
       ),
       bottomNavigationBar: const menu_Widget(currentIndex: 1), // 1 = Inventario
-    );
-  }
-
-  // Circulo numerado para la paginacion
-  Widget _numeroPagina(int numero, {required bool activo}) {
-    return Container(
-      width: 28,
-      height: 28,
-      alignment: Alignment.center,
-      decoration: BoxDecoration(
-        color: activo ? const Color(0xFF16233F) : Colors.white,
-        shape: BoxShape.circle,
-        border: Border.all(color: const Color(0xFFE0E4EA)),
-      ),
-      child: Text(
-        "$numero",
-        style: TextStyle(color: activo ? Colors.white : Colors.black87),
-      ),
     );
   }
 }
