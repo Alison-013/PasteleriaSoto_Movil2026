@@ -41,7 +41,7 @@ class _MasScreenState extends State<Mas_Screen> {
       "icono": Icons.settings_outlined,
       "titulo": "Configuración",
       "descripcion": "Ajustes generales del sistema, notificaciones y perfil de empresa.",
-      "ruta": null, // todavia no existe esta pantalla
+      "ruta": AppRoutes.configuracion,
     },
   ];
 
