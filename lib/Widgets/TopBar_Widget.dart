@@ -29,13 +29,14 @@ class TopBar_Widget extends StatelessWidget {
             ),
           ),
 
-          // Avatar del usuario (circulo). Por ahora un icono,
-          // despues lo puedes cambiar por una foto real con NetworkImage.
-          const CircleAvatar(
+    
+          CircleAvatar(
             radius: 18,
-            backgroundColor: Colors.white,
-            child: Icon(Icons.person, color: Color(0xFF0F1B3D)),
+            backgroundImage: NetworkImage(
+              'https://picsum.dev/images/ai/people/people-rsezu1wb23ld.jpg',
+            ),
           ),
+
 
         ],
       ), // Row
