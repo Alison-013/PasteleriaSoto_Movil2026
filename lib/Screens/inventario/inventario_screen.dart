@@ -115,7 +115,7 @@ class _InventoryScreenState extends State<InventoryScreen> {
 
     return Scaffold(
       backgroundColor: const Color(0xFFF4F6F9),
-      body: SingleChildScrollView(
+      body: SafeArea(child:SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -242,7 +242,7 @@ class _InventoryScreenState extends State<InventoryScreen> {
             ),
           ],
         ),
-      ),
+      ),),
       bottomNavigationBar: const menu_Widget(currentIndex: 1), // 1 = Inventario
     );
   }
