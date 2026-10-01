@@ -9,5 +9,7 @@ class AppRoutes {
   static const String seguridad = '/seguridad';
   static const String proveedores = '/proveedores';
   static const String cliente = '/cliente';
+  static const String perfil = '/perfil';
+  static const String configuracion = '/configuracion';
   AppRoutes._();
 }
