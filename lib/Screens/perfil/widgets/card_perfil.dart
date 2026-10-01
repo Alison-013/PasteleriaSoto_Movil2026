@@ -25,19 +25,12 @@ class TarjetaPerfil extends StatelessWidget {
           Stack(
             clipBehavior: Clip.none,
             children: [
-              Container(
-                width: 92,
-                height: 92,
-                decoration: BoxDecoration(
-                  color: const Color(0xFFE9F2F8),
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: const Icon(
-                  Icons.person,
-                  size: 55,
-                  color: Color(0xFF587889),
-                ),
-              ),
+             ClipRRect( 
+              borderRadius: BorderRadius.circular(10), 
+              child: Image.network( 'https://picsum.dev/images/ai/people/people-rsezu1wb23ld.jpg',
+              width: 92, height: 92, 
+              fit: BoxFit.cover, ), ),
+              
               Positioned(
                 right: -5,
                 bottom: -4,
