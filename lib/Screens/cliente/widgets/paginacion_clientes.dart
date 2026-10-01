@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 
 class PaginadorClientes extends StatelessWidget {
@@ -14,24 +15,11 @@ class PaginadorClientes extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 9, vertical: 8),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        border: Border.all(color: const Color(0xFFE3E5E7)),
-        borderRadius: BorderRadius.circular(12),
-      ),
+    return Center(
       child: Row(
+        mainAxisSize: MainAxisSize.min,
         children: [
-          Expanded(
-            child: Text(
-              'Página $paginaActual de $totalPaginas',
-              style: const TextStyle(
-                fontSize: 10,
-                color: Color(0xFF343A3E),
-              ),
-            ),
-          ),
+          // Página anterior
           _BotonPagina(
             icono: Icons.chevron_left,
             seleccionado: false,
@@ -42,7 +30,10 @@ class PaginadorClientes extends StatelessWidget {
               }
             },
           ),
+
           const SizedBox(width: 4),
+
+          // Números de páginas
           ...List.generate(totalPaginas, (index) {
             final numero = index + 1;
 
@@ -56,7 +47,10 @@ class PaginadorClientes extends StatelessWidget {
               ),
             );
           }),
+
           const SizedBox(width: 4),
+
+          // Página siguiente
           _BotonPagina(
             icono: Icons.chevron_right,
             seleccionado: false,
@@ -92,22 +86,27 @@ class _BotonPagina extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: habilitado ? onTap : null,
-      borderRadius: BorderRadius.circular(8),
+      borderRadius: BorderRadius.circular(6),
+
       child: Container(
-        width: 24,
-        height: 24,
+        width: 26,
+        height: 26,
         alignment: Alignment.center,
+
         decoration: BoxDecoration(
           color: seleccionado
               ? const Color(0xFF062B3A)
               : const Color(0xFFF1F1F2),
-          borderRadius: BorderRadius.circular(8),
+          borderRadius: BorderRadius.circular(6),
         ),
+
         child: texto != null
             ? Text(
                 texto!,
                 style: TextStyle(
-                  fontSize: 9,
+                  fontSize: 10,
+                  fontWeight:
+                      seleccionado ? FontWeight.w600 : FontWeight.w400,
                   color: seleccionado
                       ? Colors.white
                       : const Color(0xFF555B60),
@@ -115,7 +114,7 @@ class _BotonPagina extends StatelessWidget {
               )
             : Icon(
                 icono,
-                size: 15,
+                size: 16,
                 color: habilitado
                     ? const Color(0xFF555B60)
                     : const Color(0xFFBFC3C6),

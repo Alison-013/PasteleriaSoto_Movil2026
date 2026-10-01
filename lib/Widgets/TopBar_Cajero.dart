@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 
 // Widget de la barra de arriba, con el nombre de la pasteleria
 // y el avatar del usuario.
-class TopBar_Widget extends StatelessWidget {
+class TopBar_Cajero extends StatelessWidget {
 
-  const TopBar_Widget({super.key});
+  const TopBar_Cajero({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +33,7 @@ class TopBar_Widget extends StatelessWidget {
           CircleAvatar(
             radius: 18,
             backgroundImage: NetworkImage(
-              'https://picsum.dev/images/ai/people/people-rsezu1wb23ld.jpg',
+              'https://picsum.dev/images/ai/people/people-pghappw0hnwj.jpg',
             ),
           ),
 

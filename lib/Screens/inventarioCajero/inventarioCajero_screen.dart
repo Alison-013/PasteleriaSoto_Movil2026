@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import '/Widgets/menu_Widget.dart';
-import '/Widgets/TopBar_Widget.dart';
+import '/Widgets/cajeroMenu_widget.dart';
+import '/Widgets/TopBar_Cajero.dart';
 import 'widgets/producto_card_widget.dart';
 import 'widgets/filtro_dropdown_widget.dart';
 import 'widgets/paginacion_widget.dart';
 
-class InventoryScreen extends StatefulWidget {
-  const InventoryScreen({super.key});
+class InventoryCajeroScreen extends StatefulWidget {
+  const InventoryCajeroScreen({super.key});
 
   @override
-  State<InventoryScreen> createState() => _InventoryScreenState();
+  State<InventoryCajeroScreen> createState() => _InventoryScreenState();
 }
 
-class _InventoryScreenState extends State<InventoryScreen> {
+class _InventoryScreenState extends State<InventoryCajeroScreen> {
   String _busqueda = "";
   String _categoriaSeleccionada = "Todos";
   String _stockSeleccionado = "Todos";
@@ -159,7 +159,7 @@ class _InventoryScreenState extends State<InventoryScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const TopBar_Widget(),
+              const TopBar_Cajero(),
 
               Padding(
                 padding: const EdgeInsets.all(20),
@@ -330,7 +330,7 @@ class _InventoryScreenState extends State<InventoryScreen> {
         ),
       ),
 
-      bottomNavigationBar: const menu_Widget(currentIndex: 1),
+      bottomNavigationBar: const cajeroMenu_Widget(currentIndex: 0),
     );
   }
 }

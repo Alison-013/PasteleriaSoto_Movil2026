@@ -5,7 +5,7 @@ class ProductoDestacado extends StatelessWidget {
   final String nombre;
   final String categoria;
   final String unidades;
-  final IconData icono;
+  final String imagenUrl;
   final Color color;
 
   const ProductoDestacado({
@@ -13,7 +13,7 @@ class ProductoDestacado extends StatelessWidget {
     required this.nombre,
     required this.categoria,
     required this.unidades,
-    required this.icono,
+    required this.imagenUrl,
     required this.color,
   });
 
@@ -42,7 +42,7 @@ class ProductoDestacado extends StatelessWidget {
               color: color,
               borderRadius: BorderRadius.circular(5),
             ),
-            child: Icon(icono, color: Colors.white, size: 28),
+            child: Image.network(imagenUrl, fit: BoxFit.cover),
           ),
           const SizedBox(width: 10),
           Expanded(

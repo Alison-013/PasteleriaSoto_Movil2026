@@ -27,7 +27,7 @@ class TarjetaPerfil extends StatelessWidget {
             children: [
              ClipRRect( 
               borderRadius: BorderRadius.circular(10), 
-              child: Image.network( 'https://picsum.dev/images/ai/people/people-rsezu1wb23ld.jpg',
+              child: Image.network( 'https://picsum.dev/images/ai/people/people-pghappw0hnwj.jpg',
               width: 92, height: 92, 
               fit: BoxFit.cover, ), ),
               

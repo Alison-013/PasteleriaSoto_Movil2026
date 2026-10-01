@@ -7,6 +7,8 @@ class VentaReciente extends StatelessWidget {
   final String precio;
   final String estado;
   final Color colorEstado;
+  final IconData iconoCliente;
+  final Color colorCliente;
 
   const VentaReciente({
     super.key,
@@ -15,6 +17,8 @@ class VentaReciente extends StatelessWidget {
     required this.precio,
     required this.estado,
     required this.colorEstado,
+    required this.iconoCliente,
+    required this.colorCliente,
   });
 
   @override
@@ -35,13 +39,11 @@ class VentaReciente extends StatelessWidget {
       ),
       child: Row(
         children: [
-          const CircleAvatar(
-            radius: 12,
-            backgroundColor: Color(0xFFF0F2F3),
+          CircleAvatar(
+            backgroundColor: colorCliente,
             child: Icon(
-              Icons.person_outline,
-              size: 16,
-              color: Color(0xFF4E595F),
+              iconoCliente,
+              color: Colors.white,
             ),
           ),
           const SizedBox(width: 10),

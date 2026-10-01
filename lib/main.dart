@@ -13,6 +13,10 @@ import '/Screens/proveedores/proveedores_screen.dart';
 import '/Screens/cliente/cliente_screen.dart';
 import '/Screens/perfil/perfil_screen.dart';
 import '/Screens/configuracion/configuracion_screen.dart';
+import '/Screens/reportesCajero/reportesCajero_screen.dart';
+import '/Screens/perfilCajero/perfilCajero_screen.dart';
+import '/Screens/inventarioCajero/inventarioCajero_screen.dart';
+
 
 class MainApp extends StatelessWidget {
   const MainApp({super.key});
@@ -70,6 +74,16 @@ AppRoutes.perfil: (BuildContext context) {
 AppRoutes.configuracion: (BuildContext context) {
   return const ConfiguracionScreen();
 },
+AppRoutes.reportesCajero: (BuildContext context) {
+  return const reportesCajero();
+},
+AppRoutes.perfilCajero: (BuildContext context) {
+  return const PerfilCajeroScreen();
+},
+AppRoutes.inventarioCajero: (BuildContext context) {
+  return const InventoryCajeroScreen();
+},
+  
   
 },
     );

@@ -120,10 +120,8 @@ class _ClienteScreenState extends State<ClienteScreen> {
   ];
 
   final List<String> _filtros = const [
-    'Todos',
-    'Nombre',
-    'Teléfono',
-  ];
+  'Teléfono',
+];
 
   String _textoBusqueda = '';
   String _filtroSeleccionado = 'Todos';

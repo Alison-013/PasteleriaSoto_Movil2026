@@ -1,23 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_pasteleria_26/Widgets/cajeroMenu_Widget.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import '/Widgets/TopBar_Widget.dart';
-import '/Widgets/menu_Widget.dart';
-
+import '/Widgets/TopBar_Cajero.dart';
 import 'widgets/detalle_reportes.dart';
 import 'widgets/filtros_reportes.dart';
 import 'widgets/ingresos_reportes.dart';
 import 'widgets/paginacion_reportes.dart';
 import 'widgets/total_reportes.dart';
 
-class reportes extends StatefulWidget {
-  const reportes({super.key});
+class reportesCajero extends StatefulWidget {
+  const reportesCajero({super.key});
 
   @override
-  State<reportes> createState() => _ReportesState();
+  State<reportesCajero> createState() => _ReportesState();
 }
 
-class _ReportesState extends State<reportes> {
+class _ReportesState extends State<reportesCajero> {
   // Filtro activo: 'Hoy' | 'Ayer' | 'Esta semana' | 'Personalizada'
   String _filtroActivo = 'Hoy';
   DateTime? _fechaSeleccionada;
@@ -68,7 +67,7 @@ class _ReportesState extends State<reportes> {
       body: SafeArea(
         child: Column(
           children: [
-            const TopBar_Widget(),
+            const TopBar_Cajero(),
             Expanded(
               child: LayoutBuilder(
                 builder: (context, constraints) {
@@ -127,7 +126,7 @@ class _ReportesState extends State<reportes> {
           ],
         ),
       ),
-      bottomNavigationBar: const menu_Widget(currentIndex: 2),
+      bottomNavigationBar: const cajeroMenu_Widget(currentIndex: 1),
     );
   }
 }

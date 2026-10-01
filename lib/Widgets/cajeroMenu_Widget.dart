@@ -1,21 +1,38 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_pasteleria_26/app.routes.dart';
 
-// Widget del menu de abajo para el rol CAJERO.
 class cajeroMenu_Widget extends StatelessWidget {
 
-  final int currentIndex; // dice cual tab esta activo (0, 1, 2 )
-  final Function(int) onTap; // que pasa cuando el usuario toca un tab
+  final int currentIndex; // cual tab esta activo
 
   const cajeroMenu_Widget({
     super.key,
     required this.currentIndex,
-    required this.onTap,
   });
+
+  // Decide a que pantalla ir segun el tab que se toco
+  void _navegar(BuildContext context, int index) {
+
+    if (currentIndex == index) return; // no hace nada pq ya estamos ahi 
+
+    switch (index) {
+      case 0:
+        Navigator.of(context).pushReplacementNamed(AppRoutes.inventarioCajero);
+        break;
+      case 1:
+        Navigator.of(context).pushReplacementNamed(AppRoutes.reportesCajero);
+        break;
+      case 2:
+       Navigator.of(context).pushReplacementNamed(AppRoutes.perfilCajero);
+        break;
+     
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 70,
+      height: 64,
       decoration: const BoxDecoration(
         color: Colors.white,
         border: Border(
@@ -25,15 +42,15 @@ class cajeroMenu_Widget extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
-          _item(icon: Icons.cake_outlined, label: "Productos", index: 0),
-          _item(icon: Icons.receipt_long_outlined, label: "Ventas", index: 1),
-          _item(icon: Icons.person, label: "Mi Perfil", index: 2),
+          _item(context, icon: Icons.inventory_2_outlined, label: "Inventario", index: 0),
+          _item(context, icon: Icons.point_of_sale_outlined, label: "Ventas", index: 1),
+          _item(context, icon: Icons.person_outlined, label: "Mi Perfil", index: 2),
         ],
       ), // Row
     ); // Container
   }
 
-  Widget _item({
+  Widget _item(BuildContext context, {
     required IconData icon,
     required String label,
     required int index,
@@ -42,34 +59,30 @@ class cajeroMenu_Widget extends StatelessWidget {
     bool isActive = currentIndex == index;
 
     return GestureDetector(
-      onTap: () => onTap(index),
+      onTap: () => _navegar(context, index), // ahora llama a _navegar, no a un onTap de afuera
       child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
         decoration: BoxDecoration(
-          color: isActive ? const Color(0xFFDCE9FE) : Colors.transparent,
-          borderRadius: BorderRadius.circular(16),
+          color: isActive ? const Color(0xFFEAF2FE) : Colors.transparent,
+          borderRadius: BorderRadius.circular(14),
         ),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-
             Icon(
               icon,
-              size: 24,
-              color: isActive ? const Color(0xFF2E6BF2) : const Color(0xFF6B7280),
+              size: 22,
+              color: isActive ? const Color(0xFF2E6BF2) : const Color(0xFFA6ACB8),
             ),
-
-            const SizedBox(height: 4),
-
+            const SizedBox(height: 2),
             Text(
               label,
               style: TextStyle(
-                fontSize: 13,
-                fontWeight: isActive ? FontWeight.w600 : FontWeight.w400,
-                color: isActive ? const Color(0xFF2E6BF2) : const Color(0xFF6B7280),
+                fontSize: 11,
+                fontWeight: isActive ? FontWeight.bold : FontWeight.w500,
+                color: isActive ? const Color(0xFF2E6BF2) : const Color(0xFFA6ACB8),
               ),
             ),
-
           ],
         ), // Column
       ), // Container
