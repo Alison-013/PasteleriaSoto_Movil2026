@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -26,44 +27,55 @@ class FiltrosProveedores extends StatelessWidget {
             color: const Color(0xFF8A989E),
           ),
         ),
+
         const SizedBox(height: 7),
+
         SizedBox(
           height: 28,
-          child: ListView.separated(
-            scrollDirection: Axis.horizontal,
-            itemCount: filtros.length,
-            separatorBuilder: (_, __) => const SizedBox(width: 7),
-            itemBuilder: (context, index) {
-              final activo = filtroActivo == index;
+          child: Row(
+            children: List.generate(
+              filtros.length,
+              (index) {
+                final seleccionado = filtroActivo == index;
 
-              return InkWell(
-                onTap: () => onSeleccionar(index),
-                borderRadius: BorderRadius.circular(15),
-                child: Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 12),
-                  alignment: Alignment.center,
-                  decoration: BoxDecoration(
-                    color: activo ? const Color(0xFF092535) : Colors.white,
+                return Padding(
+                  padding: EdgeInsets.only(
+                    right: index == filtros.length - 1 ? 0 : 7,
+                  ),
+                  child: InkWell(
+                    onTap: () => onSeleccionar(index),
                     borderRadius: BorderRadius.circular(15),
-                    border: Border.all(
-                      color: activo
-                          ? const Color(0xFF092535)
-                          : const Color(0xFFDCE3E7),
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 12,
+                      ),
+                      alignment: Alignment.center,
+                      decoration: BoxDecoration(
+                        color: seleccionado
+                            ? const Color(0xFF092535)
+                            : Colors.white,
+                        borderRadius: BorderRadius.circular(15),
+                        border: Border.all(
+                          color: seleccionado
+                              ? const Color(0xFF092535)
+                              : const Color(0xFFDCE3E7),
+                        ),
+                      ),
+                      child: Text(
+                        filtros[index],
+                        style: GoogleFonts.poppins(
+                          fontSize: 10,
+                          fontWeight: FontWeight.w500,
+                          color: seleccionado
+                              ? Colors.white
+                              : const Color(0xFF657278),
+                        ),
+                      ),
                     ),
                   ),
-                  child: Text(
-                    filtros[index],
-                    style: GoogleFonts.poppins(
-                      fontSize: 10,
-                      fontWeight: FontWeight.w500,
-                      color: activo
-                          ? Colors.white
-                          : const Color(0xFF657278),
-                    ),
-                  ),
-                ),
-              );
-            },
+                );
+              },
+            ),
           ),
         ),
       ],

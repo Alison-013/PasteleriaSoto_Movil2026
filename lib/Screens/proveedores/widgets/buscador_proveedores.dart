@@ -1,8 +1,14 @@
+
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class BuscadorProveedores extends StatelessWidget {
-  const BuscadorProveedores({super.key});
+  final ValueChanged<String> onChanged;
+
+  const BuscadorProveedores({
+    super.key,
+    required this.onChanged,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -11,7 +17,9 @@ class BuscadorProveedores extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 10),
       decoration: BoxDecoration(
         color: Colors.white,
-        border: Border.all(color: const Color(0xFFDCE3E7)),
+        border: Border.all(
+          color: const Color(0xFFDCE3E7),
+        ),
         borderRadius: BorderRadius.circular(8),
       ),
       child: Row(
@@ -21,13 +29,28 @@ class BuscadorProveedores extends StatelessWidget {
             size: 16,
             color: Color(0xFF79909C),
           ),
+
           const SizedBox(width: 8),
-          Text(
-            'Buscar por nombre, código...',
-            style: GoogleFonts.poppins(
-              fontSize: 10,
-              fontWeight: FontWeight.w400,
-              color: const Color(0xFF94A2A8),
+
+          Expanded(
+            child: TextField(
+              onChanged: onChanged,
+              style: GoogleFonts.poppins(
+                fontSize: 10,
+                fontWeight: FontWeight.w400,
+                color: const Color(0xFF092535),
+              ),
+              decoration: InputDecoration(
+                hintText: 'Buscar por nombre, código...',
+                hintStyle: GoogleFonts.poppins(
+                  fontSize: 10,
+                  fontWeight: FontWeight.w400,
+                  color: const Color(0xFF94A2A8),
+                ),
+                border: InputBorder.none,
+                isDense: true,
+                contentPadding: EdgeInsets.zero,
+              ),
             ),
           ),
         ],
