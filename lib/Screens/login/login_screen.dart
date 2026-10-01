@@ -10,10 +10,12 @@ class Login_Screen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<Login_Screen> {
-
   // Controladores para obtener lo que escribe el usuario
-  final TextEditingController usuarioController = TextEditingController();
-  final TextEditingController contrasenaController = TextEditingController();
+  final TextEditingController usuarioController =
+      TextEditingController();
+
+  final TextEditingController contrasenaController =
+      TextEditingController();
 
   // Para mostrar/ocultar contraseña
   bool mostrarContrasena = false;
@@ -30,50 +32,58 @@ class _LoginScreenState extends State<Login_Screen> {
 
   // Función para validar el inicio de sesión
   void iniciarSesion() {
-
     String usuario = usuarioController.text.trim();
     String contrasena = contrasenaController.text;
 
-    // Credenciales permitidas
-    if (usuario == "AdminSoto" && contrasena == "AdminSoto26") {
-
-      // Si los datos son correctos, entra al Home
+    // ==============================
+    // ADMINISTRADOR
+    // ==============================
+    if (usuario == "AdminSoto" &&
+        contrasena == "AdminSoto26") {
       Navigator.pushReplacementNamed(
         context,
         AppRoutes.home,
       );
-
-    } else {
-
-      // Si los datos son incorrectos, no deja entrar
-      setState(() {
-        mensajeError = "Usuario o contraseña incorrectos";
-      });
+      return;
     }
+
+    // ==============================
+    // CAJERO
+    // ==============================
+    if (usuario == "CajeroSoto" &&
+        contrasena == "CajeroSoto26") {
+      Navigator.pushReplacementNamed(
+        context,
+        AppRoutes.inventarioCajero,
+      );
+      return;
+    }
+
+    // ==============================
+    // DATOS INCORRECTOS
+    // ==============================
+    setState(() {
+      mensajeError = "Usuario o contraseña incorrectos";
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-
       backgroundColor: const Color(0xFF0F1B3D),
 
       body: SingleChildScrollView(
         child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 24),
-
           height: MediaQuery.of(context).size.height,
 
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
-
             children: [
-
               // LOGO
               Container(
                 width: 70,
                 height: 70,
-
                 decoration: BoxDecoration(
                   border: Border.all(
                     color: Colors.orange,
@@ -81,7 +91,6 @@ class _LoginScreenState extends State<Login_Screen> {
                   ),
                   borderRadius: BorderRadius.circular(16),
                 ),
-
                 child: const Icon(
                   Icons.bar_chart,
                   color: Colors.orange,
@@ -132,7 +141,6 @@ class _LoginScreenState extends State<Login_Screen> {
 
               Container(
                 color: Colors.white,
-
                 child: TextField(
                   controller: usuarioController,
 
@@ -169,7 +177,6 @@ class _LoginScreenState extends State<Login_Screen> {
 
               Container(
                 color: Colors.white,
-
                 child: TextField(
                   controller: contrasenaController,
 
@@ -195,7 +202,8 @@ class _LoginScreenState extends State<Login_Screen> {
 
                       onPressed: () {
                         setState(() {
-                          mostrarContrasena = !mostrarContrasena;
+                          mostrarContrasena =
+                              !mostrarContrasena;
                         });
                       },
                     ),
@@ -204,7 +212,8 @@ class _LoginScreenState extends State<Login_Screen> {
 
                     border: InputBorder.none,
 
-                    contentPadding: const EdgeInsets.all(14),
+                    contentPadding:
+                        const EdgeInsets.all(14),
                   ),
                 ),
               ),
@@ -236,10 +245,8 @@ class _LoginScreenState extends State<Login_Screen> {
                     MainAxisAlignment.spaceBetween,
 
                 children: [
-
                   const Row(
                     children: [
-
                       Icon(
                         Icons.check_box_outline_blank,
                         color: Colors.white,
@@ -275,7 +282,6 @@ class _LoginScreenState extends State<Login_Screen> {
                 width: double.infinity,
 
                 child: ElevatedButton(
-
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.orange,
 
@@ -304,4 +310,3 @@ class _LoginScreenState extends State<Login_Screen> {
     );
   }
 }
-
