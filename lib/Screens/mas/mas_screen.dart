@@ -55,7 +55,7 @@ class _MasScreenState extends State<Mas_Screen> {
     return Scaffold(
       backgroundColor: const Color(0xFFF4F6F9),
 
-      body: SingleChildScrollView(
+      body: SafeArea(child:SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -184,7 +184,7 @@ class _MasScreenState extends State<Mas_Screen> {
             ),
           ],
         ),
-      ),
+      ), ),
 
       bottomNavigationBar:
           const menu_Widget(currentIndex: 4),
