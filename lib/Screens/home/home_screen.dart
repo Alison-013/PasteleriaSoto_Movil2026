@@ -36,7 +36,7 @@ class Home extends StatelessWidget {
                         TarjetaResumen(
                           icono: Icons.payments_outlined,
                           titulo: 'Ventas',
-                          cantidad: r'$1,850',
+                          cantidad: r'$27,730.00',
                         ),
                         TarjetaResumen(
                           icono: Icons.shopping_bag_outlined,
@@ -46,7 +46,7 @@ class Home extends StatelessWidget {
                         TarjetaResumen(
                           icono: Icons.inventory_2_outlined,
                           titulo: 'Stock',
-                          cantidad: '112',
+                          cantidad: '79',
                         ),
                         TarjetaResumen(
                           icono: Icons.groups_2_outlined,
@@ -69,9 +69,9 @@ class Home extends StatelessWidget {
                     const SizedBox(height: 8),
                     const ProductoDestacado(
                       nombre: 'Pastel de Trufa',
-                      categoria: 'Categoría: Postres',
+                      categoria: 'Categoría: Pasteles',
                       unidades: '32',
-                      icono: Icons.cake_outlined,
+                      imagenUrl: 'https://picsum.dev/images/ai/food/food-kgdzpabm0g69.jpg',
                       color: Color(0xFFBF8B66),
                     ),
                     const SizedBox(height: 8),
@@ -79,7 +79,7 @@ class Home extends StatelessWidget {
                       nombre: 'Croissant Clásico',
                       categoria: 'Categoría: Panadería',
                       unidades: '28',
-                      icono: Icons.bakery_dining_outlined,
+                      imagenUrl: 'https://picsum.dev/images/ai/food/food-9rrtfzhfduh8.jpg',
                       color: Color(0xFFD9A155),
                     ),
                     const SizedBox(height: 18),
@@ -93,6 +93,8 @@ class Home extends StatelessWidget {
                       precio: r'$45.00',
                       estado: 'Completado',
                       colorEstado: Color(0xFFC8EBF4),
+                      iconoCliente: Icons.face_3,
+                      colorCliente: Color.fromARGB(255, 168, 170, 172),
                     ),
                     const SizedBox(height: 8),
                     const VentaReciente(
@@ -101,6 +103,8 @@ class Home extends StatelessWidget {
                       precio: r'$120.50',
                       estado: 'Preparando',
                       colorEstado: Color(0xFFDCE9FE),
+                      iconoCliente: Icons.face_6,
+                      colorCliente: Color.fromARGB(255, 168, 170, 172),
                     ),
                   ],
                 ),
