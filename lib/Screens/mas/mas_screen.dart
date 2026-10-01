@@ -1,4 +1,6 @@
+
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_pasteleria_26/app.routes.dart';
 import '/Widgets/menu_Widget.dart';
 import '/Widgets/TopBar_Widget.dart';
@@ -28,19 +30,22 @@ class _MasScreenState extends State<Mas_Screen> {
     {
       "icono": Icons.local_shipping_outlined,
       "titulo": "Proveedores",
-      "descripcion": "Directorio y evaluación de proveedores de materia prima.",
-      "ruta":  AppRoutes.proveedores, 
+      "descripcion":
+          "Directorio y evaluación de proveedores de materia prima.",
+      "ruta": AppRoutes.proveedores,
     },
     {
       "icono": Icons.shield_outlined,
       "titulo": "Seguridad",
-      "descripcion": "Gestión de usuarios, roles y permisos de acceso.",
+      "descripcion":
+          "Gestión de usuarios, roles y permisos de acceso.",
       "ruta": AppRoutes.seguridad,
     },
     {
       "icono": Icons.settings_outlined,
       "titulo": "Configuración",
-      "descripcion": "Ajustes generales del sistema, notificaciones y perfil de empresa.",
+      "descripcion":
+          "Ajustes generales del sistema, notificaciones y perfil de empresa.",
       "ruta": AppRoutes.configuracion,
     },
   ];
@@ -49,12 +54,13 @@ class _MasScreenState extends State<Mas_Screen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xFFF4F6F9),
+
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
 
-            const TopBar_Widget(), // barra de arriba reutilizable
+            const TopBar_Widget(),
 
             Padding(
               padding: const EdgeInsets.all(20),
@@ -62,84 +68,126 @@ class _MasScreenState extends State<Mas_Screen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
 
-                  const Text(
+                  // TÍTULO
+                  Text(
                     "Más Opciones",
-                    style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                    style: GoogleFonts.poppins(
+                      fontSize: 24,
+                      fontWeight: FontWeight.w700,
+                      color: const Color(0xFF16233F),
+                    ),
                   ),
+
                   const SizedBox(height: 4),
-                  const Text(
+
+                  // SUBTÍTULO
+                  Text(
                     "Gestión avanzada y configuración del sistema.",
-                    style: TextStyle(color: Colors.grey, fontSize: 13),
+                    style: GoogleFonts.poppins(
+                      color: const Color(0xFF7A7F87),
+                      fontSize: 13,
+                      fontWeight: FontWeight.w400,
+                    ),
                   ),
 
                   const SizedBox(height: 20),
 
-                  // Lista de tarjetas de opciones
+                  // LISTA DE OPCIONES
                   Column(
                     children: _opciones.map((opcion) {
                       return GestureDetector(
                         onTap: () {
                           if (opcion["ruta"] != null) {
-                            Navigator.pushNamed(context, opcion["ruta"]);
+                            Navigator.pushNamed(
+                              context,
+                              opcion["ruta"],
+                            );
                           }
                         },
+
                         child: Container(
                           margin: const EdgeInsets.only(bottom: 14),
                           padding: const EdgeInsets.all(16),
+
                           decoration: BoxDecoration(
                             color: Colors.white,
                             borderRadius: BorderRadius.circular(16),
-                            border: Border.all(color: const Color(0xFFEFF1F5)),
+                            border: Border.all(
+                              color: const Color(0xFFEFF1F5),
+                            ),
                           ),
+
                           child: Row(
                             children: [
 
+                              // ICONO
                               Container(
                                 width: 44,
                                 height: 44,
+
                                 decoration: BoxDecoration(
                                   color: const Color(0xFFF4F6F9),
                                   borderRadius: BorderRadius.circular(12),
                                 ),
-                                child: Icon(opcion["icono"], color: const Color(0xFF16233F)),
+
+                                child: Icon(
+                                  opcion["icono"],
+                                  color: const Color(0xFF16233F),
+                                ),
                               ),
 
                               const SizedBox(width: 14),
 
+                              // TEXTO
                               Expanded(
                                 child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  crossAxisAlignment:
+                                      CrossAxisAlignment.start,
                                   children: [
+
                                     Text(
                                       opcion["titulo"],
-                                      style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                                      style: GoogleFonts.poppins(
+                                        fontWeight: FontWeight.w600,
+                                        fontSize: 16,
+                                        color: const Color(0xFF16233F),
+                                      ),
                                     ),
+
                                     const SizedBox(height: 2),
+
                                     Text(
                                       opcion["descripcion"],
-                                      style: const TextStyle(color: Colors.grey, fontSize: 12),
+                                      style: GoogleFonts.poppins(
+                                        color: const Color(0xFF7A7F87),
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.w400,
+                                      ),
                                     ),
                                   ],
                                 ),
                               ),
 
-                              const Icon(Icons.chevron_right, color: Colors.grey),
-
+                              // FLECHA
+                              const Icon(
+                                Icons.chevron_right,
+                                color: Color(0xFF9AA0A8),
+                              ),
                             ],
                           ),
                         ),
                       );
                     }).toList(),
                   ),
-
                 ],
               ),
             ),
-
           ],
         ),
       ),
-      bottomNavigationBar: const menu_Widget(currentIndex: 4), // 4 = Más
+
+      bottomNavigationBar:
+          const menu_Widget(currentIndex: 4),
     );
   }
 }

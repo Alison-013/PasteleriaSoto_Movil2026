@@ -25,25 +25,7 @@ class TotalVentas extends StatelessWidget {
                   r'$42,500.00',
                   style: _estiloTexto(const Color(0xFF092535)),
                 ),
-                Row(
-                  children: [
-                    const Icon(
-                      Icons.trending_up,
-                      color: Color(0xFF1C7994),
-                      size: 14,
-                    ),
-                    const SizedBox(width: 3),
-                    Text(
-                      '+12.5% vs ayer',
-                      style: GoogleFonts.poppins(
-                        fontSize: 11,
-                        height: 14 / 11,
-                        fontWeight: FontWeight.w500,
-                        color: const Color(0xFF1C7994),
-                      ),
-                    ),
-                  ],
-                ),
+               
               ],
             ),
           ),
