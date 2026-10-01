@@ -7,7 +7,9 @@ class IngresosDia extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 150,
+      // Antes tenía "height: 150" fijo. Se quitó para que esta tarjeta
+      // pueda crecer según el espacio que le dé el Expanded del padre
+      // (reportes.dart) y así llenar la pantalla sin dejar hueco vacío.
       padding: const EdgeInsets.fromLTRB(12, 11, 12, 8),
       decoration: BoxDecoration(
         color: Colors.white,
@@ -60,9 +62,17 @@ class _PintorBarras extends CustomPainter {
     const espacio = 5.0;
     final ancho = (size.width - (espacio * 5)) / 6;
 
+    // Las barras ahora se dibujan proporcionales al alto disponible,
+    // en vez de usar siempre los mismos valores fijos, para que se vean
+    // bien sin importar cuánto creció la tarjeta.
+    final alturaMaxima = alturas.reduce((a, b) => a > b ? a : b);
+    final altoUtil = size.height - 20; // deja espacio para las etiquetas
+    final factor = altoUtil / alturaMaxima;
+
     for (int i = 0; i < alturas.length; i++) {
       final x = i * (ancho + espacio);
-      final y = size.height - alturas[i] - 17;
+      final alturaBarra = alturas[i] * factor;
+      final y = size.height - alturaBarra - 17;
 
       final color = i == 3
           ? const Color(0xFF092535)
@@ -70,7 +80,7 @@ class _PintorBarras extends CustomPainter {
 
       canvas.drawRRect(
         RRect.fromRectAndRadius(
-          Rect.fromLTWH(x, y, ancho, alturas[i]),
+          Rect.fromLTWH(x, y, ancho, alturaBarra),
           const Radius.circular(1),
         ),
         Paint()..color = color,

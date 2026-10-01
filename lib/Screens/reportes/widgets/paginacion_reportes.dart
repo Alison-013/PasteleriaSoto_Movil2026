@@ -1,43 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+/// Misma paleta y tipografía que la versión anterior, pero sin el
+/// contenedor blanco/sombra, y centrada igual que la paginación de Inventario.
 class PaginacionReportes extends StatelessWidget {
   const PaginacionReportes({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 41,
-      padding: const EdgeInsets.symmetric(horizontal: 12),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(7),
-        boxShadow: const [
-          BoxShadow(
-            color: Color(0x16000000),
-            blurRadius: 8,
-            offset: Offset(0, 3),
-          ),
-        ],
-      ),
-      child: Row(
-        children: [
-          Text(
-            'Página 1 de 3',
-            style: _estiloCaption(const Color(0xFF526167)),
-          ),
-          const Spacer(),
-          const _BotonPagina(texto: '‹'),
-          const SizedBox(width: 5),
-          const _BotonPagina(texto: '1', activo: true),
-          const SizedBox(width: 5),
-          const _BotonPagina(texto: '2'),
-          const SizedBox(width: 5),
-          const _BotonPagina(texto: '3'),
-          const SizedBox(width: 5),
-          const _BotonPagina(texto: '›'),
-        ],
-      ),
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Text('Página 1 de 3', style: _estiloCaption(const Color(0xFF526167))),
+        const SizedBox(width: 12),
+        const Icon(Icons.chevron_left, size: 18, color: Color(0xFF526167)),
+        const SizedBox(width: 6),
+        const _BotonPagina(texto: '1', activo: true),
+        const SizedBox(width: 6),
+        const _BotonPagina(texto: '2'),
+        const SizedBox(width: 6),
+        const _BotonPagina(texto: '3'),
+        const SizedBox(width: 6),
+        const Icon(Icons.chevron_right, size: 18, color: Color(0xFF526167)),
+      ],
     );
   }
 }
