@@ -1,21 +1,21 @@
 import 'package:flutter/material.dart';
 import 'app.routes.dart';
 
-import '/Screens/login/login_screen.dart';
-import '/Screens/home/home_screen.dart';
-import '/Screens/inventario/inventario_screen.dart';
-import '/Screens/reportes/reportes_screen.dart';
-import '/Screens/actividad/actividad_screen.dart';
-import '/Screens/mas/mas_screen.dart';
-import '/Screens/compras/compras_screen.dart';
-import '/Screens/seguridad/seguridad_screen.dart';
-import '/Screens/proveedores/proveedores_screen.dart';
-import '/Screens/cliente/cliente_screen.dart';
-import '/Screens/perfil/perfil_screen.dart';
-import '/Screens/configuracion/configuracion_screen.dart';
-import '/Screens/reportesCajero/reportesCajero_screen.dart';
-import '/Screens/perfilCajero/perfilCajero_screen.dart';
-import '/Screens/inventarioCajero/inventarioCajero_screen.dart';
+import 'presentation/Screens/login/login_screen.dart';
+import 'presentation/Screens/home/home_screen.dart';
+import 'presentation/Screens/inventario/inventario_screen.dart';
+import 'presentation/Screens/reportes/reportes_screen.dart';
+import 'presentation/Screens/actividad/actividad_screen.dart';
+import 'presentation/Screens/mas/mas_screen.dart';
+import 'presentation/Screens/compras/compras_screen.dart';
+import 'presentation/Screens/seguridad/seguridad_screen.dart';
+import 'presentation/Screens/proveedores/proveedores_screen.dart';
+import 'presentation/Screens/cliente/cliente_screen.dart';
+import 'presentation/Screens/perfil/perfil_screen.dart';
+import 'presentation/Screens/configuracion/configuracion_screen.dart';
+import 'presentation/Screens/reportesCajero/reportesCajero_screen.dart';
+import 'presentation/Screens/perfilCajero/perfilCajero_screen.dart';
+import 'presentation/Screens/inventarioCajero/inventarioCajero_screen.dart';
 
 
 class MainApp extends StatelessWidget {
