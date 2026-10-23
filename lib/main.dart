@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'app.routes.dart';
-
 import 'presentation/Screens/login/login_screen.dart';
 import 'presentation/Screens/home/home_screen.dart';
 import 'presentation/Screens/inventario/inventario_screen.dart';
@@ -90,6 +89,6 @@ AppRoutes.inventarioCajero: (BuildContext context) {
   }
 }
 
-void main() {
+future void main() async {
   runApp(const MainApp());
 }

@@ -101,7 +101,8 @@ class _InventoryScreenState extends State<InventoryScreen> {
     return _productos.where((p) {
       final coincideBusqueda = _busqueda.isEmpty ||
           p["nombre"].toString().toLowerCase().contains(_busqueda.toLowerCase()) ||
-          p["sku"].toString().toLowerCase().contains(_busqueda.toLowerCase());
+          p["sku"].toString().toLowerCase().contains(_busqueda.toLowerCase()) ||
+          p["descripcion"].toString().toLowerCase().contains(_busqueda.toLowerCase());
 
       final coincideCategoria =
           _categoriaSeleccionada == "Todos" || p["categoria"] == _categoriaSeleccionada;
