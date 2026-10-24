@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_pasteleria_26/core/constants/api_constants.dart';
 import 'app.routes.dart';
 import 'presentation/Screens/login/login_screen.dart';
 import 'presentation/Screens/home/home_screen.dart';
@@ -89,6 +91,8 @@ AppRoutes.inventarioCajero: (BuildContext context) {
   }
 }
 
-future void main() async {
+Future<void> main() async {
+  await dotenv.load();
+  
   runApp(const MainApp());
 }
