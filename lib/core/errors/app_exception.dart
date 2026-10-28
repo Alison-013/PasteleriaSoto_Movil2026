@@ -25,3 +25,11 @@ class ServerException extends AppException {
 class ParsingException extends AppException {
   const ParsingException([super.message = 'Formato de respuesta inesperado']);
 }
+
+class UnauthorizedExsception extends AppException {
+  const UnauthorizedExsception([super.message = 'La sesion ha expirado. Accede otra vez']);
+}
+
+class NotFoundException extends AppException{
+   const NotFoundException([super.message = 'El recurso no fue encontrado']);
+}
