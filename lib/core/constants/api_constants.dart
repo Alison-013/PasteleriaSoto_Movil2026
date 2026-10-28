@@ -8,8 +8,9 @@ class ApiConstants{
  static final ApiConstants _instance = ApiConstants._privateConstructor();
  static ApiConstants get instance => _instance;
 
-  // Auth (POST)
+  // Auth (POST) AND Auth (GET)
   static const String login = '/auth';
+  static const String me = '/auth/me';   
 
   // Listados (GET)
   static const String users = '/users';
@@ -45,5 +46,8 @@ class ApiConstants{
   static String orderById(int id) => '/orders/$id';
   static String personalizedProductById(int id) => '/personalizedproducts/$id';
   static String optionById(int id) => '/options/$id';
+
+
+  static const Duration timeoutDuration = Duration(seconds: 30);
 
 }
