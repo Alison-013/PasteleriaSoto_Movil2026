@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_pasteleria_26/core/di/injection.dart';
+import 'package:flutter_pasteleria_26/presentation/Providers/auth_provider.dart';
+import 'package:provider/provider.dart';
 import 'app.routes.dart';
 import 'presentation/Screens/login/login_screen.dart';
 import 'presentation/Screens/home/home_screen.dart';
@@ -94,6 +96,10 @@ AppRoutes.inventarioCajero: (BuildContext context) {
 Future<void> main() async {
   await dotenv.load();
   setUpDependencies();
-
-  runApp(const MainApp());
+  runApp(
+    ChangeNotifierProvider(
+      create: (_) => getIt<AuthProvider>(),
+      child: const MainApp(),
+    ) );
+      
 }
