@@ -31,14 +31,16 @@ class AuthProvider extends ChangeNotifier {
     notifyListeners();
 
     try {
-      await _authService.login(userName, password);
+     await _authService.login(userName, password);
+     //await Future.delayed(const Duration(seconds:2));
       _authStatus = AuthStatus.authenticated;
     } on AppException catch (e){
       _errorMessage = e.message;
      
+    } on FormatException catch (e){
+      _errorMessage = e.message;
     } catch(e) {
       _errorMessage = 'ocurrio un error inesperado. Porfavor intente de nuevo.';
-
     } 
 
     _isSubmitting = false;

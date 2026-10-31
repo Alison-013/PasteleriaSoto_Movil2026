@@ -83,6 +83,7 @@ AppRoutes.reportesCajero: (BuildContext context) {
 AppRoutes.perfilCajero: (BuildContext context) {
   return const PerfilCajeroScreen();
 },
+
 AppRoutes.inventarioCajero: (BuildContext context) {
   return const InventoryCajeroScreen();
 },
