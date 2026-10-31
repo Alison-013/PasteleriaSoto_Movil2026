@@ -47,4 +47,19 @@ class AuthProvider extends ChangeNotifier {
     notifyListeners();
     
   }
+
+  Future <void> checkSession () async {
+    try {
+      final bool isAuthenticated = await _authService.isLoggedIn();
+      _authStatus = isAuthenticated
+      ? AuthStatus.authenticated
+      : AuthStatus.unahutenticated;
+    } catch (e){
+      _errorMessage = 'Ocurrio un error inesperado. Porfavor intente de nuevo';
+      _authStatus = AuthStatus.unknown;
+    } finally {
+      notifyListeners();
+    }
+  } 
 }
+  

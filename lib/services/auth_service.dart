@@ -34,5 +34,6 @@ class AuthService {
   Future<UserModel> getCurrentUser() async {
     return await _authRepository.currentUser();
   }
-  
+
+  Future<bool> isLoggedIn() => _tokenRepository.hasValidToken();
 }

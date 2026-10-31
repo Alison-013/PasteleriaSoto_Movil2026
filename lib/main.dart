@@ -97,7 +97,10 @@ AppRoutes.inventarioCajero: (BuildContext context) {
 Future<void> main() async {
   await dotenv.load();
   setUpDependencies();
-  runApp(
+
+  await getIt<AuthProvider>().checkSession();
+  
+   runApp(
     ChangeNotifierProvider(
       create: (_) => getIt<AuthProvider>(),
       child: const MainApp(),
