@@ -27,12 +27,13 @@ class MainApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      initialRoute: AppRoutes.login,
+     home: const _AuthGuard(),
 
      routes: <String, WidgetBuilder>{
   AppRoutes.login: (BuildContext context) {
     return const Login_Screen();
-  },
+  },   
+
 
   AppRoutes.home: (BuildContext context) {
     return const Home();
@@ -94,12 +95,31 @@ AppRoutes.inventarioCajero: (BuildContext context) {
   }
 }
 
+
+class _AuthGuard extends StatelessWidget {
+  const _AuthGuard();
+
+  @override
+  Widget build(BuildContext context) {
+    var authProvider = context.watch<AuthProvider>();
+    switch (authProvider.authStatus) {
+      case AuthStatus.authenticated:
+        return const Center(child: Text('Authenticated'));
+      case AuthStatus.unahutenticated:
+        return const Login_Screen();
+      // case AuthStatus.unknown:
+      default:
+        return const Center(child: CircularProgressIndicator());
+    }
+  }
+}
+
 Future<void> main() async {
   await dotenv.load();
   setUpDependencies();
 
-  await getIt<AuthProvider>().checkSession();
-  
+   getIt<AuthProvider>().checkSession();
+
    runApp(
     ChangeNotifierProvider(
       create: (_) => getIt<AuthProvider>(),

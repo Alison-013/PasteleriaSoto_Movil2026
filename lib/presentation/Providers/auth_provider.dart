@@ -56,7 +56,7 @@ class AuthProvider extends ChangeNotifier {
       : AuthStatus.unahutenticated;
     } catch (e){
       _errorMessage = 'Ocurrio un error inesperado. Porfavor intente de nuevo';
-      _authStatus = AuthStatus.unknown;
+      _authStatus = AuthStatus.unahutenticated;
     } finally {
       notifyListeners();
     }
