@@ -21,110 +21,145 @@ import 'presentation/Screens/perfilCajero/perfilCajero_screen.dart';
 import 'presentation/Screens/inventarioCajero/inventarioCajero_screen.dart';
 
 
-class MainApp extends StatelessWidget {
-  const MainApp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-     home: const _AuthGuard(),
-
-     routes: <String, WidgetBuilder>{
-  AppRoutes.login: (BuildContext context) {
-    return const Login_Screen();
-  },   
-
-
-  AppRoutes.home: (BuildContext context) {
-    return const Home();
-  },
-
-  AppRoutes.inventario: (BuildContext context) {
-    return const InventoryScreen();
-  },
-
-  AppRoutes.reportes: (BuildContext context) {
-    return const reportes();
-  },
-
-  AppRoutes.actividad: (BuildContext context) {
-    return const Activity_Screen();
-  },
-
-  AppRoutes.mas: (BuildContext context) {
-    return const Mas_Screen();
-  },
-
-  AppRoutes.compras: (BuildContext context) {
-    return const Compras_Screen();
-  },
-
-
-  AppRoutes.seguridad: (BuildContext context) {
-    return const seguridad();
-  },
-
-   AppRoutes.proveedores: (BuildContext context) {
-   return const Proveedores();
-  },
-  
-  AppRoutes.cliente: (BuildContext context) {
-  return const ClienteScreen();
-},
-
-AppRoutes.perfil: (BuildContext context) {
-  return const PerfilScreen();
-},
-AppRoutes.configuracion: (BuildContext context) {
-  return const ConfiguracionScreen();
-},
-AppRoutes.reportesCajero: (BuildContext context) {
-  return const reportesCajero();
-},
-AppRoutes.perfilCajero: (BuildContext context) {
-  return const PerfilCajeroScreen();
-},
-
-AppRoutes.inventarioCajero: (BuildContext context) {
-  return const InventoryCajeroScreen();
-},
-  
-  
-},
-    );
-  }
-}
-
-
-class _AuthGuard extends StatelessWidget {
-  const _AuthGuard();
-
-  @override
-  Widget build(BuildContext context) {
-    var authProvider = context.watch<AuthProvider>();
-    switch (authProvider.authStatus) {
-      case AuthStatus.authenticated:
-        return const Center(child: Text('Authenticated'));
-      case AuthStatus.unahutenticated:
-        return const Login_Screen();
-      // case AuthStatus.unknown:
-      default:
-        return const Center(child: CircularProgressIndicator());
-    }
-  }
-}
-
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await dotenv.load();
   setUpDependencies();
 
-   getIt<AuthProvider>().checkSession();
+  getIt<AuthProvider>().checkSession();
 
-   runApp(
+  runApp(
     ChangeNotifierProvider(
       create: (_) => getIt<AuthProvider>(),
       child: const MainApp(),
-    ) );
-      
+    ),
+  );
+}
+
+class MainApp extends StatefulWidget {
+  const MainApp({super.key});
+
+  @override
+  State<MainApp> createState() => _MainAppState();
+}
+
+class _MainAppState extends State<MainApp> {
+  final GlobalKey<NavigatorState> _navigatorKey = GlobalKey<NavigatorState>();
+  final AuthProvider _authProvider = getIt<AuthProvider>();
+  AuthStatus _routedStatus = AuthStatus.unknown;
+
+  @override
+  void initState() {
+    super.initState();
+    _authProvider.addListener(_onAuthChange);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _onAuthChange();
+    });
+  }
+
+  String _rutaSegunRol(String? rol) {
+    final r = (rol ?? '').toLowerCase();
+
+    if (r.contains('admin')) return AppRoutes.home;
+    if (r.contains('cajero')) return AppRoutes.inventarioCajero;
+    return AppRoutes.login;
+  }
+
+  void _onAuthChange() {
+    AuthStatus authStatus = _authProvider.authStatus;
+    NavigatorState? navigator = _navigatorKey.currentState;
+
+    if (authStatus == _routedStatus || navigator == null) return;
+    _routedStatus = authStatus;
+
+    final route = switch (authStatus) {
+      AuthStatus.authenticated => _rutaSegunRol(_authProvider.currentUser?.Role),
+      AuthStatus.unahutenticated => AppRoutes.login,
+      AuthStatus.unknown => AppRoutes.splash,
+    };
+
+    navigator.pushNamedAndRemoveUntil(route, (route) => false);
+  }
+
+  @override
+  void dispose() {
+    _authProvider.removeListener(_onAuthChange);
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      navigatorKey: _navigatorKey,
+      initialRoute: AppRoutes.splash,
+
+      routes: <String, WidgetBuilder>{
+        AppRoutes.splash: (BuildContext context) {
+          return const Scaffold(
+            body: Center(child: CircularProgressIndicator()),
+          );
+        },
+
+        AppRoutes.login: (BuildContext context) {
+          return const Login_Screen();
+        },
+
+        AppRoutes.home: (BuildContext context) {
+          return const Home();
+        },
+
+        AppRoutes.inventario: (BuildContext context) {
+          return const InventoryScreen();
+        },
+
+        AppRoutes.reportes: (BuildContext context) {
+          return const reportes();
+        },
+
+        AppRoutes.actividad: (BuildContext context) {
+          return const Activity_Screen();
+        },
+
+        AppRoutes.mas: (BuildContext context) {
+          return const Mas_Screen();
+        },
+
+        AppRoutes.compras: (BuildContext context) {
+          return const Compras_Screen();
+        },
+
+        AppRoutes.seguridad: (BuildContext context) {
+          return const seguridad();
+        },
+
+        AppRoutes.proveedores: (BuildContext context) {
+          return const Proveedores();
+        },
+
+        AppRoutes.cliente: (BuildContext context) {
+          return const ClienteScreen();
+        },
+
+        AppRoutes.perfil: (BuildContext context) {
+          return const PerfilScreen();
+        },
+
+        AppRoutes.configuracion: (BuildContext context) {
+          return const ConfiguracionScreen();
+        },
+
+        AppRoutes.reportesCajero: (BuildContext context) {
+          return const reportesCajero();
+        },
+
+        AppRoutes.perfilCajero: (BuildContext context) {
+          return const PerfilCajeroScreen();
+        },
+
+        AppRoutes.inventarioCajero: (BuildContext context) {
+          return const InventoryCajeroScreen();
+        },
+      },
+    );
+  }
 }
