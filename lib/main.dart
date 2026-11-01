@@ -115,6 +115,7 @@ class _AuthGuard extends StatelessWidget {
 }
 
 Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   await dotenv.load();
   setUpDependencies();
 
