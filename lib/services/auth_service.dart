@@ -10,7 +10,7 @@ class AuthService {
 
   AuthService(this._authRepository, this._tokenRepository);
 
-  Future<void> login(String userName, String password) async {
+  Future<UserModel> login(String userName, String password) async {
     final trimmedUserName = userName.trim();
     final trimmedPassword = password.trim();
 
@@ -23,11 +23,13 @@ class AuthService {
     }
 
     if (!CommonRegex.passwordRegex.hasMatch(trimmedPassword)){
-      throw const  FormatException ('La contraseña debe contener al menos 8 caracteres, incluir una letra mayuscula, una letra minuscula y numeros');
+      throw const  FormatException ('La contraseña debe contener al menos 8 caracteres, incluir una letra mayuscula, una letra minuscula o numeros');
     }
 
     final TokenModal token = await _authRepository.login(userName, password);
     await _tokenRepository.saveToken(token);
+
+    return await _authRepository.currentUser();
   }
 
 
@@ -36,4 +38,8 @@ class AuthService {
   }
 
   Future<bool> isLoggedIn() => _tokenRepository.hasValidToken();
+
+  Future<void> logout() async {
+    await _tokenRepository.removeToken();
+  }
 }

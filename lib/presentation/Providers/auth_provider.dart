@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_pasteleria_26/core/errors/app_exception.dart';
+import 'package:flutter_pasteleria_26/data/models/user_model.dart';
 import 'package:flutter_pasteleria_26/services/auth_service.dart';
 
 enum AuthStatus {
@@ -11,6 +12,9 @@ enum AuthStatus {
 class AuthProvider extends ChangeNotifier {
   final AuthService _authService;
   AuthProvider(this._authService);
+
+  UserModel? _currentUser;
+  UserModel? get currentUser => _currentUser;
 
   String? _errorMessage;
   String? get errorMessage => _errorMessage;
@@ -30,18 +34,18 @@ class AuthProvider extends ChangeNotifier {
     _isSubmitting = true;
     notifyListeners();
 
+   
     try {
-     await _authService.login(userName, password);
-     //await Future.delayed(const Duration(seconds:2));
+      UserModel user = await _authService.login(userName, password);
       _authStatus = AuthStatus.authenticated;
+      _currentUser = user;
     } on AppException catch (e){
       _errorMessage = e.message;
-     
     } on FormatException catch (e){
       _errorMessage = e.message;
     } catch(e) {
       _errorMessage = 'ocurrio un error inesperado. Porfavor intente de nuevo.';
-    } 
+    }
 
     _isSubmitting = false;
     notifyListeners();
@@ -51,6 +55,9 @@ class AuthProvider extends ChangeNotifier {
   Future <void> checkSession () async {
     try {
       final bool isAuthenticated = await _authService.isLoggedIn();
+      if (isAuthenticated) {
+        _currentUser = await _authService.getCurrentUser();
+      }
       _authStatus = isAuthenticated
       ? AuthStatus.authenticated
       : AuthStatus.unahutenticated;
@@ -61,5 +68,13 @@ class AuthProvider extends ChangeNotifier {
       notifyListeners();
     }
   } 
+
+  Future<void> logout() async {
+    await _authService.logout();
+    _authStatus = AuthStatus.unahutenticated;
+    _currentUser = null;
+    _errorMessage = null;
+    notifyListeners();
+  }
 }
   
