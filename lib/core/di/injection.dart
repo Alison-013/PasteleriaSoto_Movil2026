@@ -9,8 +9,11 @@ final getIt = GetIt.instance;
 
 void setUpDependencies (){
 
- getIt.registerLazySingleton <ApiClient>(()=> ApiClient(), dispose:(client) => client.dispose());
-
+ getIt.registerLazySingleton <ApiClient>(
+   () => ApiClient(authTokenProvider: () => getIt<TokenRepository>().getToken()),
+   dispose: (client) => client.dispose(),
+ );
+ 
  //Registrar repositorios
  getIt.registerLazySingleton<AuthRepository>(()=> AuthRepository(getIt<ApiClient>()));
  getIt.registerLazySingleton<TokenRepository>(()=> TokenRepository());
