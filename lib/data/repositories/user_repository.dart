@@ -23,4 +23,13 @@ class UserRepository {
     return data.map((json) => UserModel.fromJson(json as Map<String, dynamic>)).toList();
   }
 
+  Future<void> update (int id,Map<String, String> data ) async {
+   await _apiClient.put('${ApiConstants.users}/$id', body: data);
+  }
+
+  Future<void> delete(int id) async {
+   await _apiClient.delete('${ApiConstants.users}/$id');
+  }
 }
+
+
