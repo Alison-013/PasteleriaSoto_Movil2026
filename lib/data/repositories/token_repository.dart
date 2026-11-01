@@ -12,6 +12,14 @@ class TokenRepository {
    await _sharedPreferences.setString(_tokenKey, jsonString);
   }
 
+  Future<TokenModal> ensureToken() async {
+    final TokenModal? token = await getToken();
+    if (token == null) {
+      throw Exception('No se encontro el token valido');
+    }
+    return token;
+  }
+
   Future<TokenModal?> getToken() async{
     final String? rawJson = await _sharedPreferences.getString(_tokenKey);
     if (rawJson == null) return null;
@@ -23,6 +31,7 @@ class TokenRepository {
         await removeToken();
         return null;
       }
+       return token;
     }
     catch (e) {
      await removeToken();
