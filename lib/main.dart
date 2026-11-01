@@ -73,7 +73,7 @@ class _MainAppState extends State<MainApp> {
     _routedStatus = authStatus;
 
     final route = switch (authStatus) {
-      AuthStatus.authenticated => _rutaSegunRol(_authProvider.currentUser?.Role),
+      AuthStatus.authenticated => _rutaSegunRol(_authProvider.currentUser?.role),
       AuthStatus.unahutenticated => AppRoutes.login,
       AuthStatus.unknown => AppRoutes.splash,
     };
