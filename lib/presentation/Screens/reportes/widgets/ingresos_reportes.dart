@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class IngresosDia extends StatelessWidget {
-  const IngresosDia({super.key});
+  final List<String> etiquetas;
+  final List<double> valores;
+  
+  const IngresosDia({super.key, required this.etiquetas, required this.valores});
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      // Antes tenía "height: 150" fijo. Se quitó para que esta tarjeta
-      // pueda crecer según el espacio que le dé el Expanded del padre
-      // (reportes.dart) y así llenar la pantalla sin dejar hueco vacío.
       padding: const EdgeInsets.fromLTRB(12, 11, 12, 8),
       decoration: BoxDecoration(
         color: Colors.white,
@@ -40,11 +40,21 @@ class IngresosDia extends StatelessWidget {
             ],
           ),
           const SizedBox(height: 8),
-          const Expanded(
-            child: CustomPaint(
-              painter: _PintorBarras(),
-              child: SizedBox.expand(),
-            ),
+          Expanded(
+            child: valores.isEmpty
+                ? Center(
+                    child: Text(
+                      'Sin ventas en este rango',
+                      style: GoogleFonts.poppins(
+                        fontSize: 11,
+                        color: const Color(0xFF526167),
+                      ),
+                    ),
+                  )
+                : CustomPaint(
+                    painter: _PintorBarras(etiquetas, valores),
+                    child: const SizedBox.expand(),
+                  ),
           ),
         ],
       ),
@@ -53,28 +63,33 @@ class IngresosDia extends StatelessWidget {
 }
 
 class _PintorBarras extends CustomPainter {
-  const _PintorBarras();
+  final List<String> etiquetas;
+  final List<double> alturas;
+
+  const _PintorBarras(this.etiquetas, this.alturas);
 
   @override
   void paint(Canvas canvas, Size size) {
-    final alturas = [30.0, 45.0, 24.0, 61.0, 37.0, 68.0];
-    final etiquetas = ['8am', '10am', '12pm', '2pm', '4pm', '6pm'];
+    final n = alturas.length;
     const espacio = 5.0;
-    final ancho = (size.width - (espacio * 5)) / 6;
+    
+    final anchoCalculado = (size.width - (espacio * (n - 1))) / n;
+    final ancho = anchoCalculado > 60 ? 60.0 : anchoCalculado;
+    final anchoTotal = (ancho * n) + (espacio * (n - 1));
+    final inicioX = (size.width - anchoTotal) / 2;
+    
 
-    // Las barras ahora se dibujan proporcionales al alto disponible,
-    // en vez de usar siempre los mismos valores fijos, para que se vean
-    // bien sin importar cuánto creció la tarjeta.
-    final alturaMaxima = alturas.reduce((a, b) => a > b ? a : b);
+    final valorMaximo = alturas.reduce((a, b) => a > b ? a : b);
     final altoUtil = size.height - 20; // deja espacio para las etiquetas
-    final factor = altoUtil / alturaMaxima;
+    final factor = valorMaximo > 0 ? altoUtil / valorMaximo : 0.0;
+    final indiceMaximo = alturas.indexOf(valorMaximo);
 
-    for (int i = 0; i < alturas.length; i++) {
-      final x = i * (ancho + espacio);
+    for (int i = 0; i < n; i++) {
+      final x = inicioX + i * (ancho + espacio);
       final alturaBarra = alturas[i] * factor;
       final y = size.height - alturaBarra - 17;
-
-      final color = i == 3
+ 
+      final color = i == indiceMaximo
           ? const Color(0xFF092535)
           : const Color(0xFFBEE3FA);
 
@@ -109,5 +124,5 @@ class _PintorBarras extends CustomPainter {
   }
 
   @override
-  bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
-}
+  bool shouldRepaint(covariant _PintorBarras oldDelegate) =>
+      oldDelegate.alturas != alturas || oldDelegate.etiquetas != etiquetas;}
