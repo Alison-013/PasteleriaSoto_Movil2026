@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:flutter_pasteleria_26/core/constants/reportes_formato.dart';
+
 
 class TotalVentas extends StatelessWidget {
-  const TotalVentas({super.key});
+  final double total;
+ 
+  const TotalVentas({super.key, required this.total});
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +26,7 @@ class TotalVentas extends StatelessWidget {
                 ),
                 const Spacer(),
                 Text(
-                  r'$42,500.00',
+                  formatearMonto(total),
                   style: _estiloTexto(const Color(0xFF092535)),
                 ),
                
