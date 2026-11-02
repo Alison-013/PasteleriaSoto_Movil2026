@@ -1,27 +1,60 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-/// Misma paleta y tipografía que la versión anterior, pero sin el
-/// contenedor blanco/sombra, y centrada igual que la paginación de Inventario.
 class PaginacionReportes extends StatelessWidget {
-  const PaginacionReportes({super.key});
+ final int paginaActual;
+ final int totalPaginas;
+ final ValueChanged<int> onCambiarPagina;
 
+ const PaginacionReportes({
+    super.key,
+    required this.paginaActual,
+    required this.totalPaginas,
+    required this.onCambiarPagina,
+  });
+ 
   @override
   Widget build(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Text('Página 1 de 3', style: _estiloCaption(const Color(0xFF526167))),
+       children: [
+        Text(
+          'Página $paginaActual de $totalPaginas',
+          style: _estiloCaption(const Color(0xFF526167)),
+        ),
         const SizedBox(width: 12),
-        const Icon(Icons.chevron_left, size: 18, color: Color(0xFF526167)),
+        InkWell(
+          onTap: paginaActual > 1
+              ? () => onCambiarPagina(paginaActual - 1)
+              : null,
+          child: Icon(
+            Icons.chevron_left,
+            size: 18,
+            color: paginaActual > 1
+                ? const Color(0xFF526167)
+                : const Color(0xFFC5CBCE),
+          ),
+        ),
         const SizedBox(width: 6),
-        const _BotonPagina(texto: '1', activo: true),
-        const SizedBox(width: 6),
-        const _BotonPagina(texto: '2'),
-        const SizedBox(width: 6),
-        const _BotonPagina(texto: '3'),
-        const SizedBox(width: 6),
-        const Icon(Icons.chevron_right, size: 18, color: Color(0xFF526167)),
+        for (int i = 1; i <= totalPaginas; i++) ...[
+          InkWell(
+            onTap: () => onCambiarPagina(i),
+            child: _BotonPagina(texto: '$i', activo: i == paginaActual),
+          ),
+          const SizedBox(width: 6),
+        ],
+        InkWell(
+          onTap: paginaActual < totalPaginas
+              ? () => onCambiarPagina(paginaActual + 1)
+              : null,
+          child: Icon(
+            Icons.chevron_right,
+            size: 18,
+            color: paginaActual < totalPaginas
+                ? const Color(0xFF526167)
+                : const Color(0xFFC5CBCE),
+          ),
+        ),
       ],
     );
   }
