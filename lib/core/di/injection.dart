@@ -15,6 +15,9 @@ import 'package:flutter_pasteleria_26/services/sale_service.dart';
 import 'package:flutter_pasteleria_26/data/repositories/audit_log_repository.dart';
 import 'package:flutter_pasteleria_26/presentation/Providers/activity_provider.dart';
 import 'package:flutter_pasteleria_26/services/audit_log_service.dart';
+import 'package:flutter_pasteleria_26/data/repositories/purchase_repository.dart';
+import 'package:flutter_pasteleria_26/presentation/Providers/purchase_provider.dart';
+import 'package:flutter_pasteleria_26/services/purchase_service.dart';
  
 
 final getIt = GetIt.instance;
@@ -33,6 +36,7 @@ void setUpDependencies (){
  getIt.registerLazySingleton<ProductRepository>(()=> ProductRepository(getIt<ApiClient>()));
  getIt.registerLazySingleton<SaleRepository>(()=> SaleRepository(getIt<ApiClient>()));
  getIt.registerLazySingleton<AuditLogRepository>(()=> AuditLogRepository(getIt<ApiClient>()));
+ getIt.registerLazySingleton<PurchaseRepository>(()=> PurchaseRepository(getIt<ApiClient>()));
 
  //Registrar servicios
  getIt.registerLazySingleton<AuthService>(()=> AuthService(getIt<AuthRepository>(), getIt<TokenRepository>()));
@@ -40,14 +44,16 @@ void setUpDependencies (){
  getIt.registerLazySingleton<ProductService>(()=> ProductService(getIt<ProductRepository>()));
  getIt.registerLazySingleton<SaleService>(()=> SaleService(getIt<SaleRepository>()));
  getIt.registerLazySingleton<AuditLogService>(()=> AuditLogService(getIt<AuditLogRepository>()));
- 
+ getIt.registerLazySingleton<PurchaseService>(()=> PurchaseService(getIt<PurchaseRepository>()));
+
 
  //Registrar providers
  getIt.registerLazySingleton<AuthProvider>(()=> AuthProvider(getIt<AuthService>()));
  getIt.registerFactory<InventoryProvider>(()=> InventoryProvider(getIt<InventoryService>(), getIt<ProductService>()));
  getIt.registerFactory<SaleProvider>(()=> SaleProvider(getIt<SaleService>()));
  getIt.registerFactory<ActivityProvider>(()=> ActivityProvider(getIt<AuditLogService>()));
- 
+ getIt.registerFactory<PurchaseProvider>(()=> PurchaseProvider(getIt<PurchaseService>()));
+
 }
 
 

@@ -22,6 +22,7 @@ import 'presentation/Screens/inventarioCajero/inventarioCajero_screen.dart';
 import 'package:flutter_pasteleria_26/presentation/Providers/inventory_provider.dart';
 import 'package:flutter_pasteleria_26/presentation/Providers/sale_provider.dart';
 import 'package:flutter_pasteleria_26/presentation/Providers/activity_provider.dart';
+import 'package:flutter_pasteleria_26/presentation/Providers/purchase_provider.dart';
 
 
 Future<void> main() async {
@@ -138,7 +139,10 @@ class _MainAppState extends State<MainApp> {
         },
 
         AppRoutes.compras: (BuildContext context) {
-          return const Compras_Screen();
+          return ChangeNotifierProvider(
+            create: (_) => getIt<PurchaseProvider>()..fetchPurchases(),
+            child: const Compras_Screen(),
+          );
         },
 
         AppRoutes.seguridad: (BuildContext context) {
