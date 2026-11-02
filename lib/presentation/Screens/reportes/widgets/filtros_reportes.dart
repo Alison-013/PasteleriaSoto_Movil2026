@@ -26,7 +26,6 @@ class FiltrosReportes extends StatelessWidget {
 
     return Row(
       children: [
-        for (final filtro in filtrosRapidos) ...[
           Expanded(
             child: _ChipFiltro(
               texto: fechaInicio != null
@@ -58,7 +57,6 @@ class FiltrosReportes extends StatelessWidget {
           ),
         ],
         ],
-      ],
     );
   }
 }
