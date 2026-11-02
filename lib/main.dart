@@ -21,7 +21,7 @@ import 'presentation/Screens/perfilCajero/perfilCajero_screen.dart';
 import 'presentation/Screens/inventarioCajero/inventarioCajero_screen.dart';
 import 'package:flutter_pasteleria_26/presentation/Providers/inventory_provider.dart';
 import 'package:flutter_pasteleria_26/presentation/Providers/sale_provider.dart';
-
+import 'package:flutter_pasteleria_26/presentation/Providers/activity_provider.dart';
 
 
 Future<void> main() async {
@@ -126,8 +126,12 @@ class _MainAppState extends State<MainApp> {
         },
 
         AppRoutes.actividad: (BuildContext context) {
-          return const Activity_Screen();
+          return ChangeNotifierProvider(
+            create: (_) => getIt<ActivityProvider>()..fetchLogs(),
+            child: const Activity_Screen(),
+          );
         },
+ 
 
         AppRoutes.mas: (BuildContext context) {
           return const Mas_Screen();
