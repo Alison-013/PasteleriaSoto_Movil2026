@@ -47,7 +47,7 @@ class _LoginScreenState extends State<Login_Screen> {
         child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 24),
           height: MediaQuery.of(context).size.height,
-           child: Form(                       // ← NUEVO
+           child: Form(                     
            key: _globalKey, 
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -131,7 +131,7 @@ class _LoginScreenState extends State<Login_Screen> {
 
                     validator: (value) {
                       if (value == null || value.isEmpty) {
-                      return 'Ingresa tu contraseña';
+                      return 'Ingresa tu usuario';
                       }
                     return null;
                     }
@@ -158,9 +158,8 @@ class _LoginScreenState extends State<Login_Screen> {
 
                 Container(
                   color: Colors.white,
-                  child: TextField(
+                  child: TextFormField(
                     controller: contrasenaController,
-
                     obscureText: !mostrarContrasena,
 
                     onChanged: (value) {
@@ -173,7 +172,7 @@ class _LoginScreenState extends State<Login_Screen> {
                       prefixIcon: const Icon(
                         Icons.lock_outline,
                       ),
-
+                    
                       suffixIcon: IconButton(
                         icon: Icon(
                           mostrarContrasena
@@ -196,6 +195,13 @@ class _LoginScreenState extends State<Login_Screen> {
                       contentPadding:
                           const EdgeInsets.all(14),
                     ),
+
+                    validator: (value) {
+                      if (value == null || value.trim().isEmpty) {
+                       return 'Ingresa tu contraseña';
+                      }
+                      return null;
+                    },
                   ),
                 ),
 

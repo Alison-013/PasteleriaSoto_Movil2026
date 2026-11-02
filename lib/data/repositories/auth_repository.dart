@@ -19,7 +19,7 @@ class AuthRepository {
 
     final data = json['value'] ?? json;
     if (data is! Map<String, dynamic>) throw const ParsingException();
-    return TokenModal.fromJson(json);
+    return TokenModal.fromJson(data);
   }
 
   Future<UserModel> currentUser() async{
@@ -30,7 +30,7 @@ class AuthRepository {
  
     final data = json['value'];
     if (data is! Map<String, dynamic>) throw const ParsingException();
-    return UserModel.fromJson(json);
+    return UserModel.fromJson(data);
   }
 
 }

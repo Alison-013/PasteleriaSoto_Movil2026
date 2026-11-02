@@ -43,9 +43,10 @@ class AuthProvider extends ChangeNotifier {
       _errorMessage = e.message;
     } on FormatException catch (e){
       _errorMessage = e.message;
-    } catch(e) {
+    }  catch (e) {
+     
       _errorMessage = 'ocurrio un error inesperado. Porfavor intente de nuevo.';
-    }
+   }
 
     _isSubmitting = false;
     notifyListeners();
