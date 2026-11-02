@@ -1,8 +1,13 @@
 import 'package:flutter_pasteleria_26/core/network/api_client.dart';
 import 'package:flutter_pasteleria_26/data/repositories/auth_repository.dart';
+import 'package:flutter_pasteleria_26/data/repositories/inventory_repository.dart';
+import 'package:flutter_pasteleria_26/data/repositories/product_repository.dart';
 import 'package:flutter_pasteleria_26/data/repositories/token_repository.dart';
 import 'package:flutter_pasteleria_26/presentation/Providers/auth_provider.dart';
+import 'package:flutter_pasteleria_26/presentation/Providers/inventory_provider.dart';
 import 'package:flutter_pasteleria_26/services/auth_service.dart';
+import 'package:flutter_pasteleria_26/services/inventory_service.dart';
+import 'package:flutter_pasteleria_26/services/product_service.dart';
 import 'package:get_it/get_it.dart';
 
 final getIt = GetIt.instance;
@@ -17,11 +22,19 @@ void setUpDependencies (){
  //Registrar repositorios
  getIt.registerLazySingleton<AuthRepository>(()=> AuthRepository(getIt<ApiClient>()));
  getIt.registerLazySingleton<TokenRepository>(()=> TokenRepository());
+  getIt.registerLazySingleton<InventoryRepository>(()=> InventoryRepository(getIt<ApiClient>()));
+ getIt.registerLazySingleton<ProductRepository>(()=> ProductRepository(getIt<ApiClient>()));
 
  //Registrar servicios
  getIt.registerLazySingleton<AuthService>(()=> AuthService(getIt<AuthRepository>(), getIt<TokenRepository>()));
+  getIt.registerLazySingleton<InventoryService>(()=> InventoryService(getIt<InventoryRepository>()));
+ getIt.registerLazySingleton<ProductService>(()=> ProductService(getIt<ProductRepository>()));
+ 
 
  //Registrar providers
  getIt.registerLazySingleton<AuthProvider>(()=> AuthProvider(getIt<AuthService>()));
-
+ getIt.registerFactory<InventoryProvider>(()=> InventoryProvider(getIt<InventoryService>(), getIt<ProductService>()));
 }
+
+
+

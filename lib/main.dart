@@ -19,6 +19,7 @@ import 'presentation/Screens/configuracion/configuracion_screen.dart';
 import 'presentation/Screens/reportesCajero/reportesCajero_screen.dart';
 import 'presentation/Screens/perfilCajero/perfilCajero_screen.dart';
 import 'presentation/Screens/inventarioCajero/inventarioCajero_screen.dart';
+import 'package:flutter_pasteleria_26/presentation/Providers/inventory_provider.dart';
 
 
 Future<void> main() async {
@@ -109,8 +110,11 @@ class _MainAppState extends State<MainApp> {
         },
 
         AppRoutes.inventario: (BuildContext context) {
-          return const InventoryScreen();
-        },
+        return ChangeNotifierProvider(
+         create: (_) => getIt<InventoryProvider>()..fetchInventory(),
+         child: const InventoryScreen(),
+         );
+       },
 
         AppRoutes.reportes: (BuildContext context) {
           return const reportes();
