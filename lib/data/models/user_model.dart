@@ -1,22 +1,22 @@
 class UserModel {
-  final int Id;
-  final String UserName;
-  final String IsActive;
-  final String Role;
+  final int id;
+  final String userName;
+  final bool isActive;
+  final String role;
 
   UserModel ({
-  required this.Id,
-  required this.UserName,
-  required this.IsActive,
-  required this.Role,
+  required this.id,
+  required this.userName,
+  required this.isActive,
+  required this.role,
   });
 
-  static   UserModel fromJson(Map<String, dynamic> json){
+ static UserModel fromJson(Map<String, dynamic> json){
     return UserModel (
-      Id: json['Id'] as int,
-      UserName: json['UserName'] as String,
-      IsActive: json['IsActive'] as String,
-      Role: json['Role'] as String,
+      id: json['id'] as int,
+      userName: json['userName'] as String,
+      isActive: json['isActive'] as bool,
+      role: json['role'] as String,
     );
   }
 }

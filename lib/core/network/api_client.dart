@@ -3,8 +3,16 @@ import 'dart:convert';
 import 'package:flutter_pasteleria_26/core/constants/api_constants.dart';
 import 'package:flutter_pasteleria_26/core/errors/app_exception.dart';
 import 'package:http/http.dart' as http;
+import 'package:flutter_pasteleria_26/data/models/token_model.dart';
+
+
+typedef AuthTokenProvider = Future<TokenModal?> Function();
+
 
 class ApiClient{
+   final AuthTokenProvider? _authTokenProvider;
+  ApiClient({this._authTokenProvider});
+
   final http.Client _client = http.Client();
 
  Future<dynamic> get(String path, { Map<String, String>? query }) async => _send('GET', path, query, null);
@@ -19,9 +27,14 @@ class ApiClient{
     // path : /users
     final uri = Uri.parse('$baseUrl$path').replace(queryParameters: query);
 
-    final headers = {'Content-Type': 'application/json'};
-    if (body != null){
-      headers ['Content-Type'] = 'application/json';
+    final Map<String, String> headers = {};
+    if (body != null) {
+      headers['Content-Type'] = 'application/json';
+    }
+    
+     TokenModal? token = await _authTokenProvider?.call();
+    if (token != null && !token.isTokenExpired) {
+      headers['Authorization'] = 'Bearer ${token.token}';
     }
 
     final request = http.Request(method, uri)..headers.addAll(headers);
@@ -38,6 +51,8 @@ class ApiClient{
       throw const NetworkException('El tiempo de la solicitud ha expirado, intente nuevamente');
     } on http.ClientException {
       throw const NetworkException();
+    }on Exception catch (e) {
+      throw NetworkException(e.toString());
     }
 
     if (response.statusCode == 401){

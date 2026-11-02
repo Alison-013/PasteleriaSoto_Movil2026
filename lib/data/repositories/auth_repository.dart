@@ -15,9 +15,11 @@ class AuthRepository {
       body: {'UserName': userName, 'Password': password},
     );
 
-    if (json is! Map<String, dynamic>) throw ParsingException();
+    if (json is! Map<String, dynamic>) throw const ParsingException();
 
-    return TokenModal.fromJson(json);
+    final data = json['value'] ?? json;
+    if (data is! Map<String, dynamic>) throw const ParsingException();
+    return TokenModal.fromJson(data);
   }
 
   Future<UserModel> currentUser() async{
@@ -26,7 +28,9 @@ class AuthRepository {
     if (json == null) throw const UnauthorizedExsception();
     if (json is! Map<String, dynamic>) throw const ParsingException(); 
  
-    return UserModel.fromJson(json);
+    final data = json['value'];
+    if (data is! Map<String, dynamic>) throw const ParsingException();
+    return UserModel.fromJson(data);
   }
 
 }
