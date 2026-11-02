@@ -20,6 +20,8 @@ import 'presentation/Screens/reportesCajero/reportesCajero_screen.dart';
 import 'presentation/Screens/perfilCajero/perfilCajero_screen.dart';
 import 'presentation/Screens/inventarioCajero/inventarioCajero_screen.dart';
 import 'package:flutter_pasteleria_26/presentation/Providers/inventory_provider.dart';
+import 'package:flutter_pasteleria_26/presentation/Providers/sale_provider.dart';
+
 
 
 Future<void> main() async {
@@ -117,7 +119,10 @@ class _MainAppState extends State<MainApp> {
        },
 
         AppRoutes.reportes: (BuildContext context) {
-          return const reportes();
+          return ChangeNotifierProvider(
+            create: (_) => getIt<SaleProvider>()..fetchSales(),
+            child: const reportes(),
+          );
         },
 
         AppRoutes.actividad: (BuildContext context) {
