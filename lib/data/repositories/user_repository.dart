@@ -30,6 +30,13 @@ class UserRepository {
   Future<void> delete(int id) async {
    await _apiClient.delete('${ApiConstants.users}/$id');
   }
+
+  Future<UserModel> create(Map<String, dynamic> data) async {
+    final json = await _apiClient.post(ApiConstants.users, body: data);
+    if (json is! Map<String, dynamic>) throw ParsingException();
+
+    return UserModel.fromJson(json);
+  }
 }
 
 
