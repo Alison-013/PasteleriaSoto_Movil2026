@@ -1,5 +1,7 @@
-
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:flutter_pasteleria_26/core/constants/view_status.dart';
+import 'package:flutter_pasteleria_26/presentation/Providers/activity_provider.dart';
 import 'package:flutter_pasteleria_26/presentation/Widgets/TopBar_Widget.dart';
 import 'package:flutter_pasteleria_26/presentation/Widgets/menu_Widget.dart';
 import 'package:flutter_pasteleria_26/presentation/Screens/actividad/widgets/actividades_widget.dart';
@@ -34,12 +36,14 @@ class _ActividadScreenState extends State<Activity_Screen> {
 
   final int _elementosPorPagina = 5;
 
+  List<Map<String, dynamic>> _actividades = [];
+
   // ============================================================
   // ACTIVIDADES FILTRADAS
   // ============================================================
 
   List<Map<String, dynamic>> get _actividadesFiltradas {
-    return actividades.where((actividad) {
+    return _actividades.where((actividad) {
 
       final texto = _textoBusqueda.toLowerCase().trim();
 
@@ -189,6 +193,9 @@ class _ActividadScreenState extends State<Activity_Screen> {
 
 @override
 Widget build(BuildContext context) {
+  final logs = context.watch<ActivityProvider>();
+  _actividades = actividadesDesdeLogs(logs.logs);
+
   return Scaffold(
     backgroundColor: const Color(0xFFF4F6F9),
 
@@ -443,7 +450,33 @@ Widget build(BuildContext context) {
                   // LISTA DE ACTIVIDADES
                   // ==================================================
 
-                  if (_actividadesFiltradas.isEmpty)
+                  if (logs.viewStatus == ViewStatus.loading)
+                    const Padding(
+                      padding: EdgeInsets.symmetric(vertical: 30),
+                      child: Center(child: CircularProgressIndicator()),
+                    )
+                  else if (logs.viewStatus == ViewStatus.error)
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 30),
+                      child: Center(
+                        child: Column(
+                          children: [
+                            Text(
+                              logs.errorMessage ?? "Ocurrió un error.",
+                              textAlign: TextAlign.center,
+                              style: const TextStyle(color: Colors.red),
+                            ),
+                            const SizedBox(height: 8),
+                            ElevatedButton(
+                              onPressed: () =>
+                                  context.read<ActivityProvider>().fetchLogs(),
+                              child: const Text("Reintentar"),
+                            ),
+                          ],
+                        ),
+                      ),
+                    )
+                  else if (_actividadesFiltradas.isEmpty)
                     Container(
                       width: double.infinity,
                       padding: const EdgeInsets.all(30),
@@ -879,6 +912,8 @@ Widget build(BuildContext context) {
 
               child:
                   SafeArea(
+                    top: true,
+                    bottom: true,
                 child:
                     Column(
                   children: [
