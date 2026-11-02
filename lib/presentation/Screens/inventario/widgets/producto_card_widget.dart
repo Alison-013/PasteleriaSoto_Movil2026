@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-/// Tarjeta de producto usada dentro de la lista de Inventario.
 
 class ProductoCardWidget extends StatelessWidget {
   final String nombre;
@@ -41,10 +40,37 @@ class ProductoCardWidget extends StatelessWidget {
       ),
       child: Row(
         children: [
-          // Imagen del producto (placeholder de prueba hasta tener fotos reales)
           ClipRRect(
             borderRadius: BorderRadius.circular(10),
-            child: Image.network(
+            child: imagenUrl.isEmpty
+                ? Container(
+                    width: 56,
+                    height: 56,
+                    decoration: BoxDecoration(
+                      color: const Color(0xFFF4F6F9),
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: const Icon(Icons.cake_outlined, color: Colors.grey),
+                  )
+                : imagenUrl.startsWith('assets/')
+                    ? Image.asset(
+                        imagenUrl,
+                        width: 56,
+                        height: 56,
+                        fit: BoxFit.cover,
+                        errorBuilder: (context, error, stackTrace) {
+                          return Container(
+                            width: 56,
+                            height: 56,
+                            decoration: BoxDecoration(
+                              color: const Color(0xFFF4F6F9),
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: const Icon(Icons.cake_outlined, color: Colors.grey),
+                          );
+                        },
+                      )
+                    : Image.network(
               imagenUrl,
               width: 56,
               height: 56,
@@ -64,9 +90,8 @@ class ProductoCardWidget extends StatelessWidget {
                   ),
                 );
               },
-              errorBuilder: (context, error, stackTrace) {
-                // Si la imagen falla (sin internet, URL caída, etc.) se
-                // muestra el ícono anterior en vez de dejar un espacio roto.
+             errorBuilder: (context, error, stackTrace) {
+                debugPrint('FOTO NO CARGA: $imagenUrl -> $error');
                 return Container(
                   width: 56,
                   height: 56,
@@ -74,15 +99,12 @@ class ProductoCardWidget extends StatelessWidget {
                     color: const Color(0xFFF4F6F9),
                     borderRadius: BorderRadius.circular(10),
                   ),
-                  child: const Icon(
-                    Icons.cake_outlined,
-                    color: Colors.grey,
-                  ),
+                  child: const Icon(Icons.cake_outlined, color: Colors.grey),
                 );
               },
             ),
           ),
-
+ 
           const SizedBox(width: 12),
 
           Expanded(

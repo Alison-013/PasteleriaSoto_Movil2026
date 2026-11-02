@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_pasteleria_26/core/constants/view_status.dart';
+import 'package:flutter_pasteleria_26/data/models/inventory_model.dart';
+import 'package:flutter_pasteleria_26/presentation/Providers/inventory_provider.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_pasteleria_26/presentation/Widgets/TopBar_Widget.dart';
 import 'package:flutter_pasteleria_26/presentation/Widgets/menu_Widget.dart';
+import 'package:provider/provider.dart';
 import 'widgets/producto_card_widget.dart';
 import 'widgets/filtro_dropdown_widget.dart';
 import 'widgets/paginacion_widget.dart';
@@ -20,13 +24,6 @@ class _InventoryScreenState extends State<InventoryScreen> {
   int _paginaActual = 1;
   static const int _itemsPorPagina = 5;
 
-  // Opciones del filtro de Categoría
-  final List<FiltroOpcion> _opcionesCategoria = const [
-    FiltroOpcion(label: "Todos"),
-    FiltroOpcion(label: "Pastelería"),
-    FiltroOpcion(label: "Panadería"),
-    FiltroOpcion(label: "Tartaletas"),
-  ];
 
   // Opciones del filtro de Stock
   final List<FiltroOpcion> _opcionesStock = const [
@@ -36,86 +33,26 @@ class _InventoryScreenState extends State<InventoryScreen> {
     FiltroOpcion(label: "Agotado", color: Color(0xFFEB5757)),
   ];
 
-  // Lista de productos con datos de prueba.
-  final List<Map<String, dynamic>> _productos = [
-    {
-      "nombre": "Pastel de Chocolate M",
-      "categoria": "Pastelería",
-      "sku": "PST-CHO-01",
-      "uds": 24,
-      "estado": "Disponible",
-      "imagenUrl": "https://picsum.dev/images/ai/food/food-uibpackxl0dl.jpg",
-    },
-    {
-      "nombre": "Croissant Clásico",
-      "categoria": "Panadería",
-      "sku": "PAN-CRO-01",
-      "uds": 4,
-      "estado": "Bajo stock",
-      "imagenUrl": "https://picsum.dev/images/ai/food/food-gu4gq8otdsxz.jpg",
-    },
-    {
-      "nombre": "Tartaleta de Frutas",
-      "categoria": "Tartaletas",
-      "sku": "TAR-FRU-003",
-      "uds": 0,
-      "estado": "Agotado",
-      "imagenUrl": "https://picsum.dev/images/ai/food/food-kqpvjmi0a9tf.jpg",
-    },
-    {
-      "nombre": "Pan Campesino",
-      "categoria": "Panadería",
-      "sku": "PAN-CAM-01",
-      "uds": 12,
-      "estado": "Disponible",
-      "imagenUrl": "https://picsum.dev/images/ai/food/food-lo9lwvzbbevj.jpg",
-    },
-    {
-      "nombre": "Cheesecake de Fresa",
-      "categoria": "Pastelería",
-      "sku": "PST-CHS-01",
-      "uds": 18,
-      "estado": "Disponible",
-      "imagenUrl": "https://picsum.dev/images/ai/food/food-8elsmfgudawe.jpg",
-    },
-    {
-      "nombre": "Muffin de Arándanos",
-      "categoria": "Panadería",
-      "sku": "PAN-MUF-01",
-      "uds": 6,
-      "estado": "Bajo stock",
-      "imagenUrl": "https://picsum.dev/images/ai/food/food-zm302zzpbwrf.jpg",
-    },
-    {
-      "nombre": "Tres Leches Clásico",
-      "categoria": "Pastelería",
-      "sku": "PST-TRL-01",
-      "uds": 15,
-      "estado": "Disponible",
-      "imagenUrl": "https://picsum.dev/images/ai/food/food-muaie69g5o9w.jpg",
-    },
-  ];
-
-  // Aplica buscador + los dos filtros (Categoría y Stock) combinados.
-  List<Map<String, dynamic>> get _productosFiltrados {
-    return _productos.where((p) {
+  // Aplica buscador + stock
+  List<InventoryModel> _filtrar(List<InventoryModel> productos) {
+    return productos.where((p) {
       final coincideBusqueda = _busqueda.isEmpty ||
-          p["nombre"].toString().toLowerCase().contains(_busqueda.toLowerCase()) ||
-          p["sku"].toString().toLowerCase().contains(_busqueda.toLowerCase()) ||
-          p["descripcion"].toString().toLowerCase().contains(_busqueda.toLowerCase());
-
+          p.productName.toLowerCase().contains(_busqueda.toLowerCase()) ||
+          p.productId.toString().contains(_busqueda) ||
+          p.description.toLowerCase().contains(_busqueda.toLowerCase()) ||
+          p.categoryName.toLowerCase().contains(_busqueda.toLowerCase());
+ 
       final coincideCategoria =
-          _categoriaSeleccionada == "Todos" || p["categoria"] == _categoriaSeleccionada;
-
+          _categoriaSeleccionada == "Todos" || p.categoryName == _categoriaSeleccionada;
+ 
       final coincideStock =
-          _stockSeleccionado == "Todos" || p["estado"] == _stockSeleccionado;
-
+          _stockSeleccionado == "Todos" || p.estado == _stockSeleccionado;
+ 
       return coincideBusqueda && coincideCategoria && coincideStock;
     }).toList();
   }
+ 
 
-  // Cada vez que cambian búsqueda o filtros, se vuelve a la página 1
-  // para evitar quedar en una página que ya no existe.
   void _actualizarBusqueda(String valor) {
     setState(() {
       _busqueda = valor;
@@ -139,7 +76,13 @@ class _InventoryScreenState extends State<InventoryScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final productosFiltrados = _productosFiltrados;
+    final inventario = context.watch<InventoryProvider>();
+    final productosFiltrados = _filtrar(inventario.items);
+    final categorias = inventario.items.map((p) => p.categoryName).toSet().toList()..sort();
+    final opcionesCategoria = [
+    const FiltroOpcion(label: "Todos"),
+     ...categorias.map((c) => FiltroOpcion(label: c)),
+    ];
 
     // Cálculo de paginación sobre la lista ya filtrada.
     final totalPaginas = productosFiltrados.isEmpty
@@ -214,7 +157,7 @@ class _InventoryScreenState extends State<InventoryScreen> {
                       children: [
                         FiltroDropdownWidget(
                           titulo: "Categoría",
-                          opciones: _opcionesCategoria,
+                          opciones: opcionesCategoria,
                           seleccionado: _categoriaSeleccionada,
                           onSeleccionar: _actualizarCategoria,
                         ),
@@ -284,24 +227,50 @@ class _InventoryScreenState extends State<InventoryScreen> {
                     // LISTA DE PRODUCTOS (solo los de la página actual)
                     // ==================================================
 
-                    Column(
-                      children: productosPagina.map((producto) {
-                        return ProductoCardWidget(
-                          nombre: producto["nombre"],
-                          categoria: producto["categoria"],
-                          sku: producto["sku"],
-                          uds: producto["uds"],
-                          estado: producto["estado"],
-                          imagenUrl: producto["imagenUrl"],
-                        );
-                      }).toList(),
-                    ),
-
+                        if (inventario.viewStatus == ViewStatus.loading)
+                         const Padding(
+                         padding: EdgeInsets.symmetric(vertical: 24),
+                         child: Center(child: CircularProgressIndicator()),
+                        )
+                        else if (inventario.viewStatus == ViewStatus.error)
+                         Padding(
+                         padding: const EdgeInsets.symmetric(vertical: 24),
+                         child: Center(
+                           child: Column(
+                             children: [
+                              Text(
+                                inventario.errorMessage ?? "Ocurrió un error.",
+                                textAlign: TextAlign.center,
+                                style: GoogleFonts.playfairDisplay(color: Colors.red),
+                              ),
+                              const SizedBox(height: 8),
+                              ElevatedButton(
+                                onPressed: () => context.read<InventoryProvider>().fetchInventory(),
+                                child: const Text("Reintentar"),
+                              ),
+                            ],
+                          ),
+                        ),
+                      )
+                    else
+                      Column(
+                        children: productosPagina.map((producto) {
+                          return ProductoCardWidget(
+                            nombre: producto.productName,
+                            categoria: producto.categoryName,
+                            sku: producto.productId.toString(),
+                            uds: producto.quantity,
+                            estado: producto.estado,
+                            imagenUrl: producto.imagen,
+                          );
+                        }).toList(),
+                      ),
+ 
                     // ==================================================
                     // SIN PRODUCTOS
                     // ==================================================
-
-                    if (productosFiltrados.isEmpty)
+                    
+                    if (inventario.viewStatus == ViewStatus.success && productosFiltrados.isEmpty)
                       Padding(
                         padding: const EdgeInsets.symmetric(vertical: 24),
                         child: Center(
@@ -310,9 +279,10 @@ class _InventoryScreenState extends State<InventoryScreen> {
                             style: GoogleFonts.playfairDisplay(color: Colors.grey),
                           ),
                         ),
-                      ),
-
+                    ),
+ 
                     const SizedBox(height: 12),
+ 
 
                     // ==================================================
                     // PAGINACIÓN (funcional)
