@@ -1,255 +1,146 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_pasteleria_26/data/models/audit_log_model.dart';
 
-final List<Map<String, dynamic>> actividades = [
-  {
-    "fecha": DateTime(2023, 10, 24),
-    "tipo": "Edición",
-    "tagColor": const Color(0xFFF2994A),
-    "icono": Icons.edit_outlined,
-    "iconoColor": const Color(0xFF2E6BF2),
-    "iconoBg": const Color(0xFFEAF2FE),
-    "hora": "14:32",
-    "usuarioCorto": "maria.g",
-    "tituloNormal": "María Gómez editó el producto: ",
-    "tituloBold": "Pastel de Trufa",
-    "descripcion":
-        "Se actualizó el precio de \$45.00 a \$48.00 y se modificó la descripción.",
-    "detalle": {
-      "fechaHora": "24 Octubre 2023 - 02:32 PM",
-      "usuarioNombre": "María Gómez",
-      "usuarioEmail": "maria.g • Cajero / Tienda",
-      "productoNombre": "Pastel de Trufa",
-      "productoSku": "PST-TRF-081",
-      "productoCategoria": "Repostería",
-      "descripcionLarga":
-          "Se actualizó el precio de \$45.00 a \$48.00 y se modificó la descripción del producto para el catálogo del día.",
-      "valorAnterior": "\$45.00",
-      "valorNuevo": "\$48.00",
-      "estadoOperacion": "Modificación guardada",
-    },
-  },
-  {
-    "fecha": DateTime(2023, 10, 24),
-    "tipo": "Eliminación",
-    "tagColor": const Color(0xFFEB5757),
-    "icono": Icons.delete_outline,
-    "iconoColor": const Color(0xFFEB5757),
-    "iconoBg": const Color(0xFFFDEDED),
-    "hora": "11:15",
-    "usuarioCorto": "carlos.s",
-    "tituloNormal": "Admin eliminó el usuario: ",
-    "tituloBold": "Juan Pérez",
-    "descripcion": "Usuario inactivo eliminado del sistema.",
-    "detalle": {
-      "fechaHora": "24 Octubre 2023 - 11:15 AM",
-      "usuarioNombre": "Carlos Soto",
-      "usuarioEmail": "carlos.s • Administrador",
-      "productoNombre": "Juan Pérez",
-      "productoSku": "Usuario del sistema",
-      "productoCategoria": "Cuenta",
-      "descripcionLarga":
-          "Usuario inactivo eliminado del sistema por falta de uso durante más de 6 meses.",
-      "valorAnterior": null,
-      "valorNuevo": null,
-      "estadoOperacion": "Eliminación completada",
-    },
-  },
-  {
-    "fecha": DateTime(2026, 9, 26),
-    "tipo": "Acceso",
-    "tagColor": const Color(0xFF16233F),
-    "icono": Icons.login,
-    "iconoColor": Colors.white,
-    "iconoBg": const Color(0xFF16233F),
-    "hora": "08:05",
-    "usuarioCorto": "admin.principal",
-    "tituloNormal": "Nuevo inicio de sesión ",
-    "tituloBold": "exitoso",
-    "descripcion":
-        "Inicio de sesión desde IP: 192.168.1.45 (Dispositivo móvil).",
-    "detalle": {
-      "fechaHora": "24 Octubre 2023 - 08:05 AM",
-      "usuarioNombre": "Admin Principal",
-      "usuarioEmail": "admin.principal • Administrador",
-      "productoNombre": "Inicio de sesión",
-      "productoSku": "IP: 192.168.1.45",
-      "productoCategoria": "Dispositivo móvil",
-      "descripcionLarga":
-          "Inicio de sesión exitoso desde un dispositivo móvil registrado previamente.",
-      "valorAnterior": null,
-      "valorNuevo": null,
-      "estadoOperacion": "Acceso concedido",
-    },
-  },
+const Map<String, String> _nombresRecurso = {
+  'auth': 'Autenticación',
+  'products': 'Productos',
+  'inventory': 'Inventario',
+  'sales': 'Ventas',
+  'customers': 'Clientes',
+  'suppliers': 'Proveedores',
+  'categories': 'Categorías',
+  'purchases': 'Compras',
+  'invoices': 'Facturas',
+  'orders': 'Pedidos',
+  'users': 'Usuarios',
+  'auditlogs': 'Registros del sistema',
+  'personalizedproducts': 'Productos personalizados',
+  'options': 'Opciones',
+};
 
-  // 4
-  {
-    "fecha": DateTime(2026, 9, 26),
-    "tipo": "Creación",
-    "tagColor": const Color(0xFF27AE60),
-    "icono": Icons.add_circle_outline,
-    "iconoColor": const Color(0xFF27AE60),
-    "iconoBg": const Color(0xFFE8F8EF),
-    "hora": "16:20",
-    "usuarioCorto": "maria.g",
-    "tituloNormal": "María Gómez creó el producto: ",
-    "tituloBold": "Pastel de Chocolate",
-    "descripcion": "Nuevo producto agregado al catálogo.",
-    "detalle": {
-      "fechaHora": "26 septiembre 2026 - 04:20 PM",
-      "usuarioNombre": "María Gómez",
-      "usuarioEmail": "maria.g • Cajero / Tienda",
-      "productoNombre": "Pastel de Chocolate",
-      "productoSku": "PST-CHO-102",
-      "productoCategoria": "Repostería",
-      "descripcionLarga":
-          "Se registró un nuevo producto de repostería en el catálogo de la pastelería.",
-      "valorAnterior": null,
-      "valorNuevo": "\$50.00",
-      "estadoOperacion": "Producto creado",
-    },
-  },
-
-  // 5
-  {
-    "fecha": DateTime(2026, 10, 23),
-    "tipo": "Edición",
-    "tagColor": const Color(0xFFF2994A),
-    "icono": Icons.edit_outlined,
-    "iconoColor": const Color(0xFF2E6BF2),
-    "iconoBg": const Color(0xFFEAF2FE),
-    "hora": "13:45",
-    "usuarioCorto": "carlos.s",
-    "tituloNormal": "Carlos Soto actualizó el stock de: ",
-    "tituloBold": "Pastel de Fresa",
-    "descripcion": "Se modificó la cantidad disponible del producto.",
-    "detalle": {
-      "fechaHora": "23 Octubre 2026 - 01:45 PM",
-      "usuarioNombre": "Carlos Soto",
-      "usuarioEmail": "carlos.s • Administrador",
-      "productoNombre": "Pastel de Fresa",
-      "productoSku": "PST-FRE-054",
-      "productoCategoria": "Repostería",
-      "descripcionLarga":
-          "Se actualizó la cantidad disponible del producto debido a una entrada de inventario.",
-      "valorAnterior": "12 unidades",
-      "valorNuevo": "25 unidades",
-      "estadoOperacion": "Inventario actualizado",
-    },
-  },
-
-  // 6
-  {
-    "fecha": DateTime(2026, 10, 23),
-    "tipo": "Venta",
-    "tagColor": const Color(0xFF2E6BF2),
-    "icono": Icons.shopping_cart_outlined,
-    "iconoColor": const Color(0xFF2E6BF2),
-    "iconoBg": const Color(0xFFEAF2FE),
-    "hora": "12:10",
-    "usuarioCorto": "maria.g",
-    "tituloNormal": "María Gómez registró una venta: ",
-    "tituloBold": "Venta #00125",
-    "descripcion": "Venta registrada correctamente en el sistema.",
-    "detalle": {
-      "fechaHora": "26 Octubre 2026 - 12:10 PM",
-      "usuarioNombre": "María Gómez",
-      "usuarioEmail": "maria.g • Cajero / Tienda",
-      "productoNombre": "Venta #00125",
-      "productoSku": "VNT-00125",
-      "productoCategoria": "Venta",
-      "descripcionLarga":
-          "Se registró una nueva venta con productos de repostería y se actualizó el inventario correspondiente.",
-      "valorAnterior": null,
-      "valorNuevo": "\$85.00",
-      "estadoOperacion": "Venta registrada",
-    },
-  },
-
-  // 7
-  {
-    "fecha": DateTime(2023, 10, 22),
-    "tipo": "Acceso",
-    "tagColor": const Color(0xFF16233F),
-    "icono": Icons.login,
-    "iconoColor": Colors.white,
-    "iconoBg": const Color(0xFF16233F),
-    "hora": "09:30",
-    "usuarioCorto": "carlos.s",
-    "tituloNormal": "Carlos Soto inició sesión ",
-    "tituloBold": "correctamente",
-    "descripcion":
-        "Inicio de sesión desde IP: 192.168.1.20 (Computadora).",
-    "detalle": {
-      "fechaHora": "22 Octubre 2023 - 09:30 AM",
-      "usuarioNombre": "Carlos Soto",
-      "usuarioEmail": "carlos.s • Administrador",
-      "productoNombre": "Inicio de sesión",
-      "productoSku": "IP: 192.168.1.20",
-      "productoCategoria": "Computadora",
-      "descripcionLarga":
-          "Inicio de sesión exitoso desde una computadora registrada en el sistema.",
-      "valorAnterior": null,
-      "valorNuevo": null,
-      "estadoOperacion": "Acceso concedido",
-    },
-  },
-
-  // 8
-  {
-    "fecha": DateTime(2023, 10, 22),
-    "tipo": "Edición",
-    "tagColor": const Color(0xFFF2994A),
-    "icono": Icons.edit_outlined,
-    "iconoColor": const Color(0xFF2E6BF2),
-    "iconoBg": const Color(0xFFEAF2FE),
-    "hora": "10:45",
-    "usuarioCorto": "admin.principal",
-    "tituloNormal": "Admin actualizó el producto: ",
-    "tituloBold": "Cupcakes de Vainilla",
-    "descripcion": "Se modificó el precio del producto.",
-    "detalle": {
-      "fechaHora": "22 Octubre 2023 - 10:45 AM",
-      "usuarioNombre": "Admin Principal",
-      "usuarioEmail": "admin.principal • Administrador",
-      "productoNombre": "Cupcakes de Vainilla",
-      "productoSku": "CUP-VAI-033",
-      "productoCategoria": "Repostería",
-      "descripcionLarga":
-          "Se actualizó el precio del producto para mantener actualizado el catálogo de ventas.",
-      "valorAnterior": "\$30.00",
-      "valorNuevo": "\$32.00",
-      "estadoOperacion": "Modificación guardada",
-    },
-  },
-
-  // 9
-  {
-    "fecha": DateTime(2023, 10, 21),
-    "tipo": "Creación",
-    "tagColor": const Color(0xFF27AE60),
-    "icono": Icons.add_circle_outline,
-    "iconoColor": const Color(0xFF27AE60),
-    "iconoBg": const Color(0xFFE8F8EF),
-    "hora": "15:25",
-    "usuarioCorto": "carlos.s",
-    "tituloNormal": "Carlos Soto registró el proveedor: ",
-    "tituloBold": "Distribuidora San José",
-    "descripcion": "Nuevo proveedor agregado al sistema.",
-    "detalle": {
-      "fechaHora": "21 Octubre 2023 - 03:25 PM",
-      "usuarioNombre": "Carlos Soto",
-      "usuarioEmail": "carlos.s • Administrador",
-      "productoNombre": "Distribuidora San José",
-      "productoSku": "PROV-045",
-      "productoCategoria": "Proveedor",
-      "descripcionLarga":
-          "Se registró un nuevo proveedor para gestionar las compras y abastecimiento de productos.",
-      "valorAnterior": null,
-      "valorNuevo": "Proveedor activo",
-      "estadoOperacion": "Proveedor registrado",
-    },
-  },
-
-
+const List<String> _meses = [
+  'enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio',
+  'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre',
 ];
+
+String _recurso(String path) {
+  final partes = path.toLowerCase().split('/').where((p) => p.isNotEmpty).toList();
+  final i = partes.indexOf('api');
+  final clave = (i >= 0 && i + 1 < partes.length) ? partes[i + 1] : '';
+
+  if (clave == 'auth' && partes.contains('me')) return 'Perfil del usuario';
+  if (clave.isEmpty) return path;
+  return _nombresRecurso[clave] ?? (clave[0].toUpperCase() + clave.substring(1));
+}
+
+String _hora24(DateTime f) =>
+    '${f.hour.toString().padLeft(2, '0')}:${f.minute.toString().padLeft(2, '0')}';
+
+String _fechaHoraLarga(DateTime f) {
+  final hora12 = f.hour % 12 == 0 ? 12 : f.hour % 12;
+  final ampm = f.hour >= 12 ? 'PM' : 'AM';
+  return '${f.day.toString().padLeft(2, '0')} ${_meses[f.month - 1]} ${f.year} - '
+      '${hora12.toString().padLeft(2, '0')}:${f.minute.toString().padLeft(2, '0')} $ampm';
+}
+
+String _estadoOperacion(int codigo) {
+  if (codigo >= 200 && codigo < 300) return 'Completada ($codigo)';
+  if (codigo == 401) return 'No autorizada ($codigo)';
+  if (codigo == 403) return 'Acceso denegado ($codigo)';
+  if (codigo >= 400 && codigo < 500) return 'Rechazada ($codigo)';
+  if (codigo >= 500) return 'Error del servidor ($codigo)';
+  return 'Código $codigo';
+}
+
+List<Map<String, dynamic>> actividadesDesdeLogs(List<AuditLogModel> logs) {
+  return logs.map((log) {
+    final recurso = _recurso(log.path);
+    final metodo = log.method.toUpperCase();
+    final esLogin = metodo == 'POST' && log.path.toLowerCase().endsWith('/auth');
+    final fallo = log.statusCode >= 400;
+
+    String tipo;
+    Color tagColor;
+    IconData icono;
+    Color iconoColor;
+    Color iconoBg;
+    String tituloNormal;
+    String tituloBold = recurso;
+
+    if (fallo) {
+      tipo = 'Error';
+      tagColor = const Color(0xFF8E44AD);
+      icono = Icons.warning_amber_rounded;
+      iconoColor = const Color(0xFF8E44AD);
+      iconoBg = const Color(0xFFF3E8F9);
+      tituloNormal = 'Petición fallida en: ';
+    } else if (esLogin) {
+      tipo = 'Acceso';
+      tagColor = const Color(0xFF16233F);
+      icono = Icons.login;
+      iconoColor = Colors.white;
+      iconoBg = const Color(0xFF16233F);
+      tituloNormal = 'Nuevo inicio de sesión ';
+      tituloBold = 'exitoso';
+    } else if (metodo == 'POST') {
+      tipo = 'Creación';
+      tagColor = const Color(0xFF27AE60);
+      icono = Icons.add_circle_outline;
+      iconoColor = const Color(0xFF27AE60);
+      iconoBg = const Color(0xFFE8F8EF);
+      tituloNormal = 'Se creó un registro en: ';
+    } else if (metodo == 'PUT' || metodo == 'PATCH') {
+      tipo = 'Edición';
+      tagColor = const Color(0xFFF2994A);
+      icono = Icons.edit_outlined;
+      iconoColor = const Color(0xFF2E6BF2);
+      iconoBg = const Color(0xFFEAF2FE);
+      tituloNormal = 'Se modificó un registro en: ';
+    } else if (metodo == 'DELETE') {
+      tipo = 'Eliminación';
+      tagColor = const Color(0xFFEB5757);
+      icono = Icons.delete_outline;
+      iconoColor = const Color(0xFFEB5757);
+      iconoBg = const Color(0xFFFDEDED);
+      tituloNormal = 'Se eliminó un registro en: ';
+    } else {
+      tipo = 'Consulta';
+      tagColor = const Color(0xFF526167);
+      icono = Icons.visibility_outlined;
+      iconoColor = const Color(0xFF526167);
+      iconoColor = const Color(0xFF0F1B3D);
+      iconoBg = const Color(0xFFE8ECF5);
+      tituloNormal = 'Consulta realizada en: ';
+    }
+
+    final resumen = '$metodo ${log.path} · ${log.statusCode} · ${log.elapsedMilliseconds} ms';
+
+    return {
+      'fecha': log.timestamp,
+      'tipo': tipo,
+      'tagColor': tagColor,
+      'icono': icono,
+      'iconoColor': iconoColor,
+      'iconoBg': iconoBg,
+      'hora': _hora24(log.timestamp),
+      'usuarioCorto': 'sin usuario',
+      'tituloNormal': tituloNormal,
+      'tituloBold': tituloBold,
+      'descripcion': resumen,
+      'detalle': {
+        'fechaHora': _fechaHoraLarga(log.timestamp),
+        'usuarioNombre': 'Usuario no registrado',
+        'usuarioEmail': 'El registro del servidor no guarda el usuario',
+        'productoNombre': recurso,
+        'productoSku': '$metodo ${log.path}',
+        'productoCategoria': 'Nivel: ${log.level} • ${log.elapsedMilliseconds} ms',
+        'descripcionLarga':
+            'La petición $metodo a ${log.path} terminó con código ${log.statusCode} '
+            'en ${log.elapsedMilliseconds} ms. Traza: ${log.traceId}.',
+        'valorAnterior': null,
+        'valorNuevo': null,
+        'estadoOperacion': _estadoOperacion(log.statusCode),
+      },
+    };
+  }).toList();
+}
