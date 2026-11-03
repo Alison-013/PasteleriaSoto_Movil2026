@@ -17,10 +17,37 @@ class UserRepository {
   }
 
   Future<List<UserModel>> search(Map<String, String>? params) async{
-    final data = await _apiClient.get(ApiConstants.users, query: params);
-    if (data is! List) throw ParsingException();
- 
-    return data.map((json) => UserModel.fromJson(json as Map<String, dynamic>)).toList();
+    final Map<int, UserModel> todos = {};
+    int pagina = 1;
+    int totalPaginas = 1;
+
+    do {
+      final data = await _apiClient.get(
+        ApiConstants.users,
+        query: {...?params, 'PageNumber': '$pagina', 'PageSize': '50'},
+      );
+
+      List items;
+      if (data is List) {
+        items = data;
+      } else if (data is Map<String, dynamic> && data['value'] is Map<String, dynamic>) {
+        final value = data['value'] as Map<String, dynamic>;
+        if (value['items'] is! List) throw const ParsingException();
+        items = value['items'] as List;
+        totalPaginas = (value['totalPages'] ?? 1) as int;
+      } else {
+        throw const ParsingException();
+      }
+
+      for (final item in items) {
+        final u = UserModel.fromJson(item as Map<String, dynamic>);
+        todos[u.id] = u;
+      }
+
+      pagina++;
+    } while (pagina <= totalPaginas);
+
+    return todos.values.toList();
   }
 
   Future<void> update (int id,Map<String, String> data ) async {
@@ -38,5 +65,3 @@ class UserRepository {
     return UserModel.fromJson(json);
   }
 }
-
-
