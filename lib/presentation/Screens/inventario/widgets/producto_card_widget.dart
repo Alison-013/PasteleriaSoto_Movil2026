@@ -1,0 +1,205 @@
+import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+
+
+class ProductoCardWidget extends StatelessWidget {
+  final String nombre;
+  final String categoria;
+  final String sku;
+  final int uds;
+  final String estado; 
+  final String imagenUrl;
+
+  const ProductoCardWidget({
+    super.key,
+    required this.nombre,
+    required this.categoria,
+    required this.sku,
+    required this.uds,
+    required this.estado,
+    required this.imagenUrl,
+  });
+
+  Color _colorEstado(String estado) {
+    if (estado == "Disponible") return const Color(0xFF27AE60);
+    if (estado == "Bajo stock") return const Color(0xFFF2994A);
+    return const Color(0xFFEB5757); 
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final color = _colorEstado(estado);
+
+    return Container(
+      margin: const EdgeInsets.only(bottom: 12),
+      padding: const EdgeInsets.all(12),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(14),
+        border: Border.all(color: const Color(0xFFEFF1F5)),
+      ),
+      child: Column(
+        children: [
+      Row(
+        children: [
+          ClipRRect(
+            borderRadius: BorderRadius.circular(10),
+            child: imagenUrl.isEmpty
+                ? Container(
+                    width: 56,
+                    height: 56,
+                    decoration: BoxDecoration(
+                      color: const Color(0xFFF4F6F9),
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: const Icon(Icons.cake_outlined, color: Colors.grey),
+                  )
+                : imagenUrl.startsWith('assets/')
+                    ? Image.asset(
+                        imagenUrl,
+                        width: 56,
+                        height: 56,
+                        fit: BoxFit.cover,
+                        errorBuilder: (context, error, stackTrace) {
+                          return Container(
+                            width: 56,
+                            height: 56,
+                            decoration: BoxDecoration(
+                              color: const Color(0xFFF4F6F9),
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: const Icon(Icons.cake_outlined, color: Colors.grey),
+                          );
+                        },
+                      )
+                    : Image.network(
+              imagenUrl,
+              width: 56,
+              height: 56,
+              fit: BoxFit.cover,
+              loadingBuilder: (context, child, progress) {
+                if (progress == null) return child;
+                return Container(
+                  width: 56,
+                  height: 56,
+                  color: const Color(0xFFF4F6F9),
+                  child: const Center(
+                    child: SizedBox(
+                      width: 18,
+                      height: 18,
+                      child: CircularProgressIndicator(strokeWidth: 2),
+                    ),
+                  ),
+                );
+              },
+             errorBuilder: (context, error, stackTrace) {
+                debugPrint('FOTO NO CARGA: $imagenUrl -> $error');
+                return Container(
+                  width: 56,
+                  height: 56,
+                  decoration: BoxDecoration(
+                    color: const Color(0xFFF4F6F9),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: const Icon(Icons.cake_outlined, color: Colors.grey),
+                );
+              },
+            ),
+          ),
+ 
+          const SizedBox(width: 12),
+
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  nombre,
+                  style: GoogleFonts.playfairDisplay(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 15,
+                  ),
+                ),
+
+                const SizedBox(height: 2),
+
+                Text(
+                  "$categoria • SKU: $sku",
+                  style: GoogleFonts.playfairDisplay(
+                    color: Colors.grey,
+                    fontSize: 12,
+                  ),
+                ),
+              ],
+            ),
+          ),
+
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              Text(
+                "$uds uds",
+                style: GoogleFonts.playfairDisplay(
+                  fontWeight: FontWeight.bold,
+                  color: color,
+                ),
+              ),
+
+              const SizedBox(height: 4),
+
+              Container(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 8,
+                  vertical: 3,
+                ),
+                decoration: BoxDecoration(
+                  color: color.withOpacity(0.12),
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: Text(
+                  estado,
+                  style: GoogleFonts.playfairDisplay(
+                    color: color,
+                    fontSize: 11,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+
+      if (estado == "Bajo stock") ...[
+        const SizedBox(height: 10),
+        Container(
+          width: double.infinity,
+          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+          decoration: BoxDecoration(
+            color: color.withOpacity(0.12),
+            borderRadius: BorderRadius.circular(10),
+            border: Border.all(color: color.withOpacity(0.4)),
+          ),
+          child: Row(
+            children: [
+              Icon(Icons.warning_amber_rounded, size: 18, color: color),
+              const SizedBox(width: 8),
+              Expanded(
+                child: Text(
+                  "Quedan pocas unidades: es necesario rellenar o comprar más.",
+                  style: GoogleFonts.playfairDisplay(
+                    color: color,
+                    fontSize: 12,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
+        ],
+      ),
+    );
+  }
+}
