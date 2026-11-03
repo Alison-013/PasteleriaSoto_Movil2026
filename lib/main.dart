@@ -25,6 +25,7 @@ import 'package:flutter_pasteleria_26/presentation/Providers/activity_provider.d
 import 'package:flutter_pasteleria_26/presentation/Providers/purchase_provider.dart';
 import 'package:flutter_pasteleria_26/presentation/Providers/supplier_provider.dart';
 import 'package:flutter_pasteleria_26/presentation/Providers/user_provider.dart';
+import 'package:flutter_pasteleria_26/presentation/Providers/cliente_provider.dart';
 
 
 Future<void> main() async {
@@ -172,8 +173,11 @@ class _MainAppState extends State<MainApp> {
           );
         },
 
-        AppRoutes.cliente: (BuildContext context) {
-          return const ClienteScreen();
+       AppRoutes.cliente: (BuildContext context) {
+          return ChangeNotifierProvider(
+            create: (_) => getIt<CustomerProvider>()..fetchCustomers(),
+            child: const ClienteScreen(),
+          );
         },
 
         AppRoutes.perfil: (BuildContext context) {
