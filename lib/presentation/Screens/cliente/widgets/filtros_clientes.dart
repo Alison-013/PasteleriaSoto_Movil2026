@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 
 class FiltroClienteChip extends StatelessWidget {
@@ -15,29 +14,25 @@ class FiltroClienteChip extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const colorPrincipal = Color(0xFF062B3A);
-
-    return InkWell(
+    return GestureDetector(
       onTap: onTap,
-      borderRadius: BorderRadius.circular(18),
       child: Container(
-        padding: const EdgeInsets.symmetric(
-          horizontal: 13,
-          vertical: 6,
-        ),
+        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
         decoration: BoxDecoration(
-          color: seleccionado
-              ? colorPrincipal
-              : const Color(0xFFE8E8EA),
-          borderRadius: BorderRadius.circular(18),
+          color: seleccionado ? const Color(0xFF16233F) : Colors.white,
+          borderRadius: BorderRadius.circular(20),
+          border: Border.all(
+            color: seleccionado
+                ? const Color(0xFF16233F)
+                : const Color(0xFFE0E4EA),
+          ),
         ),
         child: Text(
           texto,
           style: TextStyle(
-            fontSize: 9,
-            color: seleccionado
-                ? Colors.white
-                : const Color(0xFF73777B),
+            color: seleccionado ? Colors.white : Colors.black87,
+            fontWeight: FontWeight.w600,
+            fontSize: 13,
           ),
         ),
       ),
