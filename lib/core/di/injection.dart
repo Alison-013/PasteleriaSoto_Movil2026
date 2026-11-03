@@ -18,7 +18,9 @@ import 'package:flutter_pasteleria_26/services/audit_log_service.dart';
 import 'package:flutter_pasteleria_26/data/repositories/purchase_repository.dart';
 import 'package:flutter_pasteleria_26/presentation/Providers/purchase_provider.dart';
 import 'package:flutter_pasteleria_26/services/purchase_service.dart';
- 
+import 'package:flutter_pasteleria_26/data/repositories/supplier_repository.dart';
+import 'package:flutter_pasteleria_26/presentation/Providers/supplier_provider.dart';
+import 'package:flutter_pasteleria_26/services/supplier_service.dart';
 
 final getIt = GetIt.instance;
 
@@ -37,6 +39,8 @@ void setUpDependencies (){
  getIt.registerLazySingleton<SaleRepository>(()=> SaleRepository(getIt<ApiClient>()));
  getIt.registerLazySingleton<AuditLogRepository>(()=> AuditLogRepository(getIt<ApiClient>()));
  getIt.registerLazySingleton<PurchaseRepository>(()=> PurchaseRepository(getIt<ApiClient>()));
+ getIt.registerLazySingleton<SupplierRepository>(()=> SupplierRepository(getIt<ApiClient>()));
+
 
  //Registrar servicios
  getIt.registerLazySingleton<AuthService>(()=> AuthService(getIt<AuthRepository>(), getIt<TokenRepository>()));
@@ -45,7 +49,7 @@ void setUpDependencies (){
  getIt.registerLazySingleton<SaleService>(()=> SaleService(getIt<SaleRepository>()));
  getIt.registerLazySingleton<AuditLogService>(()=> AuditLogService(getIt<AuditLogRepository>()));
  getIt.registerLazySingleton<PurchaseService>(()=> PurchaseService(getIt<PurchaseRepository>()));
-
+ getIt.registerLazySingleton<SupplierService>(()=> SupplierService(getIt<SupplierRepository>()));
 
  //Registrar providers
  getIt.registerLazySingleton<AuthProvider>(()=> AuthProvider(getIt<AuthService>()));
@@ -53,7 +57,7 @@ void setUpDependencies (){
  getIt.registerFactory<SaleProvider>(()=> SaleProvider(getIt<SaleService>()));
  getIt.registerFactory<ActivityProvider>(()=> ActivityProvider(getIt<AuditLogService>()));
  getIt.registerFactory<PurchaseProvider>(()=> PurchaseProvider(getIt<PurchaseService>()));
-
+ getIt.registerFactory<SupplierProvider>(()=> SupplierProvider(getIt<SupplierService>(), getIt<ProductService>()));
 }
 
 
