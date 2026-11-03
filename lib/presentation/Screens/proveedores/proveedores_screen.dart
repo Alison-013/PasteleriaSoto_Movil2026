@@ -1,10 +1,13 @@
-
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:flutter_pasteleria_26/core/constants/view_status.dart';
+import 'package:flutter_pasteleria_26/data/models/supplier_model.dart';
+import 'package:flutter_pasteleria_26/presentation/Providers/supplier_provider.dart';
 import 'package:flutter_pasteleria_26/presentation/Widgets/TopBar_Widget.dart';
 import 'package:flutter_pasteleria_26/presentation/Widgets/menu_Widget.dart';
-
 import 'widgets/buscador_proveedores.dart';
 import 'widgets/card_proveedores.dart';
+import 'widgets/detalle_proveedores.dart';
 import 'widgets/encabezado_proveedores.dart';
 import 'widgets/filtros_proveedores.dart';
 import 'widgets/Paginacion_proveedores.dart';
@@ -30,104 +33,17 @@ class _ProveedoresState extends State<Proveedores> {
     'Inactivos',
   ];
 
-  final List<ProveedorInfo> _proveedores = const [
-    ProveedorInfo(
-      icono: Icons.apartment_outlined,
-      nombre: 'PriceSmart Nicaragua',
-      codigo: 'Cód: PRV-0010',
-      detalle: 'Mayorista',
-      activo: true,
-    ),
-    ProveedorInfo(
-      icono: Icons.local_shipping_outlined,
-      nombre: 'Distribuidora La Perfecta',
-      codigo: 'Cód: PRV-0012',
-      detalle: 'Lácteos',
-      activo: true,
-    ),
-    ProveedorInfo(
-      icono: Icons.inventory_2_outlined,
-      nombre: 'Empaques & Cajas del Pacífico',
-      codigo: 'Cód: PRV-00103',
-      detalle: 'Cajas y Desechables',
-      activo: true,
-    ),
-    ProveedorInfo(
-      icono: Icons.balance_outlined,
-      nombre: 'Molinera Central S.A.',
-      codigo: 'Cód: PRV-00104',
-      detalle: 'Harina',
-      activo: false,
-    ),
-    ProveedorInfo(
-      icono: Icons.cake_outlined,
-      nombre: 'Chocolates & Coberturas Puratos',
-      codigo: 'Cód: PRV-00105',
-      detalle: 'Chocolates y Pastelería',
-      activo: true,
-    ),
-    ProveedorInfo(
-      icono: Icons.storefront_outlined,
-      nombre: 'Distribuidora La Colonia',
-      codigo: 'Cód: PRV-00106',
-      detalle: 'Insumos',
-      activo: true,
-    ),
-    ProveedorInfo(
-      icono: Icons.local_shipping_outlined,
-      nombre: 'Comercial El Éxito',
-      codigo: 'Cód: PRV-00107',
-      detalle: 'Materias Primas',
-      activo: false,
-    ),
-    ProveedorInfo(
-      icono: Icons.inventory_outlined,
-      nombre: 'Empaques del Sur',
-      codigo: 'Cód: PRV-00108',
-      detalle: 'Empaques',
-      activo: true,
-    ),
-    ProveedorInfo(
-      icono: Icons.business_outlined,
-      nombre: 'Importadora Central',
-      codigo: 'Cód: PRV-00109',
-      detalle: 'Productos Varios',
-      activo: true,
-    ),
-    ProveedorInfo(
-      icono: Icons.store_outlined,
-      nombre: 'Comercial San Marcos',
-      codigo: 'Cód: PRV-00110',
-      detalle: 'Repostería',
-      activo: false,
-    ),
-    ProveedorInfo(
-      icono: Icons.local_shipping_outlined,
-      nombre: 'Distribuidora Nacional',
-      codigo: 'Cód: PRV-00111',
-      detalle: 'Alimentos',
-      activo: true,
-    ),
-    ProveedorInfo(
-      icono: Icons.business_outlined,
-      nombre: 'Proveedora del Centro',
-      codigo: 'Cód: PRV-00112',
-      detalle: 'Insumos',
-      activo: true,
-    ),
-  ];
-
-  List<ProveedorInfo> get _proveedoresFiltrados {
-    List<ProveedorInfo> resultado = _proveedores;
+  List<SupplierModel> _filtrar(List<SupplierModel> proveedores) {
+    List<SupplierModel> resultado = proveedores;
 
     // Filtro por estado
     if (_filtroActivo == 1) {
       resultado = resultado
-          .where((proveedor) => proveedor.activo)
+          .where((proveedor) => proveedor.isActive)
           .toList();
     } else if (_filtroActivo == 2) {
       resultado = resultado
-          .where((proveedor) => !proveedor.activo)
+          .where((proveedor) => !proveedor.isActive)
           .toList();
     }
 
@@ -136,7 +52,7 @@ class _ProveedoresState extends State<Proveedores> {
       final texto = _textoBusqueda.toLowerCase().trim();
 
       resultado = resultado.where((proveedor) {
-        return proveedor.nombre.toLowerCase().contains(texto) ||
+        return proveedor.supplierName.toLowerCase().contains(texto) ||
             proveedor.codigo.toLowerCase().contains(texto) ||
             proveedor.detalle.toLowerCase().contains(texto);
       }).toList();
@@ -145,22 +61,18 @@ class _ProveedoresState extends State<Proveedores> {
     return resultado;
   }
 
-  int get _totalPaginas {
-    if (_proveedoresFiltrados.isEmpty) {
+  int _totalPaginas(List<SupplierModel> filtrados) {
+    if (filtrados.isEmpty) {
       return 1;
     }
 
-    return (_proveedoresFiltrados.length / _proveedoresPorPagina)
-        .ceil();
+    return (filtrados.length / _proveedoresPorPagina).ceil();
   }
 
-  List<ProveedorInfo> get _proveedoresPaginaActual {
-    final inicio = (_paginaActual - 1) * _proveedoresPorPagina;
+  List<SupplierModel> _paginaDe(List<SupplierModel> filtrados, int pagina) {
+    final inicio = (pagina - 1) * _proveedoresPorPagina;
 
-    return _proveedoresFiltrados
-        .skip(inicio)
-        .take(_proveedoresPorPagina)
-        .toList();
+    return filtrados.skip(inicio).take(_proveedoresPorPagina).toList();
   }
 
   void _cambiarFiltro(int indice) {
@@ -178,31 +90,36 @@ class _ProveedoresState extends State<Proveedores> {
 
   @override
   Widget build(BuildContext context) {
-    final proveedores = _proveedoresPaginaActual;
+    final suppliers = context.watch<SupplierProvider>();
+    final filtrados = _filtrar(suppliers.suppliers);
+    final totalPaginas = _totalPaginas(filtrados);
+    final paginaActual = _paginaActual > totalPaginas ? totalPaginas : _paginaActual;
+    final proveedores = _paginaDe(filtrados, paginaActual);
 
     return Scaffold(
-      backgroundColor: const Color(0xFFF8F7F7),
+      backgroundColor: const Color(0xFFF4F6F9),
 
       body: SafeArea(
-        child: Column(
-          children: [
-            const TopBar_Widget(),
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
 
-            Expanded(
-              child: SingleChildScrollView(
-                padding: const EdgeInsets.fromLTRB(
-                  12,
-                  12,
-                  12,
-                  14,
-                ),
+              const TopBar_Widget(),
+
+              Padding(
+                padding: const EdgeInsets.all(20),
+
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
+
                   children: [
-                    const EncabezadoProveedores(),
 
-                    const SizedBox(height: 10),
+                    EncabezadoProveedores(total: filtrados.length),
 
+                    const SizedBox(height: 16),
+
+                    // BUSCADOR
                     BuscadorProveedores(
                       onChanged: (texto) {
                         setState(() {
@@ -212,59 +129,108 @@ class _ProveedoresState extends State<Proveedores> {
                       },
                     ),
 
-                    const SizedBox(height: 10),
+                    const SizedBox(height: 20),
 
+                    // ENCABEZADO
+                    const Text(
+                      "DIRECTORIO REGISTRADO",
+                      style: TextStyle(
+                        color: Colors.grey,
+                        fontSize: 11,
+                        fontWeight: FontWeight.w600,
+                        letterSpacing: 0.5,
+                      ),
+                    ),
+
+                    const SizedBox(height: 12),
+
+                    // FILTROS
                     FiltrosProveedores(
                       filtros: _filtros,
                       filtroActivo: _filtroActivo,
                       onSeleccionar: _cambiarFiltro,
                     ),
 
-                    const SizedBox(height: 12),
+                    const SizedBox(height: 16),
 
-                    if (proveedores.isEmpty)
-                      Center(
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(
-                            vertical: 30,
+                    // LISTA DE PROVEEDORES
+                    if (suppliers.viewStatus == ViewStatus.loading)
+
+                      const Padding(
+                        padding: EdgeInsets.symmetric(vertical: 30),
+                        child: Center(child: CircularProgressIndicator()),
+                      )
+
+                    else if (suppliers.viewStatus == ViewStatus.error)
+
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 30),
+                        child: Center(
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Text(
+                                suppliers.errorMessage ?? "Ocurrió un error.",
+                                textAlign: TextAlign.center,
+                                style: const TextStyle(color: Colors.red),
+                              ),
+                              const SizedBox(height: 8),
+                              ElevatedButton(
+                                onPressed: () => context
+                                    .read<SupplierProvider>()
+                                    .fetchSuppliers(),
+                                child: const Text("Reintentar"),
+                              ),
+                            ],
                           ),
+                        ),
+                      )
+
+                    else if (proveedores.isEmpty)
+
+                      const Padding(
+                        padding: EdgeInsets.symmetric(vertical: 30),
+
+                        child: Center(
                           child: Text(
-                            'No se encontraron proveedores.',
+                            "No se encontraron proveedores.",
                             style: TextStyle(
-                              fontSize: 12,
-                              color: Colors.grey.shade600,
+                              color: Colors.grey,
+                              fontSize: 13,
                             ),
                           ),
                         ),
                       )
+
                     else
-                      ...proveedores.map(
-                        (proveedor) => Padding(
-                          padding: const EdgeInsets.only(bottom: 9),
-                          child: CardProveedor(
+
+                      Column(
+                        children: proveedores.map((proveedor) {
+                          return CardProveedor(
                             proveedor: proveedor,
-                          ),
-                        ),
+                            onTap: () => mostrarDetalleProveedor(context, proveedor),
+                          );
+                        }).toList(),
                       ),
 
-                    const SizedBox(height: 8),
+                    const SizedBox(height: 12),
 
-                    PaginacionProveedores(
-                      paginaActual: _paginaActual,
-                      totalPaginas: _totalPaginas,
-                      onPaginaSeleccionada: _cambiarPagina,
-                    ),
+                    // PAGINACIÓN
+                    if (totalPaginas > 1)
+                      PaginacionProveedores(
+                        paginaActual: paginaActual,
+                        totalPaginas: totalPaginas,
+                        onPaginaSeleccionada: _cambiarPagina,
+                      ),
                   ],
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
 
-      bottomNavigationBar: const menu_Widget(
-        currentIndex: 4,
-      ),
+      bottomNavigationBar: const menu_Widget(currentIndex: 4),
     );
   }
 }
