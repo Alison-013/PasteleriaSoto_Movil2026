@@ -1,6 +1,4 @@
-
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 class FiltrosProveedores extends StatelessWidget {
   final List<String> filtros;
@@ -16,69 +14,35 @@ class FiltrosProveedores extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          'DIRECTORIO REGISTRADO',
-          style: GoogleFonts.poppins(
-            fontSize: 9,
-            fontWeight: FontWeight.w500,
-            color: const Color(0xFF8A989E),
-          ),
-        ),
+    return Wrap(
+      spacing: 8,
+      runSpacing: 8,
+      crossAxisAlignment: WrapCrossAlignment.center,
+      children: List.generate(filtros.length, (index) {
+        final activo = filtroActivo == index;
 
-        const SizedBox(height: 7),
-
-        SizedBox(
-          height: 28,
-          child: Row(
-            children: List.generate(
-              filtros.length,
-              (index) {
-                final seleccionado = filtroActivo == index;
-
-                return Padding(
-                  padding: EdgeInsets.only(
-                    right: index == filtros.length - 1 ? 0 : 7,
-                  ),
-                  child: InkWell(
-                    onTap: () => onSeleccionar(index),
-                    borderRadius: BorderRadius.circular(15),
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 12,
-                      ),
-                      alignment: Alignment.center,
-                      decoration: BoxDecoration(
-                        color: seleccionado
-                            ? const Color(0xFF092535)
-                            : Colors.white,
-                        borderRadius: BorderRadius.circular(15),
-                        border: Border.all(
-                          color: seleccionado
-                              ? const Color(0xFF092535)
-                              : const Color(0xFFDCE3E7),
-                        ),
-                      ),
-                      child: Text(
-                        filtros[index],
-                        style: GoogleFonts.poppins(
-                          fontSize: 10,
-                          fontWeight: FontWeight.w500,
-                          color: seleccionado
-                              ? Colors.white
-                              : const Color(0xFF657278),
-                        ),
-                      ),
-                    ),
-                  ),
-                );
-              },
+        return GestureDetector(
+          onTap: () => onSeleccionar(index),
+          child: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
+            decoration: BoxDecoration(
+              color: activo ? const Color(0xFF16233F) : Colors.white,
+              borderRadius: BorderRadius.circular(20),
+              border: Border.all(
+                color: activo ? const Color(0xFF16233F) : const Color(0xFFE0E4EA),
+              ),
+            ),
+            child: Text(
+              filtros[index],
+              style: TextStyle(
+                color: activo ? Colors.white : Colors.black87,
+                fontWeight: FontWeight.w600,
+                fontSize: 13,
+              ),
             ),
           ),
-        ),
-      ],
+        );
+      }),
     );
   }
 }

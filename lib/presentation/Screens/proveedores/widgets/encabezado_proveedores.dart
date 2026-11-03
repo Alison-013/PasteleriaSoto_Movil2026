@@ -1,88 +1,86 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_pasteleria_26/app.routes.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 class EncabezadoProveedores extends StatelessWidget {
-  const EncabezadoProveedores({super.key});
+  final int total;
+
+  const EncabezadoProveedores({super.key, required this.total});
 
   @override
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Row(
-          children: [
-            InkWell(
-              onTap: () {
-                Navigator.pushReplacementNamed(context, AppRoutes.mas);
-              },
-              child: Text(
-                'Más Opciones',
-                style: GoogleFonts.poppins(
-                  fontSize: 9,
-                  fontWeight: FontWeight.w500,
-                  color: const Color(0xFF8A8F92),
+        // RUTA
+        GestureDetector(
+          onTap: () => Navigator.pushReplacementNamed(context, AppRoutes.mas),
+          child: Row(
+            children: const [
+              Text(
+                "Más Opciones",
+                style: TextStyle(
+                  color: Colors.grey,
+                  fontSize: 13,
                 ),
               ),
-            ),
-            const SizedBox(width: 4),
-            const Icon(
-              Icons.chevron_right,
-              size: 13,
-              color: Color(0xFF8A8F92),
-            ),
-            const SizedBox(width: 4),
-            Text(
-              'Proveedores',
-              style: GoogleFonts.poppins(
-                fontSize: 9,
-                fontWeight: FontWeight.w500,
-                color: const Color(0xFF25282A),
+              Icon(
+                Icons.chevron_right,
+                size: 16,
+                color: Colors.grey,
               ),
-            ),
-          ],
+              Text(
+                "Proveedores",
+                style: TextStyle(
+                  color: Colors.black87,
+                  fontSize: 13,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ],
+          ),
         ),
-        const SizedBox(height: 3),
+
+        const SizedBox(height: 8),
+
+        // TITULO
         Row(
           children: [
-            Expanded(
-              child: Text(
-                'Proveedores',
-                style: GoogleFonts.playfairDisplay(
-                  fontSize: 17,
-                  height: 24 / 17,
-                  fontWeight: FontWeight.w400,
-                  color: const Color(0xFF092535),
-                ),
+            const Text(
+              "Proveedores",
+              style: TextStyle(
+                fontSize: 26,
+                fontWeight: FontWeight.bold,
               ),
             ),
+
+            const SizedBox(width: 8),
+
             Container(
               padding: const EdgeInsets.symmetric(
                 horizontal: 8,
-                vertical: 4,
+                vertical: 2,
               ),
               decoration: BoxDecoration(
-                color: const Color(0xFFE2F1F9),
+                color: const Color(0xFFEFF1F5),
                 borderRadius: BorderRadius.circular(10),
               ),
               child: Text(
-                '18 total',
-                style: GoogleFonts.poppins(
-                  fontSize: 9,
-                  fontWeight: FontWeight.w600,
-                  color: const Color(0xFF315E78),
+                "$total total",
+                style: const TextStyle(
+                  fontSize: 12,
                 ),
               ),
             ),
           ],
         ),
-        Text(
-          'Consulta de proveedores de la pastelería.',
-          style: GoogleFonts.poppins(
-            fontSize: 10,
-            height: 14 / 10,
-            fontWeight: FontWeight.w400,
-            color: const Color(0xFF657278),
+
+        const SizedBox(height: 4),
+
+        const Text(
+          "Consulta de proveedores de la pastelería.",
+          style: TextStyle(
+            color: Colors.grey,
+            fontSize: 13,
           ),
         ),
       ],
