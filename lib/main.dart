@@ -24,7 +24,6 @@ import 'package:flutter_pasteleria_26/presentation/Providers/sale_provider.dart'
 import 'package:flutter_pasteleria_26/presentation/Providers/activity_provider.dart';
 import 'package:flutter_pasteleria_26/presentation/Providers/purchase_provider.dart';
 
-
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await dotenv.load();
@@ -109,8 +108,19 @@ class _MainAppState extends State<MainApp> {
         },
 
         AppRoutes.home: (BuildContext context) {
-          return const Home();
+          return MultiProvider(
+            providers: [
+              ChangeNotifierProvider(
+                create: (_) => getIt<SaleProvider>()..fetchSales(),
+              ),
+              ChangeNotifierProvider(
+                create: (_) => getIt<InventoryProvider>()..fetchInventory(),
+              ),
+            ],
+            child: const Home(),
+          );
         },
+
 
         AppRoutes.inventario: (BuildContext context) {
         return ChangeNotifierProvider(
