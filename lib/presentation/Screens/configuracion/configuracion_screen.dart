@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:flutter_pasteleria_26/presentation/Providers/auth_provider.dart';
 import 'package:flutter_pasteleria_26/app.routes.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_pasteleria_26/presentation/Widgets/TopBar_Widget.dart';
@@ -49,13 +51,12 @@ class ConfiguracionScreen extends StatelessWidget {
 
             TextButton(
               onPressed: () {
+                // Se toma el provider ANTES de cerrar el diálogo.
+                final auth = context.read<AuthProvider>();
                 Navigator.pop(context);
 
-                Navigator.pushNamedAndRemoveUntil(
-                  context,
-                  AppRoutes.login,
-                  (route) => false,
-                );
+               
+                auth.logout();
               },
               child: Text(
                 'Cerrar sesión',
