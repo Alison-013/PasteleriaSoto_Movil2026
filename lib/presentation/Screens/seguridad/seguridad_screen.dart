@@ -7,7 +7,6 @@ import 'package:flutter_pasteleria_26/presentation/Providers/user_provider.dart'
 import 'package:flutter_pasteleria_26/presentation/Widgets/TopBar_Widget.dart';
 import 'package:flutter_pasteleria_26/presentation/Widgets/menu_Widget.dart';
 import 'widgets/drawer_seguridad.dart';
-import 'widgets/estilos_seguridad.dart';
 import 'widgets/card_seguridad.dart';
 import 'widgets/infousuario_seguridad.dart';
 
@@ -23,7 +22,6 @@ class seguridad extends StatelessWidget {
     Color(0xFFE3C4B4),
   ];
 
-  // Iniciales: "maria gomez" -> MG, "admin" -> AD
   String _iniciales(String nombre) {
     final partes = nombre
         .trim()
@@ -63,46 +61,117 @@ class seguridad extends StatelessWidget {
     final users = context.watch<UserProvider>();
 
     return Scaffold(
-      backgroundColor: const Color(0xFFF8F7F7),
+      backgroundColor: const Color(0xFFF4F6F9),
+
       body: SafeArea(
-        child: Column(
-          children: [
-            const TopBar_Widget(),
-            Expanded(
-              child: SingleChildScrollView(
-                padding: const EdgeInsets.fromLTRB(12, 12, 12, 14),
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+
+              const TopBar_Widget(),
+
+              Padding(
+                padding: const EdgeInsets.all(20),
+
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
+
                   children: [
-                    InkWell(
-                      onTap: () {
-                        Navigator.pushReplacementNamed(
-                          context,
-                          AppRoutes.mas,
-                        );
-                      },
-                      child: estiloTextoVolver(),
-                    ),
-                    const SizedBox(height: 10),
-                    Text(
-                      'Seguridad',
-                      style: estiloPlayfairSeguridad(17, FontWeight.w400),
-                    ),
-                    Text(
-                      'Gestión de usuarios y permisos de acceso',
-                      style: estiloPoppinsSeguridad(
-                        10,
-                        const Color(0xFF657278),
-                        FontWeight.w400,
+
+                    // RUTA
+                    GestureDetector(
+                      onTap: () => Navigator.pushReplacementNamed(
+                        context,
+                        AppRoutes.mas,
+                      ),
+
+                      child: Row(
+                        children: const [
+                          Text(
+                            "Más Opciones",
+                            style: TextStyle(
+                              color: Colors.grey,
+                              fontSize: 13,
+                            ),
+                          ),
+
+                          Icon(
+                            Icons.chevron_right,
+                            size: 16,
+                            color: Colors.grey,
+                          ),
+
+                          Text(
+                            "Seguridad",
+                            style: TextStyle(
+                              color: Colors.black87,
+                              fontSize: 13,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                        ],
                       ),
                     ),
-                    const SizedBox(height: 14),
+
+                    const SizedBox(height: 8),
+
+                    // TITULO
+                    Row(
+                      children: [
+                        const Text(
+                          "Seguridad",
+                          style: TextStyle(
+                            fontSize: 26,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+
+                        const SizedBox(width: 8),
+
+                        Container(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 8,
+                            vertical: 2,
+                          ),
+
+                          decoration: BoxDecoration(
+                            color: const Color(0xFFEFF1F5),
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+
+                          child: Text(
+                            "${users.users.length} total",
+                            style: const TextStyle(
+                              fontSize: 12,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+
+                    const SizedBox(height: 4),
+
+                    const Text(
+                      "Gestión de usuarios y permisos de acceso.",
+                      style: TextStyle(
+                        color: Colors.grey,
+                        fontSize: 13,
+                      ),
+                    ),
+
+                    const SizedBox(height: 16),
+
+                    // LISTA DE USUARIOS
                     if (users.viewStatus == ViewStatus.loading)
+
                       const Padding(
                         padding: EdgeInsets.symmetric(vertical: 30),
                         child: Center(child: CircularProgressIndicator()),
                       )
+
                     else if (users.viewStatus == ViewStatus.error)
+
                       Padding(
                         padding: const EdgeInsets.symmetric(vertical: 30),
                         child: Center(
@@ -110,69 +179,58 @@ class seguridad extends StatelessWidget {
                             mainAxisSize: MainAxisSize.min,
                             children: [
                               Text(
-                                users.errorMessage ?? 'Ocurrió un error.',
+                                users.errorMessage ?? "Ocurrió un error.",
                                 textAlign: TextAlign.center,
-                                style: estiloPoppinsSeguridad(
-                                  10,
-                                  Colors.red,
-                                  FontWeight.w400,
-                                ),
+                                style: const TextStyle(color: Colors.red),
                               ),
                               const SizedBox(height: 8),
                               ElevatedButton(
                                 onPressed: () =>
                                     context.read<UserProvider>().fetchUsers(),
-                                child: const Text('Reintentar'),
+                                child: const Text("Reintentar"),
                               ),
                             ],
                           ),
                         ),
                       )
+
                     else if (users.users.isEmpty)
-                      Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 30),
+
+                      const Padding(
+                        padding: EdgeInsets.symmetric(vertical: 30),
+
                         child: Center(
                           child: Text(
-                            'No se encontraron usuarios.',
-                            style: estiloPoppinsSeguridad(
-                              10,
-                              const Color(0xFF657278),
-                              FontWeight.w400,
+                            "No se encontraron usuarios.",
+                            style: TextStyle(
+                              color: Colors.grey,
+                              fontSize: 13,
                             ),
                           ),
                         ),
                       )
-                    else
-                      ...users.users.map((user) {
-                        final usuario = _aUsuarioInfo(user);
 
-                        return Padding(
-                          padding: const EdgeInsets.only(bottom: 9),
-                          child: TarjetaUsuario(
+                    else
+
+                      Column(
+                        children: users.users.map((user) {
+                          final usuario = _aUsuarioInfo(user);
+
+                          return TarjetaUsuario(
                             usuario: usuario,
                             onTap: () => _abrirPermisos(context, usuario),
-                          ),
-                        );
-                      }),
+                          );
+                        }).toList(),
+                      ),
                   ],
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
-      bottomNavigationBar: const menu_Widget(currentIndex: 4),
-    );
-  }
 
-  Widget estiloTextoVolver() {
-    return Text(
-      'Más opciones > Seguridad',
-      style: estiloPoppinsSeguridad(
-        9,
-        const Color(0xFF486878),
-        FontWeight.w500,
-      ),
+      bottomNavigationBar: const menu_Widget(currentIndex: 4),
     );
   }
 }

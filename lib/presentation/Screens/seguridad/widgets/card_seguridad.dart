@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'estilos_seguridad.dart';
+
 import 'infousuario_seguridad.dart';
 
 class TarjetaUsuario extends StatelessWidget {
@@ -14,81 +14,96 @@ class TarjetaUsuario extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
+    return GestureDetector(
       onTap: onTap,
-      borderRadius: BorderRadius.circular(8),
       child: Container(
-        height: 52,
-        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 7),
-        decoration: cajaSeguridad(),
+        margin: const EdgeInsets.only(bottom: 12),
+        padding: const EdgeInsets.all(14),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(14),
+          border: Border.all(color: const Color(0xFFEFF1F5)),
+        ),
         child: Row(
           children: [
+            // INICIALES
             Container(
-              width: 37,
-              height: 37,
+              width: 44,
+              height: 44,
               alignment: Alignment.center,
               decoration: BoxDecoration(
                 color: usuario.color,
-                borderRadius: BorderRadius.circular(7),
+                borderRadius: BorderRadius.circular(12),
               ),
               child: Text(
                 usuario.iniciales,
-                style: estiloPoppinsSeguridad(
-                  11,
-                  Colors.white,
-                  FontWeight.w600,
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontSize: 15,
+                  fontWeight: FontWeight.bold,
                 ),
               ),
             ),
-            const SizedBox(width: 10),
+
+            const SizedBox(width: 12),
+
+            // INFORMACIÓN
             Expanded(
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
                     usuario.nombre,
-                    style: estiloPoppinsSeguridad(
-                      14,
-                      const Color(0xFF202B30),
-                      FontWeight.w600,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 15,
                     ),
                   ),
+
+                  const SizedBox(height: 2),
+
                   Text(
                     usuario.rol,
-                    style: estiloPoppinsSeguridad(
-                      9,
-                      const Color(0xFF657278),
-                      FontWeight.w500,
+                    style: const TextStyle(
+                      color: Colors.grey,
+                      fontSize: 12,
                     ),
                   ),
                 ],
               ),
             ),
+
+            const SizedBox(width: 8),
+
+            // ESTADO
             Container(
-              padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 3),
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
               decoration: BoxDecoration(
                 color: usuario.activo
-                    ? const Color(0xFFFFF2D8)
+                    ? const Color(0xFFE2F8EF)
                     : const Color(0xFFF3E6E6),
-                borderRadius: BorderRadius.circular(8),
+                borderRadius: BorderRadius.circular(10),
               ),
               child: Text(
-                usuario.activo ? 'Activo' : 'Inactivo',
-                style: estiloPoppinsSeguridad(
-                  8,
-                  usuario.activo
-                      ? const Color(0xFFD69A2D)
+                usuario.activo ? "Activo" : "Inactivo",
+                style: TextStyle(
+                  fontSize: 12,
+                  fontWeight: FontWeight.w600,
+                  color: usuario.activo
+                      ? const Color(0xFF158260)
                       : const Color(0xFFB04A4A),
-                  FontWeight.w500,
                 ),
               ),
             ),
-            const SizedBox(width: 7),
+
+            const SizedBox(width: 6),
+
             const Icon(
               Icons.chevron_right,
-              size: 18,
-              color: Color(0xFF092535),
+              size: 20,
+              color: Colors.grey,
             ),
           ],
         ),
