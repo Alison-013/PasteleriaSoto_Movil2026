@@ -1,8 +1,8 @@
-
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:flutter_pasteleria_26/presentation/Providers/auth_provider.dart';
 import 'package:flutter_pasteleria_26/presentation/Widgets/cajeroMenu_Widget.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:flutter_pasteleria_26/app.routes.dart';
 import 'widgets/opcion_perfil.dart';
 import 'widgets/card_perfil.dart';
 
@@ -50,13 +50,11 @@ class PerfilCajeroScreen extends StatelessWidget {
             ),
             TextButton(
               onPressed: () {
+                final auth = context.read<AuthProvider>();
                 Navigator.pop(context);
 
-                Navigator.pushNamedAndRemoveUntil(
-                  context,
-                  AppRoutes.login,
-                  (route) => false,
-                );
+               
+                auth.logout();
               },
               child: Text(
                 'Cerrar sesión',
