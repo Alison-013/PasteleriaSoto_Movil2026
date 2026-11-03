@@ -7,7 +7,7 @@ class ProductoCardWidget extends StatelessWidget {
   final String categoria;
   final String sku;
   final int uds;
-  final String estado; // "Disponible" | "Bajo stock" | "Agotado"
+  final String estado; 
   final String imagenUrl;
 
   const ProductoCardWidget({
@@ -23,7 +23,7 @@ class ProductoCardWidget extends StatelessWidget {
   Color _colorEstado(String estado) {
     if (estado == "Disponible") return const Color(0xFF27AE60);
     if (estado == "Bajo stock") return const Color(0xFFF2994A);
-    return const Color(0xFFEB5757); // Agotado
+    return const Color(0xFFEB5757); 
   }
 
   @override
@@ -38,7 +38,9 @@ class ProductoCardWidget extends StatelessWidget {
         borderRadius: BorderRadius.circular(14),
         border: Border.all(color: const Color(0xFFEFF1F5)),
       ),
-      child: Row(
+      child: Column(
+        children: [
+      Row(
         children: [
           ClipRRect(
             borderRadius: BorderRadius.circular(10),
@@ -165,6 +167,37 @@ class ProductoCardWidget extends StatelessWidget {
               ),
             ],
           ),
+        ],
+      ),
+
+      if (estado == "Bajo stock") ...[
+        const SizedBox(height: 10),
+        Container(
+          width: double.infinity,
+          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+          decoration: BoxDecoration(
+            color: color.withOpacity(0.12),
+            borderRadius: BorderRadius.circular(10),
+            border: Border.all(color: color.withOpacity(0.4)),
+          ),
+          child: Row(
+            children: [
+              Icon(Icons.warning_amber_rounded, size: 18, color: color),
+              const SizedBox(width: 8),
+              Expanded(
+                child: Text(
+                  "Quedan pocas unidades: es necesario rellenar o comprar más.",
+                  style: GoogleFonts.playfairDisplay(
+                    color: color,
+                    fontSize: 12,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
         ],
       ),
     );
