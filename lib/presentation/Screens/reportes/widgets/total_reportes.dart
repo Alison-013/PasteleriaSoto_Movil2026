@@ -2,17 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_pasteleria_26/core/constants/reportes_formato.dart';
 
-
 class TotalVentas extends StatelessWidget {
   final double total;
- 
+
   const TotalVentas({super.key, required this.total});
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 74,
-      padding: const EdgeInsets.all(12),
+      padding: const EdgeInsets.all(14),
       decoration: _decoracionTarjeta(),
       child: Row(
         children: [
@@ -22,28 +20,33 @@ class TotalVentas extends StatelessWidget {
               children: [
                 Text(
                   'Total Ventas',
-                  style: _estiloCaption(const Color(0xFF526167)),
+                  style: GoogleFonts.playfairDisplay(
+                    color: Colors.grey,
+                    fontSize: 13,
+                  ),
                 ),
-                const Spacer(),
+                const SizedBox(height: 4),
                 Text(
                   formatearMonto(total),
-                  style: _estiloTexto(const Color(0xFF092535)),
+                  style: GoogleFonts.playfairDisplay(
+                    fontSize: 22,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
-               
               ],
             ),
           ),
           Container(
-            width: 54,
-            height: 50,
+            width: 56,
+            height: 56,
             decoration: BoxDecoration(
               color: const Color(0xFFEAF3FD),
-              borderRadius: BorderRadius.circular(6),
+              borderRadius: BorderRadius.circular(10),
             ),
             child: const Icon(
               Icons.payments_outlined,
               color: Color(0xFF315E78),
-              size: 20,
+              size: 24,
             ),
           ),
         ],
@@ -52,34 +55,10 @@ class TotalVentas extends StatelessWidget {
   }
 }
 
-TextStyle _estiloCaption(Color color) {
-  return GoogleFonts.poppins(
-    fontSize: 11,
-    height: 14 / 11,
-    fontWeight: FontWeight.w500,
-    color: color,
-  );
-}
-
-TextStyle _estiloTexto(Color color) {
-  return GoogleFonts.poppins(
-    fontSize: 15,
-    height: 22 / 15,
-    fontWeight: FontWeight.w400,
-    color: color,
-  );
-}
-
 BoxDecoration _decoracionTarjeta() {
   return BoxDecoration(
     color: Colors.white,
-    borderRadius: BorderRadius.circular(7),
-    boxShadow: const [
-      BoxShadow(
-        color: Color(0x16000000),
-        blurRadius: 8,
-        offset: Offset(0, 3),
-      ),
-    ],
+    borderRadius: BorderRadius.circular(14),
+    border: Border.all(color: const Color(0xFFEFF1F5)),
   );
 }

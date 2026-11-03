@@ -43,7 +43,7 @@ class _ReportesState extends State<reportes> {
         return Theme(
           data: Theme.of(context).copyWith(
             colorScheme: const ColorScheme.light(
-              primary: Color(0xFF092535),
+              primary: Color(0xFF16233F),
             ),
           ),
           child: child!,
@@ -201,96 +201,83 @@ class _ReportesState extends State<reportes> {
     final lineasPagina = lineas.sublist(inicio, fin);
 
     return Scaffold(
-      backgroundColor: const Color(0xFFF8F7F7),
+      backgroundColor: const Color(0xFFF4F6F9),
       body: SafeArea(
-        child: Column(
-          children: [
-            const TopBar_Widget(),
-            Expanded(
-              child: LayoutBuilder(
-                builder: (context, constraints) {
-                  final altoDisponible = constraints.maxHeight - 28;
-
-                  return SingleChildScrollView(
-                    padding: const EdgeInsets.all(14),
-                    child: ConstrainedBox(
-                      constraints: BoxConstraints(minHeight: altoDisponible),
-                      child: IntrinsicHeight(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          children: [
-                            Text(
-                              'Reportes',
-                              style: GoogleFonts.playfairDisplay(
-                                fontSize: 17,
-                                height: 24 / 17,
-                                fontWeight: FontWeight.w400,
-                                color: const Color(0xFF092535),
-                              ),
-                            ),
-                            const SizedBox(height: 10),
-                            FiltrosReportes(
-                              fechaInicio: _fechaInicio,
-                              fechaFin: _fechaFin,
-                              onElegirInicio: _elegirInicio,
-                              onElegirFin: _elegirFin,
-                              onLimpiar: _limpiarFechas,
-                            ),
-                            const SizedBox(height: 17),
-
-                            if (sales.viewStatus == ViewStatus.loading)
-                              const Expanded(
-                                child: Center(child: CircularProgressIndicator()),
-                              )
-                            else if (sales.viewStatus == ViewStatus.error)
-                              Expanded(
-                                child: Center(
-                                  child: Column(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      Text(
-                                        sales.errorMessage ?? 'Ocurrió un error.',
-                                        textAlign: TextAlign.center,
-                                        style: GoogleFonts.poppins(color: Colors.red),
-                                      ),
-                                      const SizedBox(height: 8),
-                                      ElevatedButton(
-                                        onPressed: () =>
-                                            context.read<SaleProvider>().fetchSales(),
-                                        child: const Text('Reintentar'),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              )
-                            else ...[
-                              TotalVentas(total: total),
-                              const SizedBox(height: 12),
-                              Expanded(
-                                child: IngresosDia(
-                                  etiquetas: grafico.etiquetas,
-                                  valores: grafico.valores,
-                                ),
-                              ),
-                              const SizedBox(height: 12),
-                              DetalleVentas(rango: _textoRango, lineas: lineasPagina),
-                              const SizedBox(height: 12),
-                              PaginacionReportes(
-                                paginaActual: paginaActual,
-                                totalPaginas: totalPaginas,
-                                onCambiarPagina: (nueva) =>
-                                    setState(() => _paginaActual = nueva),
-                              ),
-                            ],
-                          ],
-                        ),
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const TopBar_Widget(),
+              Padding(
+                padding: const EdgeInsets.all(20),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Reportes',
+                      style: GoogleFonts.playfairDisplay(
+                        fontSize: 26,
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
-                  );
-                },
+                    const SizedBox(height: 16),
+                    FiltrosReportes(
+                      fechaInicio: _fechaInicio,
+                      fechaFin: _fechaFin,
+                      onElegirInicio: _elegirInicio,
+                      onElegirFin: _elegirFin,
+                      onLimpiar: _limpiarFechas,
+                    ),
+                    const SizedBox(height: 20),
+                    if (sales.viewStatus == ViewStatus.loading)
+                      const Padding(
+                        padding: EdgeInsets.symmetric(vertical: 60),
+                        child: Center(child: CircularProgressIndicator()),
+                      )
+                    else if (sales.viewStatus == ViewStatus.error)
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 60),
+                        child: Center(
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Text(
+                                sales.errorMessage ?? 'Ocurrió un error.',
+                                textAlign: TextAlign.center,
+                                style: GoogleFonts.playfairDisplay(color: Colors.red),
+                              ),
+                              const SizedBox(height: 8),
+                              ElevatedButton(
+                                onPressed: () =>
+                                    context.read<SaleProvider>().fetchSales(),
+                                child: const Text('Reintentar'),
+                              ),
+                            ],
+                          ),
+                        ),
+                      )
+                    else ...[
+                      TotalVentas(total: total),
+                      const SizedBox(height: 12),
+                      IngresosDia(
+                        etiquetas: grafico.etiquetas,
+                        valores: grafico.valores,
+                      ),
+                      const SizedBox(height: 12),
+                      DetalleVentas(rango: _textoRango, lineas: lineasPagina),
+                      const SizedBox(height: 12),
+                      PaginacionReportes(
+                        paginaActual: paginaActual,
+                        totalPaginas: totalPaginas,
+                        onCambiarPagina: (nueva) =>
+                            setState(() => _paginaActual = nueva),
+                      ),
+                    ],
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
       bottomNavigationBar: const menu_Widget(currentIndex: 2),
