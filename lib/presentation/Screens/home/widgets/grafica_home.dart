@@ -1,8 +1,10 @@
+import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class GraficaSemanal extends StatelessWidget {
-  const GraficaSemanal({super.key});
+  final List<double> valores;
+  const GraficaSemanal({super.key,  required this.valores});
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +23,7 @@ class GraficaSemanal extends StatelessWidget {
         ],
       ),
       child: CustomPaint(
-        painter: _PintorGraficaSemanal(),
+        painter: _PintorGraficaSemanal(valores),
         child: const SizedBox.expand(),
       ),
     );
@@ -29,6 +31,10 @@ class GraficaSemanal extends StatelessWidget {
 }
 
 class _PintorGraficaSemanal extends CustomPainter {
+    final List<double> valores;
+ 
+   _PintorGraficaSemanal(this.valores);
+
   @override
   void paint(Canvas canvas, Size size) {
     final lineaGuia = Paint()
@@ -41,18 +47,21 @@ class _PintorGraficaSemanal extends CustomPainter {
       }
     }
 
-    final puntos = [
-      Offset(0, 82),
-      Offset(size.width * .16, 65),
-      Offset(size.width * .32, 70),
-      Offset(size.width * .48, 35),
-      Offset(size.width * .64, 59),
-      Offset(size.width * .80, 31),
-      Offset(size.width, 43),
-    ];
-
+     final maximo = valores.fold<double>(0, (m, v) => math.max(m, v));
+    const arriba = 15.0;
+    final abajo = size.height - 25;
+ 
+    final puntos = <Offset>[];
+    for (int i = 0; i < valores.length; i++) {
+      final proporcion = maximo == 0 ? 0.0 : valores[i] / maximo;
+      puntos.add(Offset(
+        i * size.width / (valores.length - 1),
+        abajo - proporcion * (abajo - arriba),
+      ));
+    }
+ 
     final curva = Path()..moveTo(puntos.first.dx, puntos.first.dy);
-
+ 
     for (final punto in puntos.skip(1)) {
       curva.lineTo(punto.dx, punto.dy);
     }
@@ -90,5 +99,7 @@ class _PintorGraficaSemanal extends CustomPainter {
   }
 
   @override
-  bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
+  bool shouldRepaint(covariant _PintorGraficaSemanal oldDelegate) =>
+      oldDelegate.valores != valores;
+
 }

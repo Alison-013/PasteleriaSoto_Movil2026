@@ -33,7 +33,7 @@ class ProductoDestacado extends StatelessWidget {
           ),
         ],
       ),
-      child: Row(
+     child: Row(
         children: [
           Container(
             width: 45,
@@ -42,9 +42,15 @@ class ProductoDestacado extends StatelessWidget {
               color: color,
               borderRadius: BorderRadius.circular(5),
             ),
-            child: Image.network(imagenUrl, fit: BoxFit.cover),
+            child: imagenUrl.isEmpty
+                ? const Icon(Icons.cake_outlined, color: Colors.white)
+                : imagenUrl.startsWith('assets/')
+                    ? Image.asset(imagenUrl, fit: BoxFit.cover)
+                    : Image.network(imagenUrl, fit: BoxFit.cover),
           ),
+          
           const SizedBox(width: 10),
+
           Expanded(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
