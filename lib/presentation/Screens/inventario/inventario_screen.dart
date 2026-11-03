@@ -25,7 +25,6 @@ class _InventoryScreenState extends State<InventoryScreen> {
   static const int _itemsPorPagina = 5;
 
 
-  // Opciones del filtro de Stock
   final List<FiltroOpcion> _opcionesStock = const [
     FiltroOpcion(label: "Todos"),
     FiltroOpcion(label: "Disponible", color: Color(0xFF27AE60)),
@@ -33,7 +32,6 @@ class _InventoryScreenState extends State<InventoryScreen> {
     FiltroOpcion(label: "Agotado", color: Color(0xFFEB5757)),
   ];
 
-  // Aplica buscador + stock
   List<InventoryModel> _filtrar(List<InventoryModel> productos) {
     return productos.where((p) {
       final coincideBusqueda = _busqueda.isEmpty ||
@@ -78,22 +76,25 @@ class _InventoryScreenState extends State<InventoryScreen> {
   Widget build(BuildContext context) {
     final inventario = context.watch<InventoryProvider>();
     final productosFiltrados = _filtrar(inventario.items);
+  
+    final bajoStock = productosFiltrados.where((p) => p.estado == "Bajo stock");
+    final resto = productosFiltrados.where((p) => p.estado != "Bajo stock");
+    final productosOrdenados = [...bajoStock, ...resto];
     final categorias = inventario.items.map((p) => p.categoryName).toSet().toList()..sort();
     final opcionesCategoria = [
     const FiltroOpcion(label: "Todos"),
      ...categorias.map((c) => FiltroOpcion(label: c)),
     ];
 
-    // Cálculo de paginación sobre la lista ya filtrada.
-    final totalPaginas = productosFiltrados.isEmpty
+    final totalPaginas = productosOrdenados.isEmpty
         ? 1
-        : (productosFiltrados.length / _itemsPorPagina).ceil();
+        : (productosOrdenados.length / _itemsPorPagina).ceil();
     final paginaActual = _paginaActual > totalPaginas ? totalPaginas : _paginaActual;
     final inicio = (paginaActual - 1) * _itemsPorPagina;
-    final fin = (inicio + _itemsPorPagina) > productosFiltrados.length
-        ? productosFiltrados.length
+    final fin = (inicio + _itemsPorPagina) > productosOrdenados.length
+        ? productosOrdenados.length
         : inicio + _itemsPorPagina;
-    final productosPagina = productosFiltrados.sublist(inicio, fin);
+    final productosPagina = productosOrdenados.sublist(inicio, fin);
 
     return Scaffold(
       backgroundColor: const Color(0xFFF4F6F9),
@@ -110,9 +111,7 @@ class _InventoryScreenState extends State<InventoryScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    // ==================================================
                     // TITULO
-                    // ==================================================
 
                     Text(
                       "Inventario",
@@ -124,9 +123,7 @@ class _InventoryScreenState extends State<InventoryScreen> {
 
                     const SizedBox(height: 16),
 
-                    // ==================================================
                     // BUSCADOR
-                    // ==================================================
 
                     Container(
                       padding: const EdgeInsets.symmetric(horizontal: 14),
@@ -149,9 +146,7 @@ class _InventoryScreenState extends State<InventoryScreen> {
 
                     const SizedBox(height: 16),
 
-                    // ==================================================
                     // FILTROS
-                    // ==================================================
 
                     Row(
                       children: [
@@ -175,9 +170,7 @@ class _InventoryScreenState extends State<InventoryScreen> {
 
                     const SizedBox(height: 20),
 
-                    // ==================================================
                     // PRODUCTOS
-                    // ==================================================
 
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -223,9 +216,7 @@ class _InventoryScreenState extends State<InventoryScreen> {
 
                     const SizedBox(height: 12),
 
-                    // ==================================================
-                    // LISTA DE PRODUCTOS (solo los de la página actual)
-                    // ==================================================
+                    // LISTA DE PRODUCTOS 
 
                         if (inventario.viewStatus == ViewStatus.loading)
                          const Padding(
@@ -266,9 +257,7 @@ class _InventoryScreenState extends State<InventoryScreen> {
                         }).toList(),
                       ),
  
-                    // ==================================================
                     // SIN PRODUCTOS
-                    // ==================================================
                     
                     if (inventario.viewStatus == ViewStatus.success && productosFiltrados.isEmpty)
                       Padding(
@@ -284,9 +273,7 @@ class _InventoryScreenState extends State<InventoryScreen> {
                     const SizedBox(height: 12),
  
 
-                    // ==================================================
                     // PAGINACIÓN (funcional)
-                    // ==================================================
 
                     PaginacionWidget(
                       paginaActual: paginaActual,

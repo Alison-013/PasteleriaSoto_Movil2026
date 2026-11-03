@@ -2,14 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_pasteleria_26/core/constants/reportes_formato.dart';
 
-
 class FiltrosReportes extends StatelessWidget {
   final DateTime? fechaInicio;
   final DateTime? fechaFin;
   final VoidCallback onElegirInicio;
   final VoidCallback onElegirFin;
   final VoidCallback onLimpiar;
- 
 
   const FiltrosReportes({
     super.key,
@@ -26,18 +24,18 @@ class FiltrosReportes extends StatelessWidget {
 
     return Row(
       children: [
-          Expanded(
-            child: _ChipFiltro(
-              texto: fechaInicio != null
+        Expanded(
+          child: _ChipFiltro(
+            texto: fechaInicio != null
                 ? 'Inicio: ${formatearFecha(fechaInicio!)}'
                 : 'Inicio',
-                activo: fechaInicio != null,
-                icono: Icons.calendar_today_rounded,
-                onTap: onElegirInicio,
-            ),
+            activo: fechaInicio != null,
+            icono: Icons.calendar_today_rounded,
+            onTap: onElegirInicio,
           ),
-          const SizedBox(width: 7),
-           Expanded(
+        ),
+        const SizedBox(width: 10),
+        Expanded(
           child: _ChipFiltro(
             texto: fechaFin != null
                 ? 'Fin: ${formatearFecha(fechaFin!)}'
@@ -48,7 +46,7 @@ class FiltrosReportes extends StatelessWidget {
           ),
         ),
         if (hayFiltro) ...[
-          const SizedBox(width: 7),
+          const SizedBox(width: 10),
           _ChipFiltro(
             texto: 'Limpiar',
             activo: false,
@@ -56,7 +54,7 @@ class FiltrosReportes extends StatelessWidget {
             onTap: onLimpiar,
           ),
         ],
-        ],
+      ],
     );
   }
 }
@@ -78,16 +76,15 @@ class _ChipFiltro extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: onTap,
-      borderRadius: BorderRadius.circular(15),
+      borderRadius: BorderRadius.circular(10),
       child: Container(
-        height: 28,
-        padding: const EdgeInsets.symmetric(horizontal: 13),
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
         alignment: Alignment.center,
         decoration: BoxDecoration(
-          color: activo ? const Color(0xFF092535) : Colors.white,
-          borderRadius: BorderRadius.circular(15),
+          color: activo ? const Color(0xFF16233F) : Colors.white,
+          borderRadius: BorderRadius.circular(10),
           border: Border.all(
-            color: activo ? const Color(0xFF092535) : const Color(0xFFDDE2E5),
+            color: activo ? const Color(0xFF16233F) : const Color(0xFFE0E4EA),
           ),
         ),
         child: Row(
@@ -96,20 +93,18 @@ class _ChipFiltro extends StatelessWidget {
             if (icono != null) ...[
               Icon(
                 icono,
-                size: 13,
-                color: activo ? Colors.white : const Color(0xFF526167),
+                size: 18,
+                color: activo ? Colors.white : Colors.grey,
               ),
-              const SizedBox(width: 5),
+              const SizedBox(width: 6),
             ],
             Flexible(
               child: Text(
                 texto,
                 overflow: TextOverflow.ellipsis,
-                style: GoogleFonts.poppins(
-                  fontSize: 11,
-                  height: 14 / 11,
-                  fontWeight: FontWeight.w500,
-                  color: activo ? Colors.white : const Color(0xFF526167),
+                style: GoogleFonts.playfairDisplay(
+                  fontSize: 12,
+                  color: activo ? Colors.white : Colors.black87,
                 ),
               ),
             ),

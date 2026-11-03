@@ -4,56 +4,44 @@ import 'package:google_fonts/google_fonts.dart';
 class IngresosDia extends StatelessWidget {
   final List<String> etiquetas;
   final List<double> valores;
-  
+
   const IngresosDia({super.key, required this.etiquetas, required this.valores});
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.fromLTRB(12, 11, 12, 8),
+      padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(7),
-        boxShadow: const [
-          BoxShadow(
-            color: Color(0x16000000),
-            blurRadius: 8,
-            offset: Offset(0, 3),
-          ),
-        ],
+        borderRadius: BorderRadius.circular(14),
+        border: Border.all(color: const Color(0xFFEFF1F5)),
       ),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Row(
-            children: [
-              Text(
-                'Ingresos del Día',
-                style: GoogleFonts.playfairDisplay(
-                  fontSize: 17,
-                  height: 24 / 17,
-                  fontWeight: FontWeight.w400,
-                  color: const Color(0xFF092535),
-                ),
-              ),
-              const Spacer(),
-              const Icon(Icons.more_horiz, size: 19),
-            ],
+          Text(
+            'Ingresos del Día',
+            style: GoogleFonts.playfairDisplay(
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+            ),
           ),
-          const SizedBox(height: 8),
-          Expanded(
+          const SizedBox(height: 12),
+          SizedBox(
+            height: 180,
+            width: double.infinity,
             child: valores.isEmpty
                 ? Center(
                     child: Text(
                       'Sin ventas en este rango',
-                      style: GoogleFonts.poppins(
-                        fontSize: 11,
-                        color: const Color(0xFF526167),
+                      style: GoogleFonts.playfairDisplay(
+                        fontSize: 13,
+                        color: Colors.grey,
                       ),
                     ),
                   )
                 : CustomPaint(
                     painter: _PintorBarras(etiquetas, valores),
-                    child: const SizedBox.expand(),
                   ),
           ),
         ],
@@ -80,17 +68,17 @@ class _PintorBarras extends CustomPainter {
     
 
     final valorMaximo = alturas.reduce((a, b) => a > b ? a : b);
-    final altoUtil = size.height - 20; // deja espacio para las etiquetas
+    final altoUtil = size.height - 26; // deja espacio para las etiquetas
     final factor = valorMaximo > 0 ? altoUtil / valorMaximo : 0.0;
     final indiceMaximo = alturas.indexOf(valorMaximo);
 
     for (int i = 0; i < n; i++) {
       final x = inicioX + i * (ancho + espacio);
       final alturaBarra = alturas[i] * factor;
-      final y = size.height - alturaBarra - 17;
+      final y = size.height - alturaBarra - 22;
  
       final color = i == indiceMaximo
-          ? const Color(0xFF092535)
+          ? const Color(0xFF16233F)
           : const Color(0xFFBEE3FA);
 
       canvas.drawRRect(
@@ -105,7 +93,7 @@ class _PintorBarras extends CustomPainter {
         text: TextSpan(
           text: etiquetas[i],
           style: GoogleFonts.poppins(
-            fontSize: 8,
+            fontSize: 11,
             fontWeight: FontWeight.w500,
             color: const Color(0xFF526167),
           ),
@@ -117,7 +105,7 @@ class _PintorBarras extends CustomPainter {
         canvas,
         Offset(
           x + (ancho - texto.width) / 2,
-          size.height - 11,
+          size.height - 16,
         ),
       );
     }

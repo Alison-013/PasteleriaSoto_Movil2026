@@ -1,101 +1,72 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 class PaginacionReportes extends StatelessWidget {
- final int paginaActual;
- final int totalPaginas;
- final ValueChanged<int> onCambiarPagina;
+  final int paginaActual;
+  final int totalPaginas;
+  final ValueChanged<int> onCambiarPagina;
 
- const PaginacionReportes({
+  const PaginacionReportes({
     super.key,
     required this.paginaActual,
     required this.totalPaginas,
     required this.onCambiarPagina,
   });
- 
+
+  Widget _numeroPagina(int numero) {
+    final activo = numero == paginaActual;
+    return GestureDetector(
+      onTap: activo ? null : () => onCambiarPagina(numero),
+      child: Container(
+        width: 28,
+        height: 28,
+        alignment: Alignment.center,
+        decoration: BoxDecoration(
+          color: activo ? const Color(0xFF16233F) : Colors.white,
+          shape: BoxShape.circle,
+          border: Border.all(color: const Color(0xFFE0E4EA)),
+        ),
+        child: Text(
+          '$numero',
+          style: TextStyle(color: activo ? Colors.white : Colors.black87),
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
+    final puedeAnterior = paginaActual > 1;
+    final puedeSiguiente = paginaActual < totalPaginas;
+
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
-       children: [
+      children: [
         Text(
           'Página $paginaActual de $totalPaginas',
-          style: _estiloCaption(const Color(0xFF526167)),
+          style: const TextStyle(color: Colors.grey),
         ),
         const SizedBox(width: 12),
-        InkWell(
-          onTap: paginaActual > 1
-              ? () => onCambiarPagina(paginaActual - 1)
-              : null,
+        GestureDetector(
+          onTap: puedeAnterior ? () => onCambiarPagina(paginaActual - 1) : null,
           child: Icon(
             Icons.chevron_left,
-            size: 18,
-            color: paginaActual > 1
-                ? const Color(0xFF526167)
-                : const Color(0xFFC5CBCE),
+            color: puedeAnterior ? Colors.black87 : Colors.grey.shade300,
           ),
         ),
-        const SizedBox(width: 6),
+        const SizedBox(width: 8),
         for (int i = 1; i <= totalPaginas; i++) ...[
-          InkWell(
-            onTap: () => onCambiarPagina(i),
-            child: _BotonPagina(texto: '$i', activo: i == paginaActual),
-          ),
-          const SizedBox(width: 6),
+          _numeroPagina(i),
+          if (i != totalPaginas) const SizedBox(width: 8),
         ],
-        InkWell(
-          onTap: paginaActual < totalPaginas
-              ? () => onCambiarPagina(paginaActual + 1)
-              : null,
+        const SizedBox(width: 8),
+        GestureDetector(
+          onTap: puedeSiguiente ? () => onCambiarPagina(paginaActual + 1) : null,
           child: Icon(
             Icons.chevron_right,
-            size: 18,
-            color: paginaActual < totalPaginas
-                ? const Color(0xFF526167)
-                : const Color(0xFFC5CBCE),
+            color: puedeSiguiente ? Colors.black87 : Colors.grey.shade300,
           ),
         ),
       ],
     );
   }
-}
-
-class _BotonPagina extends StatelessWidget {
-  final String texto;
-  final bool activo;
-
-  const _BotonPagina({
-    required this.texto,
-    this.activo = false,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: 21,
-      height: 21,
-      alignment: Alignment.center,
-      decoration: BoxDecoration(
-        color: activo ? const Color(0xFF092535) : const Color(0xFFF0F2F3),
-        shape: BoxShape.circle,
-      ),
-      child: Text(
-        texto,
-        style: GoogleFonts.poppins(
-          fontSize: 11,
-          fontWeight: FontWeight.w600,
-          color: activo ? Colors.white : const Color(0xFF526167),
-        ),
-      ),
-    );
-  }
-}
-
-TextStyle _estiloCaption(Color color) {
-  return GoogleFonts.poppins(
-    fontSize: 11,
-    height: 14 / 11,
-    fontWeight: FontWeight.w500,
-    color: color,
-  );
 }

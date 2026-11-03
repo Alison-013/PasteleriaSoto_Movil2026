@@ -23,57 +23,57 @@ class DetalleVentas extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(12),
+      padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(7),
-        boxShadow: const [
-          BoxShadow(
-            color: Color(0x16000000),
-            blurRadius: 8,
-            offset: Offset(0, 3),
-          ),
-        ],
+        borderRadius: BorderRadius.circular(14),
+        border: Border.all(color: const Color(0xFFEFF1F5)),
       ),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
                 'Detalle de Ventas',
                 style: GoogleFonts.playfairDisplay(
-                  fontSize: 17,
-                  height: 24 / 17,
-                  fontWeight: FontWeight.w400,
-                  color: const Color(0xFF092535),
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
                 ),
               ),
-              const Spacer(),
-              Text(
-                rango,
-                style: _estiloCaption(const Color(0xFF526167)),
+              Flexible(
+                child: Text(
+                  rango,
+                  overflow: TextOverflow.ellipsis,
+                  style: GoogleFonts.playfairDisplay(
+                    color: Colors.grey,
+                    fontSize: 12,
+                  ),
+                ),
               ),
             ],
           ),
-          const SizedBox(height: 7),
+          const SizedBox(height: 12),
           if (lineas.isEmpty)
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 12),
               child: Text(
                 'Sin ventas en este rango',
-                style: _estiloCaption(const Color(0xFF526167)),
+                style: GoogleFonts.playfairDisplay(color: Colors.grey),
               ),
             )
           else
-           for (int i = 0; i < lineas.length; i++) ...[
+            for (int i = 0; i < lineas.length; i++) ...[
               _ProductoVenta(
                 producto: lineas[i].producto,
                 ordenes: '${lineas[i].ordenes} '
                     '${lineas[i].ordenes == 1 ? 'orden' : 'órdenes'}',
                 precio: formatearMonto(lineas[i].monto),
               ),
-              if (i < lineas.length - 1) const Divider(height: 13),
-           ],
+              if (i < lineas.length - 1)
+                const Divider(height: 20, color: Color(0xFFEFF1F5)),
+            ],
         ],
       ),
     );
@@ -101,43 +101,30 @@ class _ProductoVenta extends StatelessWidget {
             children: [
               Text(
                 producto,
-                style: _estiloTexto(const Color(0xFF092535)),
+                style: GoogleFonts.playfairDisplay(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 15,
+                ),
               ),
+              const SizedBox(height: 2),
               Text(
                 ordenes,
-                style: _estiloCaption(const Color(0xFF657278)),
+                style: GoogleFonts.playfairDisplay(
+                  color: Colors.grey,
+                  fontSize: 12,
+                ),
               ),
             ],
           ),
         ),
         Text(
           precio,
-          style: GoogleFonts.poppins(
-            fontSize: 11,
-            height: 14 / 11,
-            fontWeight: FontWeight.w600,
-            color: const Color(0xFF092535),
+          style: GoogleFonts.playfairDisplay(
+            fontWeight: FontWeight.bold,
+            fontSize: 15,
           ),
         ),
       ],
     );
   }
-}
-
-TextStyle _estiloCaption(Color color) {
-  return GoogleFonts.poppins(
-    fontSize: 11,
-    height: 14 / 11,
-    fontWeight: FontWeight.w500,
-    color: color,
-  );
-}
-
-TextStyle _estiloTexto(Color color) {
-  return GoogleFonts.poppins(
-    fontSize: 15,
-    height: 22 / 15,
-    fontWeight: FontWeight.w400,
-    color: color,
-  );
 }

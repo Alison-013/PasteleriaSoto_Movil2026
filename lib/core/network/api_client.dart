@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_pasteleria_26/core/constants/api_constants.dart';
 import 'package:flutter_pasteleria_26/core/errors/app_exception.dart';
 import 'package:http/http.dart' as http;
@@ -63,7 +64,8 @@ class ApiClient{
   }
   
     dynamic _decode(http.Response response){
-      if (response.statusCode > 200 || response.statusCode >= 300) {
+      debugPrint('API ${response.request?.method} ${response.request?.url} -> ${response.statusCode} ${response.body}');
+      if (response.statusCode < 200 || response.statusCode >= 300) {
         throw ServerException('Solicitud fallida', statusCode: response.statusCode);
       }
 
