@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 
 class PaginadorClientes extends StatelessWidget {
@@ -19,106 +18,71 @@ class PaginadorClientes extends StatelessWidget {
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          // Página anterior
-          _BotonPagina(
-            icono: Icons.chevron_left,
-            seleccionado: false,
-            habilitado: paginaActual > 1,
-            onTap: () {
-              if (paginaActual > 1) {
-                onCambiarPagina(paginaActual - 1);
-              }
-            },
+          // ANTERIOR
+          InkWell(
+            onTap: paginaActual > 1
+                ? () => onCambiarPagina(paginaActual - 1)
+                : null,
+            child: Icon(
+              Icons.chevron_left,
+              size: 20,
+              color: paginaActual > 1
+                  ? const Color(0xFF555B60)
+                  : const Color(0xFFBFC3C6),
+            ),
           ),
 
-          const SizedBox(width: 4),
+          const SizedBox(width: 6),
 
-          // Números de páginas
+          // NÚMEROS
           ...List.generate(totalPaginas, (index) {
             final numero = index + 1;
+            final activo = paginaActual == numero;
 
             return Padding(
-              padding: const EdgeInsets.only(left: 4),
-              child: _BotonPagina(
-                texto: '$numero',
-                seleccionado: paginaActual == numero,
-                habilitado: true,
+              padding: const EdgeInsets.symmetric(horizontal: 3),
+              child: InkWell(
                 onTap: () => onCambiarPagina(numero),
+                borderRadius: BorderRadius.circular(6),
+                child: Container(
+                  width: 26,
+                  height: 26,
+                  alignment: Alignment.center,
+                  decoration: BoxDecoration(
+                    color: activo
+                        ? const Color(0xFF16233F)
+                        : const Color(0xFFF1F1F2),
+                    borderRadius: BorderRadius.circular(6),
+                  ),
+                  child: Text(
+                    "$numero",
+                    style: TextStyle(
+                      fontSize: 10,
+                      fontWeight: activo ? FontWeight.w600 : FontWeight.w400,
+                      color: activo ? Colors.white : const Color(0xFF555B60),
+                    ),
+                  ),
+                ),
               ),
             );
           }),
 
-          const SizedBox(width: 4),
+          const SizedBox(width: 6),
 
-          // Página siguiente
-          _BotonPagina(
-            icono: Icons.chevron_right,
-            seleccionado: false,
-            habilitado: paginaActual < totalPaginas,
-            onTap: () {
-              if (paginaActual < totalPaginas) {
-                onCambiarPagina(paginaActual + 1);
-              }
-            },
+          // SIGUIENTE
+          InkWell(
+            onTap: paginaActual < totalPaginas
+                ? () => onCambiarPagina(paginaActual + 1)
+                : null,
+            child: Icon(
+              Icons.chevron_right,
+              size: 20,
+              color: paginaActual < totalPaginas
+                  ? const Color(0xFF555B60)
+                  : const Color(0xFFBFC3C6),
+            ),
           ),
         ],
-      ),
-    );
-  }
-}
-
-class _BotonPagina extends StatelessWidget {
-  final String? texto;
-  final IconData? icono;
-  final bool seleccionado;
-  final bool habilitado;
-  final VoidCallback onTap;
-
-  const _BotonPagina({
-    this.texto,
-    this.icono,
-    required this.seleccionado,
-    required this.habilitado,
-    required this.onTap,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return InkWell(
-      onTap: habilitado ? onTap : null,
-      borderRadius: BorderRadius.circular(6),
-
-      child: Container(
-        width: 26,
-        height: 26,
-        alignment: Alignment.center,
-
-        decoration: BoxDecoration(
-          color: seleccionado
-              ? const Color(0xFF062B3A)
-              : const Color(0xFFF1F1F2),
-          borderRadius: BorderRadius.circular(6),
-        ),
-
-        child: texto != null
-            ? Text(
-                texto!,
-                style: TextStyle(
-                  fontSize: 10,
-                  fontWeight:
-                      seleccionado ? FontWeight.w600 : FontWeight.w400,
-                  color: seleccionado
-                      ? Colors.white
-                      : const Color(0xFF555B60),
-                ),
-              )
-            : Icon(
-                icono,
-                size: 16,
-                color: habilitado
-                    ? const Color(0xFF555B60)
-                    : const Color(0xFFBFC3C6),
-              ),
       ),
     );
   }
