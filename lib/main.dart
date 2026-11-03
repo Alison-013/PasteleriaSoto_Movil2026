@@ -24,6 +24,8 @@ import 'package:flutter_pasteleria_26/presentation/Providers/sale_provider.dart'
 import 'package:flutter_pasteleria_26/presentation/Providers/activity_provider.dart';
 import 'package:flutter_pasteleria_26/presentation/Providers/purchase_provider.dart';
 import 'package:flutter_pasteleria_26/presentation/Providers/supplier_provider.dart';
+import 'package:flutter_pasteleria_26/presentation/Providers/user_provider.dart';
+
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -157,9 +159,12 @@ class _MainAppState extends State<MainApp> {
         },
 
         AppRoutes.seguridad: (BuildContext context) {
-          return const seguridad();
+          return ChangeNotifierProvider(
+            create: (_) => getIt<UserProvider>()..fetchUsers(),
+            child: const seguridad(),
+          );
         },
-
+        
         AppRoutes.proveedores: (BuildContext context) {
           return ChangeNotifierProvider(
             create: (_) => getIt<SupplierProvider>()..fetchSuppliers(),

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import 'estilos_seguridad.dart';
 import 'infousuario_seguridad.dart';
 
@@ -67,14 +66,18 @@ class CabeceraUsuario extends StatelessWidget {
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 3),
             decoration: BoxDecoration(
-              color: const Color(0xFFE2F8EF),
+              color: usuario.activo
+                  ? const Color(0xFFE2F8EF)
+                  : const Color(0xFFF3E6E6),
               borderRadius: BorderRadius.circular(6),
             ),
             child: Text(
-              'ACTIVO',
+              usuario.activo ? 'ACTIVO' : 'INACTIVO',
               style: estiloPoppinsSeguridad(
                 8,
-                const Color(0xFF158260),
+                usuario.activo
+                    ? const Color(0xFF158260)
+                    : const Color(0xFFB04A4A),
                 FontWeight.w600,
               ),
             ),

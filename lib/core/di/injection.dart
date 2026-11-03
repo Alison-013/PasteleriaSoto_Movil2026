@@ -21,6 +21,9 @@ import 'package:flutter_pasteleria_26/services/purchase_service.dart';
 import 'package:flutter_pasteleria_26/data/repositories/supplier_repository.dart';
 import 'package:flutter_pasteleria_26/presentation/Providers/supplier_provider.dart';
 import 'package:flutter_pasteleria_26/services/supplier_service.dart';
+import 'package:flutter_pasteleria_26/data/repositories/user_repository.dart';
+import 'package:flutter_pasteleria_26/presentation/Providers/user_provider.dart';
+import 'package:flutter_pasteleria_26/services/user_service.dart';
 
 final getIt = GetIt.instance;
 
@@ -40,6 +43,7 @@ void setUpDependencies (){
  getIt.registerLazySingleton<AuditLogRepository>(()=> AuditLogRepository(getIt<ApiClient>()));
  getIt.registerLazySingleton<PurchaseRepository>(()=> PurchaseRepository(getIt<ApiClient>()));
  getIt.registerLazySingleton<SupplierRepository>(()=> SupplierRepository(getIt<ApiClient>()));
+ getIt.registerLazySingleton<UserRepository>(()=> UserRepository(getIt<ApiClient>()));
 
 
  //Registrar servicios
@@ -50,6 +54,7 @@ void setUpDependencies (){
  getIt.registerLazySingleton<AuditLogService>(()=> AuditLogService(getIt<AuditLogRepository>()));
  getIt.registerLazySingleton<PurchaseService>(()=> PurchaseService(getIt<PurchaseRepository>()));
  getIt.registerLazySingleton<SupplierService>(()=> SupplierService(getIt<SupplierRepository>()));
+ getIt.registerLazySingleton<UserService>(()=> UserService(getIt<UserRepository>()));
 
  //Registrar providers
  getIt.registerLazySingleton<AuthProvider>(()=> AuthProvider(getIt<AuthService>()));
@@ -58,6 +63,8 @@ void setUpDependencies (){
  getIt.registerFactory<ActivityProvider>(()=> ActivityProvider(getIt<AuditLogService>()));
  getIt.registerFactory<PurchaseProvider>(()=> PurchaseProvider(getIt<PurchaseService>()));
  getIt.registerFactory<SupplierProvider>(()=> SupplierProvider(getIt<SupplierService>(), getIt<ProductService>()));
+ getIt.registerFactory<UserProvider>(()=> UserProvider(getIt<UserService>()));
+
 }
 
 
