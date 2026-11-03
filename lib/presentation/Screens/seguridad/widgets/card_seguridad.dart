@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import 'estilos_seguridad.dart';
 import 'infousuario_seguridad.dart';
 
@@ -69,14 +68,18 @@ class TarjetaUsuario extends StatelessWidget {
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 3),
               decoration: BoxDecoration(
-                color: const Color(0xFFFFF2D8),
+                color: usuario.activo
+                    ? const Color(0xFFFFF2D8)
+                    : const Color(0xFFF3E6E6),
                 borderRadius: BorderRadius.circular(8),
               ),
               child: Text(
-                'Activo',
+                usuario.activo ? 'Activo' : 'Inactivo',
                 style: estiloPoppinsSeguridad(
                   8,
-                  const Color(0xFFD69A2D),
+                  usuario.activo
+                      ? const Color(0xFFD69A2D)
+                      : const Color(0xFFB04A4A),
                   FontWeight.w500,
                 ),
               ),
